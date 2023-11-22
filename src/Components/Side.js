@@ -11,16 +11,15 @@ const Side = () => {
             </div>
             <div>
                 <div class="mb-6 flex items-center gap-4">
-                    <span class="avatar avatar-circle rounded-full avatar-md border-2 border-white"><img class="w-[36px] rounded-full" src={avatar} alt='avatar' loading="lazy" /></span>
+                    <span class=" rounded-full bg-[#6B7280]   border-2 border-white "><img class="w-[36px]   rounded-full" src={avatar} alt='avatarimg' /></span>
                     <div class="text-white">
-                        <div class="font-semibold text-base">Mayur Solanki</div>
-                        <span class="opacity-80 text-sm">DOT, Sarvadhi Solutions pvt ltd.</span>
+                        <div class="font-semibold text-base tracking-wide">Mayur Solanki</div>
+                        <span class="opacity-80 text-sm font-light tracking-wide">DOT, Sarvadhi Solutions pvt ltd.</span>
                     </div>
                 </div>
-                <p className='text-white opacity-80 text-lg'>Digital Transformations For the People, By the People!</p>
+                <p className='text-white opacity-80 text-lg font-light tracking-wide'>Digital Transformations For the People, By the People!</p>
             </div>
             <div>
-
                 <span className='text-white text-sm opacity-80'>Copyright © 2023 <span className='font-semibold opacity-100'>Sarvadhi</span> </span>
             </div>
         </div>

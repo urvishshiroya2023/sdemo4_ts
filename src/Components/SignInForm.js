@@ -5,12 +5,10 @@ import * as Yup from 'yup';
 
 const SignInForm = () => {
 
-
     const validationSchema = Yup.object({
         userName: Yup.string().required('Please enter your user name'),
         password: Yup.string().required('Please enter your password'),
     });
-
 
     const initialValues = {
         userName: '',
@@ -18,9 +16,7 @@ const SignInForm = () => {
         rememberMe: false,
     };
 
-
     const [passwordVisible, setPasswordVisible] = useState(false);
-
 
     const onSubmit = (values, { setSubmitting }) => {
 
@@ -31,8 +27,8 @@ const SignInForm = () => {
     return (
         <div className='xl:min-w-[450px] px-8'>
             <div className="mb-8">
-                <h3 className="mb-1 text-2xl font-semibold">Welcome back!</h3>
-                <p className='text-[#6B7280]'>Please enter your credentials to sign in!</p>
+                <h3 className="mb-1 text-2xl font-semibold tracking-wide">Welcome back!</h3>
+                <p className='text-[#6B7280] font-light text-sm tracking-wide'>Please enter your credentials to sign in!</p>
             </div>
             <div>
                 <Formik
@@ -43,7 +39,7 @@ const SignInForm = () => {
                     {({ errors, touched, isSubmitting }) => (
                         <Form className="max-w-md mx-auto mt-8">
                             <div className="mb-5">
-                                <label htmlFor="userName" className="block text-gray-700 text-sm font-bold mb-2">
+                                <label htmlFor="userName" className="block text-[#6B7280] text-sm font-semibold mb-2">
                                     User Name
                                 </label>
                                 <Field
@@ -51,14 +47,14 @@ const SignInForm = () => {
                                     id="userName"
                                     name="userName"
                                     placeholder="User Name"
-                                    className={`relative  appearance-none border ${errors.userName && touched.userName ? 'border-red-500' : ''
-                                        } rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+                                    className={`relative font-light  appearance-none border ${errors.userName && touched.userName ? 'border-red-500 border-2' : ''
+                                        } rounded w-full py-3 px-3 text-gray-700 leading-tight focus:border-indigo-500 focus:border-2 focus:outline-none focus:shadow-outline`}
                                 />
                                 <ErrorMessage name="userName" component="p" className="absolute text-red-500 text-xs " />
                             </div>
 
                             <div className="mb-5 relative">
-                                <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">
+                                <label htmlFor="password" className="block text-[#6B7280] text-sm font-semibold mb-2">
                                     Password
                                 </label>
                                 <Field
@@ -66,11 +62,11 @@ const SignInForm = () => {
                                     id="password"
                                     placeholder="Password"
                                     name="password"
-                                    className={`relative  appearance-none border ${errors.password && touched.password ? 'border-red-500' : ''
-                                        } rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+                                    className={`relative font-light  appearance-none border ${errors.password && touched.password ? 'border-red-500 border-2' : ''
+                                        } rounded w-full py-3 px-3 text-gray-700 leading-tight focus:border-indigo-500 focus:border-2 focus:outline-none focus:shadow-outline `}
                                 />
                                 <div
-                                    className="absolute inset-y-0 right-0 top-2 pr-3 pt-3 flex items-center cursor-pointer"
+                                    className="absolute inset-y-0 right-0 top-4 pr-3 pt-3 flex items-center cursor-pointer"
                                     onClick={() => setPasswordVisible(!passwordVisible)}
                                 >
                                     {passwordVisible ? (
