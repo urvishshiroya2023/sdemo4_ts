@@ -27,11 +27,11 @@ const OnBoardForm = () => {
     };
 
     return (
-        <div className=" mt-8 p-6 bg-white w-[57%] ">
+        <div className=" mt-8 p-6 bg-white w-4/5 sm:w-[57%] ">
 
             <div>
                 <div className="mb-8">
-                    <h3 className="mb-1 text-2xl">Personal Information</h3>
+                    <h3 className="mb-1 text-2xl font-semibold">Personal Information</h3>
                     <p className='text-[#6B7280]'>Basic information for an account opening</p>
                 </div>
             </div>
@@ -44,7 +44,7 @@ const OnBoardForm = () => {
                 >
                     {({ errors, touched, isSubmitting }) => (
                         <Form>
-                            <div className='flex justify-between gap-x-2'>
+                            <div className='lg:flex justify-between gap-x-2'>
                                 <div className="mb-5 w-full">
                                     <label htmlFor="firstName" className="block  text-[#6B7280] text-sm font-bold mb-2">
                                         First Name
@@ -110,7 +110,10 @@ const OnBoardForm = () => {
                                 <ErrorMessage name="gender" component="p" className="absolute text-red-500 text-xs " />
                             </div>
 
-                            <div className='flex justify-between gap-x-2'>
+
+
+
+                            <div className='lg:flex justify-between gap-x-2'>
                                 <div className="mb-5 w-full">
                                     <label htmlFor="phoneNumber" className="block text-[#6B7280] text-sm font-bold mb-2">
                                         Phone Number
@@ -122,7 +125,7 @@ const OnBoardForm = () => {
                                             id="dialCode"
                                             name="dialCode"
                                             className={`appearance-none border ${errors.phoneNumber && touched.phoneNumber ? 'border-red-500' : ''
-                                                } rounded-l-lg py-2 px-3 text-[#6B7280] leading-tight focus:outline-none focus:shadow-outline`}
+                                                } rounded-l py-2 px-3 text-[#6B7280] leading-tight focus:outline-none focus:shadow-outline`}
 
                                         >
 
@@ -136,7 +139,7 @@ const OnBoardForm = () => {
                                             name="phoneNumber"
                                             placeholder="Phone Number"
                                             className={`flex-1 relative appearance-none border ${errors.phoneNumber && touched.phoneNumber ? 'border-red-500' : ''
-                                                } rounded-r-lg w-full py-2 px-3 text-[#6B7280] leading-tight focus:outline-none focus:shadow-outline`}
+                                                } rounded-r w-full py-2 px-3 text-[#6B7280] leading-tight focus:outline-none focus:shadow-outline`}
                                         />
                                     </div>
                                     <ErrorMessage name="phoneNumber" component="p" className="absolute text-red-500 text-xs " />

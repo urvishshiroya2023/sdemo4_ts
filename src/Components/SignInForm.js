@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 
 const SignInForm = () => {
+
+
     const validationSchema = Yup.object({
         userName: Yup.string().required('Please enter your user name'),
         password: Yup.string().required('Please enter your password'),
@@ -29,7 +31,7 @@ const SignInForm = () => {
     return (
         <div className='xl:min-w-[450px] px-8'>
             <div className="mb-8">
-                <h3 className="mb-1 text-2xl">Welcome back!</h3>
+                <h3 className="mb-1 text-2xl font-semibold">Welcome back!</h3>
                 <p className='text-[#6B7280]'>Please enter your credentials to sign in!</p>
             </div>
             <div>
@@ -103,13 +105,9 @@ const SignInForm = () => {
             <div class="mt-4 text-center">
                 <span>Onboard your organization </span>
                 <Link className='text-indigo-600 hover:underline' to={"/onboarduser"}><span className="text-indigo-700">Onboarding...</span></Link>
-
             </div>
         </div>
     );
 };
 
 export default SignInForm;
-
-
-
