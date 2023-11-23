@@ -1,9 +1,11 @@
+import axios from 'axios';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 
 const SignInForm = () => {
+    const [passwordVisible, setPasswordVisible] = useState(false);
 
     const validationSchema = Yup.object({
         userName: Yup.string().required('Please enter your user name'),
@@ -16,13 +18,51 @@ const SignInForm = () => {
         rememberMe: false,
     };
 
-    const [passwordVisible, setPasswordVisible] = useState(false);
 
-    const onSubmit = (values, { setSubmitting }) => {
+    // const onSubmit = (values, { setSubmitting }) => {
+    //     console.log(values);
+    //     setSubmitting(false);
+    // };
 
+    const getAuthToken = async (email, password) => {
+        try {
+            const response = await axios.post('http://192.168.2.129:9500/api/v1/crm/user/login', {
+                email: email,
+                password: password,
+            });
+
+            const authToken = response.data.token;
+            return authToken;
+        } catch (error) {
+            console.error('Error getting authentication token:', error.response ? error.response.data : error.message);
+            throw error;
+        }
+    };
+
+    const onSubmit = async (values, { setSubmitting }) => {
         console.log(values);
+        try {
+            const authToken = await getAuthToken(values.userName, values.password);
+            const headers = {
+                headers: {
+                    Authorization: `Bearer ${authToken}`,
+                },
+            };
+
+            // const response = await axios.get('http://192.168.2.129:9500/api/v1/crm/user/login', headers);
+
+            console.log(headers);
+
+        } catch (error) {
+            console.error('Error making authenticated request:', error.response ? error.response.data : error.message);
+        }
+
         setSubmitting(false);
     };
+
+
+
+
 
     return (
         <div className='xl:min-w-[450px] px-8'>

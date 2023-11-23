@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React from 'react';
 import * as Yup from 'yup';
@@ -8,7 +9,7 @@ const validationSchema = Yup.object({
     email: Yup.string().email('Invalid email Address').required('Email Required'),
     gender: Yup.string().required('Gender Required'),
     phoneNumber: Yup.string().required('Phone Number Required'),
-    dateOfBirth: Yup.date().required('Date of Birth Required'),
+    dob: Yup.date().required('Date of Birth Required'),
 });
 
 const initialValues = {
@@ -17,17 +18,29 @@ const initialValues = {
     email: '',
     gender: '',
     phoneNumber: '',
-    dateOfBirth: '',
+    dob: '',
 };
 
 const OnBoardForm = () => {
-    const onSubmit = (values, { setSubmitting }) => {
-        console.log(values);
-        setSubmitting(false);
+
+    // const onSubmit = (values, { setSubmitting }) => {
+    //     console.log(values);
+    //     setSubmitting(false);
+    // };
+
+    const onSubmit = async (values, { setSubmitting }) => {
+        try {
+            const response = await axios.post('http://192.168.2.129:9500/api/v1/master/crm/organization-admin', values);
+            console.log(response.data);
+            setSubmitting(false);
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            setSubmitting(false);
+        }
     };
 
     return (
-        <div className="  p-6 bg-white w-4/5 sm:w-[60%] ">
+        <div className="p-6 bg-white w-4/5 sm:w-[60%] ">
             <div>
                 <div className="mb-8">
                     <h3 className="mb-1 text-2xl font-semibold tracking-wide">Personal Information</h3>
@@ -148,12 +161,12 @@ const OnBoardForm = () => {
                                     </label>
                                     <Field
                                         type="date"
-                                        id="dateOfBirth"
-                                        name="dateOfBirth"
-                                        className={`relative font-light  appearance-none border ${errors.dateOfBirth && touched.dateOfBirth ? 'border-red-500 border-2' : ''
+                                        id="dob"
+                                        name="dob"
+                                        className={`relative font-light  appearance-none border ${errors.dob && touched.dob ? 'border-red-500 border-2' : ''
                                             } rounded w-full py-3 px-3 text-[#6B7280] leading-tight focus:border-indigo-500 focus:border-2 focus:outline-none focus:shadow-outline`}
                                     />
-                                    <ErrorMessage name="dateOfBirth" component="p" className="absolute text-red-500 text-xs " />
+                                    <ErrorMessage name="dob" component="p" className="absolute text-red-500 text-xs " />
                                 </div>
                             </div>
 
