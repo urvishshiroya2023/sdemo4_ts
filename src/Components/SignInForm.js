@@ -72,9 +72,6 @@ const SignInForm = () => {
         setSubmitting(false);
     };
 
-
-
-
     return (
         <div className='xl:min-w-[450px] px-8'>
             <div className="mb-8">

@@ -8,6 +8,7 @@ import OnBoardComponent from './Components/OnBoardComponent';
 import ProtectedRoutes from './Components/ProtectedRoutes';
 import SignInComponent from './Components/SignInComponent';
 import TaskDetail from "./Components/TaskDetail";
+import TaskForm from './Components/TaskForm';
 import "./index.css";
 
 
@@ -31,6 +32,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/taskdetail",
         element: <TaskDetail />
+      },
+      {
+        path: "/addtask",
+        element: <TaskForm />
       },
     ]
   }
