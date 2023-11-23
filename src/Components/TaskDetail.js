@@ -39,11 +39,6 @@ const TaskDetail = () => {
 
     const maxVisibleButtons = 10;
 
-    // Calculate the range of visible page number buttons
-    // const buttonRange = Array.from(
-    //     { length: Math.min(totalPages, maxVisibleButtons) },
-    //     (_, i) => i + 1 + Math.max(0, currentPage - Math.floor(maxVisibleButtons / 2))
-    // );
 
     const calculateButtonRange = () => {
         const leftOffset = Math.max(0, currentPage - Math.floor(maxVisibleButtons / 2));
@@ -66,7 +61,7 @@ const TaskDetail = () => {
     };
 
     return (
-        <div className='bg-[#e5e7eb]'>
+        <div className='bg-[#e5e7eb]  h-full'>
             <div>
                 <HomePageHeader />
             </div>
