@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
 const validationSchema = Yup.object({
@@ -22,7 +24,7 @@ const initialValues = {
 };
 
 const OnBoardForm = () => {
-
+    const navigate = useNavigate();
     // const onSubmit = (values, { setSubmitting }) => {
     //     console.log(values);
     //     setSubmitting(false);
@@ -32,10 +34,21 @@ const OnBoardForm = () => {
         try {
             const response = await axios.post('http://192.168.2.129:9500/api/v1/master/crm/organization-admin', values);
             console.log(response.data);
+
+            toast.success('Registration successful!', {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 2000,
+            });
+
             setSubmitting(false);
             resetForm();
+            navigate('/')
         } catch (error) {
             console.error('Error submitting form:', error);
+            toast.error('Registration failed. Please check your credentials.', {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 2000,
+            });
             setSubmitting(false);
         }
     };

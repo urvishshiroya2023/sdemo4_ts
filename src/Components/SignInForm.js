@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
+
 const SignInForm = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const navigate = useNavigate();
@@ -34,6 +35,9 @@ const SignInForm = () => {
             });
 
             const authToken = response.data.token;
+
+            localStorage.setItem('authToken', authToken);
+
             return authToken;
         } catch (error) {
             console.error('Error getting authentication token:', error.response ? error.response.data : error.message);
@@ -73,12 +77,12 @@ const SignInForm = () => {
                 },
             };
 
-            // Perform additional actions if needed
 
-            // Show success notification
+
+
             toast.success('Login successful!', {
                 position: toast.POSITION.TOP_CENTER,
-                autoClose: 2000, // Automatically close the notification after 2000 milliseconds (2 seconds)
+                autoClose: 2000,
             });
 
             resetForm();
@@ -88,7 +92,7 @@ const SignInForm = () => {
         } catch (error) {
             console.error('Error making authenticated request:', error.response ? error.response.data : error.message);
 
-            // Show error notification
+
             toast.error('Login failed. Please check your credentials.', {
                 position: toast.POSITION.TOP_CENTER,
                 autoClose: 2000,

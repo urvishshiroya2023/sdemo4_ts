@@ -1,11 +1,12 @@
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, RouterProvider, Routes, createBrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import Body from './Components/Body';
 import HomePage from './Components/HomePage';
-import OnBoardForm from './Components/OnBoardForm';
-import SignInForm from './Components/SignInForm';
+import OnBoardComponent from './Components/OnBoardComponent';
+import ProtectedRoutes from './Components/ProtectedRoutes';
+import SignInComponent from './Components/SignInComponent';
 import "./index.css";
 
 
@@ -15,12 +16,12 @@ const appRouter = createBrowserRouter([
     element: <Body />,
     children: [
       {
-        path: "/",
-        element: <SignInForm />
+        path: "/signin",
+        element: <SignInComponent />
       },
       {
         path: "/onboarduser",
-        element: <OnBoardForm />
+        element: <OnBoardComponent />
       },
       {
         path: "/homepage",
@@ -31,8 +32,18 @@ const appRouter = createBrowserRouter([
 ])
 
 function App() {
+
+
+
   return (
     <div className="">
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<ProtectedRoutes />}>
+            <Route path='/' element={<HomePage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
       <RouterProvider router={appRouter} />
       <ToastContainer />
     </div>
