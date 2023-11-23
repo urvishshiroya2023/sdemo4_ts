@@ -7,6 +7,7 @@ import HomePage from './Components/HomePage';
 import OnBoardComponent from './Components/OnBoardComponent';
 import ProtectedRoutes from './Components/ProtectedRoutes';
 import SignInComponent from './Components/SignInComponent';
+import TaskDetail from "./Components/TaskDetail";
 import "./index.css";
 
 
@@ -26,6 +27,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/homepage",
         element: <HomePage />
+      },
+      {
+        path: "/taskdetail",
+        element: <TaskDetail />
       },
     ]
   }

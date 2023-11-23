@@ -1,23 +1,14 @@
 import React from 'react'
-import logo from "../Images/logo-dark-full.png"
-import Logout from './Logout'
+import HomePageHeader from './HomePageHeader'
 
 const HomePage = () => {
     return (
         <div>
-            <div className='bg-indigo-600 flex justify-center'>
-                <div className='container' >
-                    <div className='flex justify-between items-center'>
-                        <div>
-                            <img src={logo} alt='logo' />
-                        </div>
-                        <div></div>
-                        <div><Logout /></div>
-                    </div>
-                </div>
+            <div>
+                <HomePageHeader />
             </div>
             <div>
-                <h1>Task List</h1>
+                <h1>Dashboard</h1>
             </div>
         </div>
     )

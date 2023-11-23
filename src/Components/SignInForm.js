@@ -22,11 +22,6 @@ const SignInForm = () => {
     };
 
 
-    // const onSubmit = (values, { setSubmitting }) => {
-    //     console.log(values);
-    //     setSubmitting(false);
-    // };
-
     const getAuthToken = async (email, password) => {
         try {
             const response = await axios.post('http://192.168.2.129:9500/api/v1/crm/user/login', {
@@ -45,27 +40,6 @@ const SignInForm = () => {
         }
     };
 
-    // const onSubmit = async (values, { setSubmitting }) => {
-    //     console.log(values);
-    //     try {
-    //         const authToken = await getAuthToken(values.userName, values.password);
-    //         const headers = {
-    //             headers: {
-    //                 Authorization: `Bearer ${authToken}`,
-    //             },
-    //         };
-
-    //         // const response = await axios.get('http://192.168.2.129:9500/api/v1/crm/user/login', headers);
-
-    //         console.log(headers);
-
-
-    //     } catch (error) {
-    //         console.error('Error making authenticated request:', error.response ? error.response.data : error.message);
-    //     }
-
-    //     setSubmitting(false);
-    // };
 
     const onSubmit = async (values, { setSubmitting, resetForm }) => {
         console.log(values);
@@ -76,9 +50,6 @@ const SignInForm = () => {
                     Authorization: `Bearer ${authToken}`,
                 },
             };
-
-
-
 
             toast.success('Login successful!', {
                 position: toast.POSITION.TOP_CENTER,
@@ -91,7 +62,6 @@ const SignInForm = () => {
 
         } catch (error) {
             console.error('Error making authenticated request:', error.response ? error.response.data : error.message);
-
 
             toast.error('Login failed. Please check your credentials.', {
                 position: toast.POSITION.TOP_CENTER,

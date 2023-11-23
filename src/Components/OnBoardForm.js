@@ -25,10 +25,7 @@ const initialValues = {
 
 const OnBoardForm = () => {
     const navigate = useNavigate();
-    // const onSubmit = (values, { setSubmitting }) => {
-    //     console.log(values);
-    //     setSubmitting(false);
-    // };
+
 
     const onSubmit = async (values, { setSubmitting, resetForm }) => {
         try {
@@ -117,7 +114,7 @@ const OnBoardForm = () => {
                                 <ErrorMessage name="email" component="p" className="absolute text-red-500 text-xs " />
                             </div>
 
-                            <div className="mb-5 w-1/2">
+                            <div className="mb-5 md:w-1/2">
                                 <label htmlFor="gender" className="block text-[#6B7280] text-sm font-semibold mb-2">
                                     Gender
                                 </label>
