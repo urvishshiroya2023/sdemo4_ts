@@ -8,7 +8,7 @@ const validationSchema = Yup.object({
     lastName: Yup.string().required('Last Name Required'),
     email: Yup.string().email('Invalid email Address').required('Email Required'),
     gender: Yup.string().required('Gender Required'),
-    phoneNumber: Yup.string().required('Phone Number Required'),
+    phoneNumber: Yup.string().matches(/^\d{10}$/, 'Phone number must be 10 digits').required('Phone Number Required'),
     dob: Yup.date().required('Date of Birth Required'),
 });
 
@@ -28,11 +28,12 @@ const OnBoardForm = () => {
     //     setSubmitting(false);
     // };
 
-    const onSubmit = async (values, { setSubmitting }) => {
+    const onSubmit = async (values, { setSubmitting, resetForm }) => {
         try {
             const response = await axios.post('http://192.168.2.129:9500/api/v1/master/crm/organization-admin', values);
             console.log(response.data);
             setSubmitting(false);
+            resetForm();
         } catch (error) {
             console.error('Error submitting form:', error);
             setSubmitting(false);
@@ -103,7 +104,7 @@ const OnBoardForm = () => {
                                 <ErrorMessage name="email" component="p" className="absolute text-red-500 text-xs " />
                             </div>
 
-                            <div className="mb-5">
+                            <div className="mb-5 w-1/2">
                                 <label htmlFor="gender" className="block text-[#6B7280] text-sm font-semibold mb-2">
                                     Gender
                                 </label>
@@ -148,6 +149,10 @@ const OnBoardForm = () => {
                                             id="phoneNumber"
                                             name="phoneNumber"
                                             placeholder="Phone Number"
+                                            // pattern="[0-9]*"
+                                            onInput={(e) => {
+                                                e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, '');
+                                            }}
                                             className={`flex-1 relative font-light  appearance-none border ${errors.phoneNumber && touched.phoneNumber ? 'border-red-500 border-2' : ''
                                                 } rounded-r w-full py-3 px-3 text-[#6B7280] leading-tight focus:border-indigo-500 focus:border-2 focus:outline-none focus:shadow-outline`}
                                         />

@@ -1,11 +1,13 @@
 import axios from 'axios';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
 const SignInForm = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
+    const navigate = useNavigate();
 
     const validationSchema = Yup.object({
         userName: Yup.string().required('Please enter your user name'),
@@ -39,7 +41,29 @@ const SignInForm = () => {
         }
     };
 
-    const onSubmit = async (values, { setSubmitting }) => {
+    // const onSubmit = async (values, { setSubmitting }) => {
+    //     console.log(values);
+    //     try {
+    //         const authToken = await getAuthToken(values.userName, values.password);
+    //         const headers = {
+    //             headers: {
+    //                 Authorization: `Bearer ${authToken}`,
+    //             },
+    //         };
+
+    //         // const response = await axios.get('http://192.168.2.129:9500/api/v1/crm/user/login', headers);
+
+    //         console.log(headers);
+
+
+    //     } catch (error) {
+    //         console.error('Error making authenticated request:', error.response ? error.response.data : error.message);
+    //     }
+
+    //     setSubmitting(false);
+    // };
+
+    const onSubmit = async (values, { setSubmitting, resetForm }) => {
         console.log(values);
         try {
             const authToken = await getAuthToken(values.userName, values.password);
@@ -49,17 +73,30 @@ const SignInForm = () => {
                 },
             };
 
-            // const response = await axios.get('http://192.168.2.129:9500/api/v1/crm/user/login', headers);
+            // Perform additional actions if needed
 
-            console.log(headers);
+            // Show success notification
+            toast.success('Login successful!', {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 2000, // Automatically close the notification after 2000 milliseconds (2 seconds)
+            });
+
+            resetForm();
+
+            navigate('/homepage');
 
         } catch (error) {
             console.error('Error making authenticated request:', error.response ? error.response.data : error.message);
+
+            // Show error notification
+            toast.error('Login failed. Please check your credentials.', {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 2000,
+            });
         }
 
         setSubmitting(false);
     };
-
 
 
 
