@@ -1,10 +1,12 @@
 // import axios from 'axios';
 // import React, { useEffect, useState } from 'react';
 // import HomePageHeader from './HomePageHeader';
+// import TaskData from './TaskData';
 // import TaskForm from './TaskForm';
 
 // const TaskDetail = () => {
 //     const [tasks, setTasks] = useState([]);
+//     const [loading, setLoading] = useState(true);
 //     const authToken = localStorage.getItem('authToken');
 
 //     const fetchData = async () => {
@@ -15,6 +17,8 @@
 //                 },
 //             });
 //             setTasks(response?.data);
+//             console.log(response?.data);
+//             setLoading(false);
 //         } catch (error) {
 //             console.error('Error fetching data:', error);
 //         }
@@ -29,18 +33,41 @@
 //     }, [authToken]);
 
 //     return (
-//         <div>
-//             <div>
-//                 <HomePageHeader />
-//             </div>
-//             <div>
-//                 <TaskForm />
-//             </div>
-//             <div>Task Detail</div>
-//             <div>
+//         <div >
+//             <div >
 //                 <div>
-//                     {console.log(tasks?.data)}
+//                     <HomePageHeader />
 //                 </div>
+
+//                 <div className='flex justify-center'>
+//                     <div className='container'>
+//                         <div >
+//                             <TaskForm />
+//                         </div>
+//                         <div className='mt-3'>Task Details</div>
+//                         <div className='mt-3'>
+//                             {loading ? (
+//                                 <div>Loading...</div>
+//                             ) : (
+//                                 <div>
+//                                     {tasks.data ? (
+//                                         <div>
+//                                             <div>
+//                                                 {tasks.data.map((item) => (
+//                                                     // <li key={item.id}>{item.title}</li>
+//                                                     <TaskData key={item.id} item={item} />
+//                                                 ))}
+//                                             </div>
+//                                         </div>
+//                                     ) : (
+//                                         <div>No data available</div>
+//                                     )}
+//                                 </div>
+//                             )}
+//                         </div>
+//                     </div>
+//                 </div>
+
 //             </div>
 //         </div>
 //     );
@@ -52,11 +79,14 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import HomePageHeader from './HomePageHeader';
+import TaskData from './TaskData';
 import TaskForm from './TaskForm';
 
 const TaskDetail = () => {
     const [tasks, setTasks] = useState([]);
-    const [loading, setLoading] = useState(true); // Add loading state
+    const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [tasksPerPage] = useState(10);
     const authToken = localStorage.getItem('authToken');
 
     const fetchData = async () => {
@@ -81,33 +111,53 @@ const TaskDetail = () => {
         }
     }, [authToken]);
 
+    // Calculate current tasks based on pagination
+    const indexOfLastTask = currentPage * tasksPerPage;
+    const indexOfFirstTask = indexOfLastTask - tasksPerPage;
+    const currentTasks = tasks.data?.slice(indexOfFirstTask, indexOfLastTask);
+
+    // Change page
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
     return (
         <div>
             <div>
                 <HomePageHeader />
             </div>
-            <div>
-                <TaskForm />
-            </div>
-            <div>Task Detail</div>
-            <div>
-                {loading ? (
-                    <div>Loading...</div>
-                ) : (
+
+            <div className='flex justify-center'>
+                <div className='container'>
                     <div>
-                        {tasks.data ? (
-                            <div>
-                                <ul>
-                                    {tasks.data.map((item) => (
-                                        <li key={item.id}>{item.title}</li>
-                                    ))}
-                                </ul>
-                            </div>
+                        <TaskForm />
+                    </div>
+                    <div className='mt-3'>Task Details</div>
+                    <div className='mt-3'>
+                        {loading ? (
+                            <div>Loading...</div>
                         ) : (
-                            <div>No data available</div>
+                            <div>
+                                {currentTasks && currentTasks.length > 0 ? (
+                                    <div>
+                                        <div>
+                                            {currentTasks.map((item) => (
+                                                <TaskData key={item.id} item={item} />
+                                            ))}
+                                        </div>
+                                        <div className='pagination'>
+                                            {Array.from({ length: Math.ceil(tasks.data.length / tasksPerPage) }, (_, i) => (
+                                                <button key={i + 1} onClick={() => paginate(i + 1)}>
+                                                    {i + 1}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div>No data available</div>
+                                )}
+                            </div>
                         )}
                     </div>
-                )}
+                </div>
             </div>
         </div>
     );
