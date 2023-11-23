@@ -13,7 +13,7 @@ const TaskDetail = () => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get('http://192.168.2.129:9500/api/v1/crm/tasks', {
+            const response = await axios.get('https://crmapi.sarvadhi.work/api/v1/crm/tasks', {
                 headers: {
                     Authorization: `Bearer ${authToken}`,
                 },
@@ -66,13 +66,13 @@ const TaskDetail = () => {
     };
 
     return (
-        <div>
+        <div className='bg-[#e5e7eb]'>
             <div>
                 <HomePageHeader />
             </div>
 
-            <div className='flex justify-center'>
-                <div className='container'>
+            <div className='flex py-5 justify-center'>
+                <div className='container bg-white rounded-md p-5'>
                     <div className=''>
                         <Link to={"/addtask"}><button className='bg-indigo-600 py-2 px-3 rounded mt-2 text-white'>Add New Task</button></Link>
                     </div>

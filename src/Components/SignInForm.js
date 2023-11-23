@@ -24,7 +24,7 @@ const SignInForm = () => {
 
     const getAuthToken = async (email, password) => {
         try {
-            const response = await axios.post('http://192.168.2.129:9500/api/v1/crm/user/login', {
+            const response = await axios.post('https://crmapi.sarvadhi.work/api/v1/crm/user/login', {
                 email: email,
                 password: password,
             });
