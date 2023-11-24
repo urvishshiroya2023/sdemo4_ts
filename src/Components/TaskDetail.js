@@ -61,12 +61,12 @@ const TaskDetail = () => {
     };
 
     return (
-        <div className='bg-[#e5e7eb]  h-full'>
+        <div className='bg-[#e5e7eb]  h-full min-h-screen'>
             <div>
                 <HomePageHeader />
             </div>
 
-            <div className='flex py-5 justify-center'>
+            <div className='flex py-5 h-full justify-center'>
                 <div className='container bg-white rounded-md p-5'>
                     <div className=''>
                         <Link to={"/addtask"}><button className='bg-indigo-600 py-2 px-3 rounded mt-2 text-white'>Add New Task</button></Link>

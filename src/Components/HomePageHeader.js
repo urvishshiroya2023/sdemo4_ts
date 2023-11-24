@@ -5,11 +5,12 @@ import Logout from "./Logout"
 
 const HomePageHeader = () => {
     return (
-        <div className='bg-white flex justify-center shadow-lg'>
+        <div className='bg-white flex justify-center shadow-md'>
             <div className='container' >
                 <div className='flex justify-between items-center'>
                     <div>
-                        <img src={logo} alt='logo' />
+                        <Link to={"/homepage"}>
+                            <img src={logo} alt='logo' /></Link>
                     </div>
                     <div className=''>
                         <ul className='text-[#6B7280] font-medium flex justify-between'>

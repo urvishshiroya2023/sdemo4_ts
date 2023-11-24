@@ -29,7 +29,7 @@ const OnBoardForm = () => {
 
     const onSubmit = async (values, { setSubmitting, resetForm }) => {
         try {
-            const response = await axios.post('http://192.168.2.129:9500/api/v1/master/crm/organization-admin', values);
+            const response = await axios.post('https://crmapi.sarvadhi.work/api/v1/master/crm/organization-admin', values);
             console.log(response.data);
 
             toast.success('Registration successful!', {
