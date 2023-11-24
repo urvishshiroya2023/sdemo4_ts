@@ -33,28 +33,6 @@ const validationSchema = Yup.object().shape({
 const TaskForm = () => {
     const navigate = useNavigate();
 
-    // const handleSubmit = async (values, { resetForm }) => {
-    //     // console.log(values);
-    //     try {
-    //         const response = await axios.post('http://192.168.2.129:9500/api/v1/crm/tasks', values);
-    //         console.log(response.data)
-
-    //         toast.success('Task added successfully!', {
-    //             position: toast.POSITION.TOP_RIGHT,
-    //         });
-
-    //         navigate('/taskdetail')
-
-    //         resetForm();
-    //     } catch (error) {
-    //         console.error('Error submitting form:', error);
-    //         toast.error('Registration failed. Please check your credentials.', {
-    //             position: toast.POSITION.TOP_CENTER,
-    //             autoClose: 2000,
-    //         });
-    //     }
-    // };
-
     const handleSubmit = async (values, { resetForm }) => {
         try {
 
@@ -66,8 +44,6 @@ const TaskForm = () => {
                 Authorization: `Bearer ${authToken}`,
             };
 
-
-            // const response = await axios.post('http://192.168.2.129:9500/api/v1/crm/tasks', values, { headers });
             const response = await axios.post('https://crmapi.sarvadhi.work/api/v1/crm/tasks', values, { headers });
 
             console.log(response.data);
