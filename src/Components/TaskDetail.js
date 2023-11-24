@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import HomePageHeader from './HomePageHeader';
 import TaskData from './TaskData';
 import TaskForm from './TaskForm';
@@ -24,6 +25,59 @@ const TaskDetail = () => {
             setLoading(false);
         } catch (error) {
             console.error('Error fetching data:', error);
+        }
+    };
+
+    const handleEdit = async (taskId) => {
+        try {
+            const response = await axios.get(`https://crmapi.sarvadhi.work/api/v1/crm/tasks/${taskId}`, {
+                headers: {
+                    Authorization: `Bearer ${authToken}`,
+                },
+            });
+
+
+            const taskDetails = response?.data;
+            console.log(taskDetails);
+
+            // Use taskDetails to populate the form for editing
+            // Example:
+            // setInitialValues(taskDetails);
+
+            setShowTaskForm(true);
+        } catch (error) {
+            console.error('Error fetching task details for editing:', error);
+        }
+    };
+
+
+
+
+
+    const handleDelete = async (taskId) => {
+        try {
+            const response = await axios.delete(`https://crmapi.sarvadhi.work/api/v1/crm/tasks/${taskId}`, {
+                headers: {
+                    Authorization: `Bearer ${authToken}`,
+                },
+            });
+
+            // Assuming response.data contains a success message or status
+            const deleteStatus = response?.data;
+
+            // Check the delete status and update the tasks accordingly
+            if (deleteStatus === 'success') {
+                // Filter out the deleted task from the tasks state
+                setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+            }
+
+            // You can also show a toast or notification for successful deletion
+            toast.success('Task deleted successfully!', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+        } catch (error) {
+            console.error('Error deleting task:', error);
+            // Handle error, show toast, or notification for deletion failure
         }
     };
 
@@ -97,9 +151,9 @@ const TaskDetail = () => {
                         </div>
 
                         <div className=''>
-                            {/* <Link to={"/addtask"}><button className='border py-2 px-3 rounded mt-2 '>Add New</button></Link> */}
                             <button
                                 className="border py-2 px-3 rounded mt-2"
+
                                 onClick={() => setShowTaskForm(true)}
                             >
                                 Add New
@@ -113,8 +167,6 @@ const TaskDetail = () => {
                         ) : (
                             <div>
                                 <>
-
-
                                     <table className='table-auto w-full text-sm border-collapse'>
                                         <thead>
                                             <tr className='text-[#6B7280] text-left uppercase border-b'>
@@ -136,7 +188,7 @@ const TaskDetail = () => {
                                                 <>
                                                     <>
                                                         {filteredTasks.slice((currentPage - 1) * tasksPerPage, currentPage * tasksPerPage).map((item) => (
-                                                            <TaskData key={item.id} item={item} />
+                                                            <TaskData handleEdit={handleEdit} handleDelete={handleDelete} key={item.id} item={item} />
                                                         ))}
                                                     </>
 

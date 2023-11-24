@@ -1,0 +1,1 @@
+export const BASE_URL = "https://crmapi.sarvadhi.work/api/v1/"
