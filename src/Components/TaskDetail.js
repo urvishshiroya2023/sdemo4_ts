@@ -1,8 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import HomePageHeader from './HomePageHeader';
 import TaskData from './TaskData';
+import TaskForm from './TaskForm';
 
 const TaskDetail = () => {
     const [tasks, setTasks] = useState([]);
@@ -10,6 +10,7 @@ const TaskDetail = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [tasksPerPage] = useState(10);
     const [searchTitle, setSearchTitle] = useState('');
+    const [showTaskForm, setShowTaskForm] = useState(false);
     const authToken = localStorage.getItem('authToken');
 
     const fetchData = async () => {
@@ -55,6 +56,12 @@ const TaskDetail = () => {
         }
     };
 
+    const handleCloseForm = (e) => {
+        if (e.target.classList.contains('overlay')) {
+            setShowTaskForm(false);
+        }
+    };
+
     const handleSearchChange = (event) => {
         setSearchTitle(event.target.value);
     };
@@ -90,7 +97,13 @@ const TaskDetail = () => {
                         </div>
 
                         <div className=''>
-                            <Link to={"/addtask"}><button className='border py-2 px-3 rounded mt-2 '>Add New</button></Link>
+                            {/* <Link to={"/addtask"}><button className='border py-2 px-3 rounded mt-2 '>Add New</button></Link> */}
+                            <button
+                                className="border py-2 px-3 rounded mt-2"
+                                onClick={() => setShowTaskForm(true)}
+                            >
+                                Add New
+                            </button>
                         </div>
                     </div>
 
@@ -157,6 +170,15 @@ const TaskDetail = () => {
                             </div>
                         )}
                     </div>
+
+                    {/* TaskForm overlay */}
+                    {showTaskForm && (
+                        <div onClick={handleCloseForm} className="fixed top-0 right-0 w-full h-full bg-black bg-opacity-80 overlay">
+                            <div className='w-1/2 fixed  top-0 right-0'>
+                                <TaskForm onClose={() => setShowTaskForm(false)} />
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
@@ -164,3 +186,6 @@ const TaskDetail = () => {
 };
 
 export default TaskDetail;
+
+
+
