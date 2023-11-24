@@ -170,7 +170,7 @@ const TaskForm = () => {
                                     name="priority"
                                     className=" ml-2 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600"
                                 >
-                                    <option value="" label="Select Priority" />
+                                    <option value="none" label="none" />
                                     <option value="high" label="high" />
                                     <option value="medium" label="medium" />
                                     <option value="low" label="low" />

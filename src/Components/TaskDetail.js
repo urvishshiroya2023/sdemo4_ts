@@ -61,27 +61,34 @@ const TaskDetail = () => {
     };
 
     return (
-        <div className='bg-[#e5e7eb]  h-full min-h-screen'>
+        <div className='bg-[#e5e7eb] bg-opacity-50  h-full min-h-screen'>
             <div>
                 <HomePageHeader />
             </div>
 
             <div className='flex py-5 h-full justify-center'>
-                <div className='container bg-white rounded-md p-5'>
+                <div className='container border bg-white rounded-lg p-5'>
                     <div className=''>
-                        <Link to={"/addtask"}><button className='bg-indigo-600 py-2 px-3 rounded mt-2 text-white'>Add New Task</button></Link>
+                        <Link to={"/addtask"}><button className='border py-2 px-3 rounded mt-2 '>Add New</button></Link>
                     </div>
-                    <div className='mt-3'>Task Details</div>
+
                     <div className='mt-3'>
                         {loading ? (
                             <div>Loading...</div>
                         ) : (
                             <div>
                                 <div>
-                                    <div className='grid grid-cols-4 gap-4 my-2'>
+                                    <div className='grid text-[12px] bg-[#e5e7eb] bg-opacity-25  p-3 font-semibold text-[#6B7280] uppercase grid-cols-12 gap-4 my-2'>
+                                        <div className='truncate '>Action</div>
                                         <div className='truncate'>Title</div>
                                         <div className='truncate'>Due Date</div>
                                         <div className='truncate'>Priority</div>
+                                        <div className='truncate'>Module</div>
+                                        <div className='truncate'>ReactJs</div>
+                                        <div className='truncate'>NodeJs</div>
+                                        <div className='truncate'>Type</div>
+                                        <div className='truncate'>Assigned to</div>
+                                        <div className='truncate'>connected Lead</div>
                                         <div className='truncate'>Status</div>
                                     </div>
                                 </div>
@@ -92,22 +99,22 @@ const TaskDetail = () => {
                                                 <TaskData key={item.id} item={item} />
                                             ))}
                                         </div>
-                                        <div className='pagination'>
+                                        <div className='pagination mt-5 text-[#6B7280]'>
                                             <button className='mx-2' onClick={() => changePage(currentPage - 1)} disabled={currentPage === 1}>
-                                                Previous
+                                                &lsaquo;
                                             </button>
                                             {buttonRange.map((pageNumber) => (
                                                 <button
                                                     key={pageNumber}
                                                     onClick={() => changePage(pageNumber)}
-                                                    className={`${pageNumber === currentPage ? 'active bg-red-300 p-1 rounded' : ''
-                                                        } mx-2`}
+                                                    className={`${pageNumber === currentPage ? 'active text-indigo-600 bg-indigo-50 py-1 px-3 rounded' : ''
+                                                        } mx-3`}
                                                 >
                                                     {pageNumber}
                                                 </button>
                                             ))}
                                             <button className='mx-2' onClick={() => changePage(currentPage + 1)} disabled={currentPage === totalPages}>
-                                                Next
+                                                &rsaquo;
                                             </button>
                                         </div>
                                     </div>

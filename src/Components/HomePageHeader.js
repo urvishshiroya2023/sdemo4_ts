@@ -5,7 +5,7 @@ import Logout from "./Logout"
 
 const HomePageHeader = () => {
     return (
-        <div className='bg-white flex justify-center shadow-md'>
+        <div className='bg-white flex justify-center shadow-sm'>
             <div className='container' >
                 <div className='flex justify-between items-center'>
                     <div>

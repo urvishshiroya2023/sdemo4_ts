@@ -9,15 +9,29 @@ const TaskData = ({ item }) => {
 
 
     return (
-        <div className='grid grid-cols-4 gap-4 my-2'>
-            {/* <div className='truncate'>Actions</div>
-            <div className='truncate'>{item.module}</div> */}
-            <div className='truncate'>{item.title}</div>
-            <div className='truncate'>{formatDate(item.dueDate)}</div>
-            <div className='truncate'>{item.priority}</div>
-            <div className='truncate'>{item?.taskStatus?.statusName}</div>
+        <div className='grid grid-cols-12 text-sm gap-x-2 border-b text-[#6B7280]'>
+            <div className='truncate p-3 '>Actions</div>
+            <div className='truncate p-3 '>{item.title}</div>
+            <div className='truncate p-3 '>{formatDate(item.dueDate)}</div>
+            <div className='truncate p-3 '>{item.priority}</div>
+            <div className='truncate p-3 '>{item?.module}</div>
+            <div className='truncate p-3 '>-</div>
+            <div className='truncate p-3 '>-</div>
+            <div className='truncate p-3 '>{item?.type}</div>
+            <div className='truncate p-3 '>{item?.assignedToData?.firstName + " " + item?.assignedToData?.lastName}</div>
+            <div className='truncate p-3 '>{item?.leadModel?.title}</div>
+            <div className='truncate p-3 '>{item?.taskStatus?.statusName}</div>
         </div>
     );
 };
 
 export default TaskData;
+
+
+
+
+
+
+
+
+
