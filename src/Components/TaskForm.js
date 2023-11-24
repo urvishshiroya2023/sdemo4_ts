@@ -85,7 +85,8 @@ const TaskForm = ({ onClose }) => {
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >
-                    <Form className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                    {({ values, setFieldValue, errors, touched }) => (<Form className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="col-span-1 ">
                             <div className="form-item  vertical">
                                 <label className="form-label flex mb-2" htmlFor="module">Module</label>
@@ -93,7 +94,8 @@ const TaskForm = ({ onClose }) => {
                                     as="select"
                                     id="module"
                                     name="module"
-                                    className={`w-full border rounded  input input-md h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 `}
+                                    className={`w-full border rounded  input input-md h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${touched.module && errors.module ? 'border-red-500' : ''
+                                        }`}
                                 >
                                     <option value="" label="Module" />
                                     <option value="lead" label="lead" />
@@ -104,7 +106,7 @@ const TaskForm = ({ onClose }) => {
                             </div>
                         </div>
 
-                        <div className="col-span-1">
+                        {/* <div className="col-span-1">
                             <div className="form-item vertical">
                                 <label className="form-label flex mb-2" htmlFor="type">Type</label>
                                 <Field
@@ -118,6 +120,28 @@ const TaskForm = ({ onClose }) => {
                                     <option value="lead" label="lead" />
                                     <option value="deal" label="Deal" />
                                     <option value="contact" label="contact" />
+                                </Field>
+                                <ErrorMessage name="type" component="div" className="text-red-500" />
+                            </div>
+                        </div> */}
+
+                        <div className="col-span-1">
+                            <div className="form-item vertical">
+                                <label className="form-label flex mb-2" htmlFor="type">
+                                    Type
+                                </label>
+                                <Field
+                                    as="select"
+                                    type="text"
+                                    id="type"
+                                    name="type"
+                                    className="border w-full rounded px-2 py-1 h-11 focus:ring-indigo-600 focus:border-indigo-600"
+                                >
+                                    <option value="" label="Type" />
+                                    {/* Dynamic rendering of type options based on selected module */}
+                                    {moduleTypeOptions[values.module]?.map((type) => (
+                                        <option key={type} value={type} label={type} />
+                                    ))}
                                 </Field>
                                 <ErrorMessage name="type" component="div" className="text-red-500" />
                             </div>
@@ -234,7 +258,8 @@ const TaskForm = ({ onClose }) => {
                                 </div>
                             </div>
                         </div>
-                    </Form>
+                    </Form>)}
+
                 </Formik>
 
             </div>
