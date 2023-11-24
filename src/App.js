@@ -3,7 +3,10 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import Body from './Components/Body';
+import Contacts from './Components/Contacts';
+import Deal from './Components/Deal';
 import HomePage from './Components/HomePage';
+import Leads from './Components/Leads';
 import OnBoardComponent from './Components/OnBoardComponent';
 import ProtectedRoutes from './Components/ProtectedRoutes';
 import SignInComponent from './Components/SignInComponent';
@@ -28,6 +31,18 @@ const appRouter = createBrowserRouter([
       {
         path: "/homepage",
         element: <HomePage />
+      },
+      {
+        path: "/contacts",
+        element: <Contacts />
+      },
+      {
+        path: "/leads",
+        element: <Leads />
+      },
+      {
+        path: "/deal",
+        element: <Deal />
       },
       {
         path: "/taskdetail",
