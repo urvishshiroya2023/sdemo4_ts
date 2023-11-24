@@ -12,6 +12,20 @@ const TaskDetail = () => {
     const [tasksPerPage] = useState(10);
     const [searchTitle, setSearchTitle] = useState('');
     const [showTaskForm, setShowTaskForm] = useState(false);
+    // const [initialValues, setInitialValues] = useState({
+    //     module: '',
+    //     type: '',
+    //     title: '',
+    //     dueDate: '',
+    //     priority: '',
+    //     assignedTo: '',
+    //     connectedLead: '',
+    //     descriptions: '',
+    //     reactjsTags: [],
+    //     nodejsTags: [],
+    //     size: '',
+    //     dob: '',
+    // });
     const authToken = localStorage.getItem('authToken');
 
     const fetchData = async () => {
@@ -49,9 +63,6 @@ const TaskDetail = () => {
             console.error('Error fetching task details for editing:', error);
         }
     };
-
-
-
 
 
     const handleDelete = async (taskId) => {
@@ -153,7 +164,7 @@ const TaskDetail = () => {
                         <div className=''>
                             <button
                                 className="border py-2 px-3 rounded mt-2"
-
+                                // initialValues={initialValues}
                                 onClick={() => setShowTaskForm(true)}
                             >
                                 Add New

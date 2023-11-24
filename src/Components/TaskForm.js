@@ -56,7 +56,7 @@ const TaskForm = ({ onClose }) => {
             resetForm();
         } catch (error) {
             console.error('Error submitting form:', error);
-            toast.error('Registration failed. Please check your credentials.', {
+            toast.error('Task added failed', {
                 position: toast.POSITION.TOP_CENTER,
                 autoClose: 2000,
             });
@@ -74,7 +74,6 @@ const TaskForm = ({ onClose }) => {
                     initialValues={initialValues}
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
-                    enableReinitialize={true}
                 >
                     {({ values, errors, touched, setFieldValue }) => (
                         <Form className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -244,7 +243,8 @@ const TaskForm = ({ onClose }) => {
                                 <Field
                                     as="textarea"
                                     name="descriptions"
-                                    className={`border w-full h-25 rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${touched.descriptions && errors.descriptions ? 'border-red-500 border-2' : ''
+                                    placeholder="Notes"
+                                    className={`border w-full h-32 rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${touched.descriptions && errors.descriptions ? 'border-red-500 border-2' : ''
                                         }`}
                                 />
                                 <ErrorMessage name="descriptions" component="div" className="text-red-500" />
