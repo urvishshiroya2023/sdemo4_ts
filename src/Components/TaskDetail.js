@@ -250,8 +250,8 @@ const TaskDetail = () => {
                             <div>Loading...</div>
                         ) : (
                             <div>
-                                <div>
-                                    <div className='grid text-[12px] bg-[#e5e7eb] bg-opacity-25  p-3 font-semibold text-[#6B7280] uppercase grid-cols-12 gap-4 my-2'>
+                                <>
+                                    {/* <div className='grid text-[12px] bg-[#e5e7eb] bg-opacity-25  p-3 font-semibold text-[#6B7280] uppercase grid-cols-12 gap-4 my-2'>
                                         <div className='truncate '>Action</div>
                                         <div className='truncate'>Title</div>
                                         <div className='truncate'>Due Date</div>
@@ -263,9 +263,76 @@ const TaskDetail = () => {
                                         <div className='truncate'>Assigned to</div>
                                         <div className='truncate'>connected Lead</div>
                                         <div className='truncate'>Status</div>
+                                        </div> */}
+
+                                    <table className='table-auto w-full text-sm border-collapse'>
+                                        <thead>
+                                            <tr className='text-[#6B7280] text-left uppercase border-b'>
+                                                <th className='truncate p-3'>Actions </th>
+                                                <th className='truncate p-3'>Title</th>
+                                                <th className='truncate p-3'>Due Date</th>
+                                                <th className='truncate p-3 '>Priority</th>
+                                                <th className='truncate p-3'>Module</th>
+                                                <th className='truncate p-3'>ReactJs</th>
+                                                <th className='truncate p-3'>NodeJs</th>
+                                                <th className='truncate p-3'>Type</th>
+                                                <th className='truncate p-3'>Assigned to</th>
+                                                <th className='truncate p-3'>Connected Lead</th>
+                                                <th className='truncate p-3'>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {filteredTasks && filteredTasks.length > 0 ? (
+                                                <>
+                                                    <>
+                                                        {filteredTasks.slice((currentPage - 1) * tasksPerPage, currentPage * tasksPerPage).map((item) => (
+                                                            <TaskData key={item.id} item={item} />
+                                                        ))}
+                                                    </>
+                                                    {/* <div className='pagination mt-5 text-[#6B7280]'>
+                                                        <button className='mx-2' onClick={() => changePage(currentPage - 1)} disabled={currentPage === 1}>
+                                                            &lsaquo;
+                                                        </button>
+                                                        {buttonRange.map((pageNumber) => (
+                                                            <button
+                                                                key={pageNumber}
+                                                                onClick={() => changePage(pageNumber)}
+                                                                className={`${pageNumber === currentPage ? 'active text-indigo-600 bg-indigo-50 py-1 px-3 rounded' : ''
+                                                                    } mx-3`}
+                                                            >
+                                                                {pageNumber}
+                                                            </button>
+                                                        ))}
+                                                        <button className='mx-2' onClick={() => changePage(currentPage + 1)} disabled={currentPage === totalPages}>
+                                                            &rsaquo;
+                                                        </button>
+                                                    </div> */}
+                                                </>
+                                            ) : (
+                                                <div>No data available</div>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                    <div className='pagination mt-5 text-[#6B7280]'>
+                                        <button className='mx-2' onClick={() => changePage(currentPage - 1)} disabled={currentPage === 1}>
+                                            &lsaquo;
+                                        </button>
+                                        {buttonRange.map((pageNumber) => (
+                                            <button
+                                                key={pageNumber}
+                                                onClick={() => changePage(pageNumber)}
+                                                className={`${pageNumber === currentPage ? 'active text-indigo-600 bg-indigo-50 py-1 px-3 rounded' : ''
+                                                    } mx-3`}
+                                            >
+                                                {pageNumber}
+                                            </button>
+                                        ))}
+                                        <button className='mx-2' onClick={() => changePage(currentPage + 1)} disabled={currentPage === totalPages}>
+                                            &rsaquo;
+                                        </button>
                                     </div>
-                                </div>
-                                {filteredTasks && filteredTasks.length > 0 ? (
+                                </>
+                                {/* {filteredTasks && filteredTasks.length > 0 ? (
                                     <div>
                                         <div>
                                             {filteredTasks.slice((currentPage - 1) * tasksPerPage, currentPage * tasksPerPage).map((item) => (
@@ -293,7 +360,8 @@ const TaskDetail = () => {
                                     </div>
                                 ) : (
                                     <div>No data available</div>
-                                )}
+                                    )} */}
+
                             </div>
                         )}
                     </div>
