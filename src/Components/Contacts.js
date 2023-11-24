@@ -1,8 +1,16 @@
 import React from 'react'
+import HomePageHeader from './HomePageHeader'
 
 const Contacts = () => {
     return (
-        <div>Contacts</div>
+        <div>
+            <div>
+                <HomePageHeader />
+            </div>
+            <div>
+                <h1>Contacts</h1>
+            </div>
+        </div>
     )
 }
 

@@ -1,8 +1,16 @@
 import React from 'react'
+import HomePageHeader from './HomePageHeader'
 
 const Deal = () => {
     return (
-        <div>Deal</div>
+        <div>
+            <div>
+                <HomePageHeader />
+            </div>
+            <div>
+                <h1>Deal</h1>
+            </div>
+        </div>
     )
 }
 
