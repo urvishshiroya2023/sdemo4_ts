@@ -1,25 +1,25 @@
 import axios from 'axios';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import * as Yup from 'yup';
 
-const initialValues = {
-    module: '',
-    type: '',
-    title: '',
-    dueDate: '',
-    priority: '',
-    assignedTo: '',
-    connectedLead: '',
-    descriptions: '',
-    reactjsTags: [],
-    nodejsTags: [],
-    size: '',
-    dob: '',
-};
+// const initialValues = {
+//     module: '',
+//     type: '',
+//     title: '',
+//     dueDate: '',
+//     priority: '',
+//     assignedTo: '',
+//     connectedLead: '',
+//     descriptions: '',
+//     reactjsTags: [],
+//     nodejsTags: [],
+//     size: '',
+//     dob: '',
+// };
 
 const validationSchema = Yup.object().shape({
     // module: Yup.string().required('Module is required'),
@@ -32,10 +32,47 @@ const validationSchema = Yup.object().shape({
     // connectedLead: Yup.string().required('Connected Lead is required'),
 });
 
-const TaskForm = ({ onClose }) => {
+const TaskForm = ({ onClose, formValues, formMode }) => {
+    const [formData, setFormData] = useState(formValues);
+
+    console.log(formValues)
+    // Update internal state when formValues prop changes
+    useEffect(() => {
+        setFormData(formValues);
+    }, [formValues]);
+
     const navigate = useNavigate();
 
+    // const handleSubmit = async (values, { resetForm }) => {
+    //     try {
+    //         const authToken = localStorage.getItem('authToken');
+    //         const headers = {
+    //             'Content-Type': 'application/json',
+    //             Authorization: `Bearer ${authToken}`,
+    //         };
+
+    //         const response = await axios.post('https://crmapi.sarvadhi.work/api/v1/crm/tasks', values, { headers });
+
+    //         console.log(response.data);
+
+    //         toast.success('Task added successfully!', {
+    //             position: toast.POSITION.TOP_RIGHT,
+    //         });
+
+    //         navigate('/taskdetail');
+
+    //         resetForm();
+    //     } catch (error) {
+    //         console.error('Error submitting form:', error);
+    //         toast.error('Task added failed', {
+    //             position: toast.POSITION.TOP_CENTER,
+    //             autoClose: 2000,
+    //         });
+    //     }
+    // };
+
     const handleSubmit = async (values, { resetForm }) => {
+
         try {
             const authToken = localStorage.getItem('authToken');
             const headers = {
@@ -43,11 +80,21 @@ const TaskForm = ({ onClose }) => {
                 Authorization: `Bearer ${authToken}`,
             };
 
-            const response = await axios.post('https://crmapi.sarvadhi.work/api/v1/crm/tasks', values, { headers });
+            let response;
+
+            if (formMode === 'edit') {
+                // Update existing task
+                response = await axios.put(`https://crmapi.sarvadhi.work/api/v1/crm/tasks/${formValues.Id}`, values, { headers });
+            } else {
+                // Add new task
+                response = await axios.post('https://crmapi.sarvadhi.work/api/v1/crm/tasks', values, { headers });
+            }
 
             console.log(response.data);
 
-            toast.success('Task added successfully!', {
+            const successMessage = formMode === 'edit' ? 'Task Edited successfully!' : 'Task added successfully!';
+
+            toast.success(successMessage, {
                 position: toast.POSITION.TOP_RIGHT,
             });
 
@@ -56,7 +103,7 @@ const TaskForm = ({ onClose }) => {
             resetForm();
         } catch (error) {
             console.error('Error submitting form:', error);
-            toast.error('Task added failed', {
+            toast.error('Task operation failed', {
                 position: toast.POSITION.TOP_CENTER,
                 autoClose: 2000,
             });
@@ -71,7 +118,7 @@ const TaskForm = ({ onClose }) => {
                 </div>
 
                 <Formik
-                    initialValues={initialValues}
+                    initialValues={formValues}
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
                 >

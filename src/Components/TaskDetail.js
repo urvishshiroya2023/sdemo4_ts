@@ -5,6 +5,22 @@ import HomePageHeader from './HomePageHeader';
 import TaskData from './TaskData';
 import TaskForm from './TaskForm';
 
+const initialValues = {
+    module: '',
+    type: '',
+    title: '',
+    dueDate: '',
+    priority: '',
+    assignedTo: '',
+    connectedLead: '',
+    descriptions: '',
+    reactjsTags: [],
+    nodejsTags: [],
+    size: '',
+    dob: '',
+};
+
+
 const TaskDetail = () => {
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -12,20 +28,9 @@ const TaskDetail = () => {
     const [tasksPerPage] = useState(10);
     const [searchTitle, setSearchTitle] = useState('');
     const [showTaskForm, setShowTaskForm] = useState(false);
-    // const [initialValues, setInitialValues] = useState({
-    //     module: '',
-    //     type: '',
-    //     title: '',
-    //     dueDate: '',
-    //     priority: '',
-    //     assignedTo: '',
-    //     connectedLead: '',
-    //     descriptions: '',
-    //     reactjsTags: [],
-    //     nodejsTags: [],
-    //     size: '',
-    //     dob: '',
-    // });
+    const [formValues, setFormValues] = useState(initialValues);
+    const [formMode, setFormMode] = useState(null);
+
     const authToken = localStorage.getItem('authToken');
 
     const fetchData = async () => {
@@ -42,6 +47,27 @@ const TaskDetail = () => {
         }
     };
 
+    // const handleEdit = async (taskId) => {
+    //     try {
+    //         const response = await axios.get(`https://crmapi.sarvadhi.work/api/v1/crm/tasks/${taskId}`, {
+    //             headers: {
+    //                 Authorization: `Bearer ${authToken}`,
+    //             },
+    //         });
+
+
+    //         const taskDetails = response?.data;
+    //         console.log(taskDetails);
+
+
+
+    //         setShowTaskForm(true);
+    //     } catch (error) {
+    //         console.error('Error fetching task details for editing:', error);
+    //     }
+    // };
+
+
     const handleEdit = async (taskId) => {
         try {
             const response = await axios.get(`https://crmapi.sarvadhi.work/api/v1/crm/tasks/${taskId}`, {
@@ -50,19 +76,36 @@ const TaskDetail = () => {
                 },
             });
 
+            const taskDetails = response?.data?.data;
+            console.log('Task Details:', taskDetails);
 
-            const taskDetails = response?.data;
-            console.log(taskDetails);
+            if (taskDetails) {
+                console.log('Module:', taskDetails.module);
+                console.log('Type:', taskDetails.type);
 
-            // Use taskDetails to populate the form for editing
-            // Example:
-            // setInitialValues(taskDetails);
+                setFormValues((prevValues) => ({
+                    ...prevValues,
+                    module: taskDetails.module || '',
+                    type: taskDetails.type || '',
+                    title: taskDetails.title || '',
+                    dueDate: taskDetails.dueDate || '',
+                    priority: taskDetails.priority || '',
+                    assignedTo: taskDetails.assignedToData?.firstName || '',
+                    connectedLead: taskDetails.connectedLead || '',
+                    descriptions: taskDetails.descriptions || '',
+                    Id: taskDetails.id
+                }));
+                setFormMode('edit');
+            } else {
+                console.log('Task details not found or undefined.');
+            }
 
             setShowTaskForm(true);
         } catch (error) {
             console.error('Error fetching task details for editing:', error);
         }
     };
+
 
 
     const handleDelete = async (taskId) => {
@@ -124,6 +167,8 @@ const TaskDetail = () => {
     const handleCloseForm = (e) => {
         if (e.target.classList.contains('overlay')) {
             setShowTaskForm(false);
+            setFormValues(initialValues); // Reset form values
+            setFormMode(null);
         }
     };
 
@@ -147,7 +192,7 @@ const TaskDetail = () => {
                         <div className="">
                             <span className="flex items-center border border-gray-300 focus-within:border-indigo-600 focus-within:border-2 px-3 rounded-lg ">
                                 <div className="w-6 contents h-6">
-                                    <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true" className="text-lg" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                    <svg stroke="currentColor" fill="none" viewBox="0 0 24 24" aria-hidden="true" className="text-lg" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                     </svg>
                                 </div>
@@ -164,7 +209,7 @@ const TaskDetail = () => {
                         <div className=''>
                             <button
                                 className="border py-2 px-3 rounded mt-2"
-                                // initialValues={initialValues}
+                                formValues={formValues}
                                 onClick={() => setShowTaskForm(true)}
                             >
                                 Add New
@@ -238,7 +283,7 @@ const TaskDetail = () => {
                     {showTaskForm && (
                         <div onClick={handleCloseForm} className="fixed top-0 right-0 w-full h-full bg-black bg-opacity-80 overlay">
                             <div className='w-1/2 fixed  top-0 right-0'>
-                                <TaskForm onClose={() => setShowTaskForm(false)} />
+                                <TaskForm formValues={formValues} formMode={formMode} onClose={() => setShowTaskForm(false)} />
                             </div>
                         </div>
                     )}
