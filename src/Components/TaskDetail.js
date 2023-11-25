@@ -1,9 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import Footer from './Footer';
 import HomePageHeader from './HomePageHeader';
 import TaskData from './TaskData';
 import TaskForm from './TaskForm';
+import TasksHeader from './TasksHeader';
 
 const initialValues = {
     module: '',
@@ -30,6 +32,7 @@ const TaskDetail = () => {
     const [showTaskForm, setShowTaskForm] = useState(false);
     const [formValues, setFormValues] = useState(initialValues);
     const [formMode, setFormMode] = useState(null);
+
 
     const authToken = localStorage.getItem('authToken');
 
@@ -182,8 +185,12 @@ const TaskDetail = () => {
 
     return (
         <div className='bg-[#e5e7eb] bg-opacity-50 h-full min-h-screen'>
-            <div>
+            <div className='sticky top-0'>
                 <HomePageHeader />
+            </div>
+
+            <div className='mt-5'>
+                <TasksHeader />
             </div>
 
             <div className='flex py-5 h-full justify-center'>
@@ -208,7 +215,7 @@ const TaskDetail = () => {
 
                         <div className=''>
                             <button
-                                className="border py-2 px-3 rounded mt-2"
+                                className="border py-2 text-[#6B7280] text-sm font-semibold px-3 rounded mt-2"
                                 formValues={formValues}
                                 onClick={() => setShowTaskForm(true)}
                             >
@@ -250,7 +257,7 @@ const TaskDetail = () => {
 
                                                 </>
                                             ) : (
-                                                <div>No data available</div>
+                                                <div>No Tasks Found</div>
                                             )}
                                         </tbody>
                                     </table>
@@ -288,6 +295,10 @@ const TaskDetail = () => {
                         </div>
                     )}
                 </div>
+            </div>
+
+            <div>
+                <Footer />
             </div>
         </div>
     );

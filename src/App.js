@@ -12,6 +12,7 @@ import ProtectedRoutes from './Components/ProtectedRoutes';
 import SignInComponent from './Components/SignInComponent';
 import TaskDetail from "./Components/TaskDetail";
 import TaskForm from './Components/TaskForm';
+import TaskInfo from './Components/TaskInfo';
 import "./index.css";
 
 
@@ -52,6 +53,10 @@ const appRouter = createBrowserRouter([
         path: "/addtask",
         element: <TaskForm />
       },
+      {
+        path: "/taskdetails/:id",
+        element: <TaskInfo />
+      }
     ]
   }
 ])
@@ -62,6 +67,7 @@ function App() {
 
   return (
     <div className="">
+
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<ProtectedRoutes />}>
@@ -71,6 +77,8 @@ function App() {
       </BrowserRouter>
       <RouterProvider router={appRouter} />
       <ToastContainer />
+
+
     </div>
   );
 }

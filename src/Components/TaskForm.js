@@ -98,6 +98,7 @@ const TaskForm = ({ onClose, formValues, formMode }) => {
                 position: toast.POSITION.TOP_RIGHT,
             });
 
+
             navigate('/taskdetail');
 
             resetForm();
