@@ -80,8 +80,8 @@ const TaskDetail = () => {
             console.log('Task Details:', taskDetails);
 
             if (taskDetails) {
-                console.log('Module:', taskDetails.module);
-                console.log('Type:', taskDetails.type);
+                // console.log('Module:', taskDetails.module);
+                // console.log('Type:', taskDetails.type);
 
                 setFormValues((prevValues) => ({
                     ...prevValues,

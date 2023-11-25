@@ -35,7 +35,7 @@ const validationSchema = Yup.object().shape({
 const TaskForm = ({ onClose, formValues, formMode }) => {
     const [formData, setFormData] = useState(formValues);
 
-    console.log(formValues)
+
     // Update internal state when formValues prop changes
     useEffect(() => {
         setFormData(formValues);
