@@ -72,8 +72,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<ProtectedRoutes />}>
-            <Route path="/homepage" element={<HomePage />} />
-            <Route path="/taskdetail" element={<TaskDetail />} />
+            <Route path="/" element={<HomePage />} />
             <Route path="/deal" element={<Deal />} />
             <Route path="/leads" element={<Leads />} />
             <Route path="/contacts" element={<Contacts />} />

@@ -15,10 +15,12 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import Body from "./Body";
+import HomePage from "./HomePage";
 
 const ProtectedRoutes = () => {
   const { token } = useAuth();
-  return token ? <Body /> : <Navigate to="/signin" />;
+  //   return token ? <Body /> : <Navigate to="/signin" />;
+  return token ? <HomePage /> : <Navigate to="/signin" />;
 };
 
 export default ProtectedRoutes;
