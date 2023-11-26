@@ -52,23 +52,6 @@ const TaskDetail = () => {
     }
   };
 
-  // const handleEdit = async (taskId) => {
-  //     try {
-  //         const response = await axios.get(`https://crmapi.sarvadhi.work/api/v1/crm/tasks/${taskId}`, {
-  //             headers: {
-  //                 Authorization: `Bearer ${authToken}`,
-  //             },
-  //         });
-
-  //         const taskDetails = response?.data;
-  //         console.log(taskDetails);
-
-  //         setShowTaskForm(true);
-  //     } catch (error) {
-  //         console.error('Error fetching task details for editing:', error);
-  //     }
-  // };
-
   const handleEdit = async (taskId) => {
     try {
       const response = await axios.get(
@@ -86,7 +69,7 @@ const TaskDetail = () => {
       if (taskDetails) {
         // console.log('Module:', taskDetails.module);
         // console.log('Type:', taskDetails.type);
-
+        console.log(taskDetails);
         setFormValues((prevValues) => ({
           ...prevValues,
           module: taskDetails.module || "",

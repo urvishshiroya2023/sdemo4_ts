@@ -6,21 +6,6 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as Yup from "yup";
 
-// const initialValues = {
-//     module: '',
-//     type: '',
-//     title: '',
-//     dueDate: '',
-//     priority: '',
-//     assignedTo: '',
-//     connectedLead: '',
-//     descriptions: '',
-//     reactjsTags: [],
-//     nodejsTags: [],
-//     size: '',
-//     dob: '',
-// };
-
 const validationSchema = Yup.object().shape({
   // module: Yup.string().required('Module is required'),
   // type: Yup.string().required('Type is required'),
@@ -35,40 +20,11 @@ const validationSchema = Yup.object().shape({
 const TaskForm = ({ onClose, formValues, formMode }) => {
   const [formData, setFormData] = useState(formValues);
 
-  // Update internal state when formValues prop changes
   useEffect(() => {
     setFormData(formValues);
   }, [formValues]);
 
   const navigate = useNavigate();
-
-  // const handleSubmit = async (values, { resetForm }) => {
-  //     try {
-  //         const authToken = localStorage.getItem('authToken');
-  //         const headers = {
-  //             'Content-Type': 'application/json',
-  //             Authorization: `Bearer ${authToken}`,
-  //         };
-
-  //         const response = await axios.post('https://crmapi.sarvadhi.work/api/v1/crm/tasks', values, { headers });
-
-  //         console.log(response.data);
-
-  //         toast.success('Task added successfully!', {
-  //             position: toast.POSITION.TOP_RIGHT,
-  //         });
-
-  //         navigate('/taskdetail');
-
-  //         resetForm();
-  //     } catch (error) {
-  //         console.error('Error submitting form:', error);
-  //         toast.error('Task added failed', {
-  //             position: toast.POSITION.TOP_CENTER,
-  //             autoClose: 2000,
-  //         });
-  //     }
-  // };
 
   const handleSubmit = async (values, { resetForm }) => {
     try {
@@ -120,10 +76,14 @@ const TaskForm = ({ onClose, formValues, formMode }) => {
   };
 
   return (
-    <div className="bg-white h-[100vh]">
-      <div className="container p-4">
-        <div className="mb-3">
-          <h2>Task Details</h2>
+    <div className="bg-white overflow-y-auto h-[100vh]">
+      <div className="container  p-4">
+        <div className="font-semibold  border-b text-indigo-600">
+          <div className="pb-3">
+            <span className="border-b-2 pb-3  border-indigo-600">
+              Tasks Details
+            </span>
+          </div>
         </div>
 
         <Formik
@@ -132,7 +92,7 @@ const TaskForm = ({ onClose, formValues, formMode }) => {
           onSubmit={handleSubmit}
         >
           {({ values, errors, touched, setFieldValue }) => (
-            <Form className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Form className="grid grid-cols-1 mt-3 font-semibold text-[#6B7280] md:grid-cols-2 gap-4">
               <div className="col-span-1">
                 <div className={`form-item vertical `}>
                   <label className="form-label flex mb-2" htmlFor="module">
@@ -368,7 +328,110 @@ const TaskForm = ({ onClose, formValues, formMode }) => {
                 />
               </div>
 
-              <div className="col-span-2 mt-5 relative bottom-0 right-0">
+              <div className="col-span-1">
+                <div className={`form-item vertical`}>
+                  <label className="form-label flex mb-2" htmlFor="reactjsTags">
+                    ReactJS Tags
+                  </label>
+                  <Field
+                    as="select"
+                    id="reactjsTags"
+                    name="reactjsTags"
+                    className={`w-full h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${
+                      touched.reactjsTags && errors.reactjsTags
+                        ? "border-red-500 border-2"
+                        : ""
+                    }`}
+                  >
+                    <option value="" label="Select..." />
+                    <option value="tag1" label="Tag 1" />
+                    <option value="tag2" label="Tag 2" />
+                    {/* Add more options as needed */}
+                  </Field>
+                  <ErrorMessage
+                    name="reactjsTags"
+                    component="div"
+                    className="text-red-500"
+                  />
+                </div>
+              </div>
+
+              <div className="col-span-1">
+                <div className={`form-item vertical`}>
+                  <label className="form-label flex mb-2" htmlFor="nodejsTags">
+                    NodeJS Tags
+                  </label>
+                  <Field
+                    as="select"
+                    id="nodejsTags"
+                    name="nodejsTags"
+                    className={`w-full h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${
+                      touched.nodejsTags && errors.nodejsTags
+                        ? "border-red-500 border-2"
+                        : ""
+                    }`}
+                  >
+                    <option value="" label="Select..." />
+                    <option value="tagA" label="Tag A" />
+                    <option value="tagB" label="Tag B" />
+                    {/* Add more options as needed */}
+                  </Field>
+                  <ErrorMessage
+                    name="nodejsTags"
+                    component="div"
+                    className="text-red-500"
+                  />
+                </div>
+              </div>
+
+              <div className="col-span-1">
+                <div className={`form-item vertical`}>
+                  <label className="form-label flex mb-2" htmlFor="size">
+                    Size
+                  </label>
+                  <Field
+                    as="input"
+                    type="number"
+                    id="size"
+                    name="size"
+                    placeholder="Size"
+                    className={`w-full h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${
+                      touched.size && errors.size
+                        ? "border-red-500 border-2"
+                        : ""
+                    }`}
+                  />
+                  <ErrorMessage
+                    name="size"
+                    component="div"
+                    className="text-red-500"
+                  />
+                </div>
+              </div>
+
+              <div className="col-span-1">
+                <div className={`form-item vertical`}>
+                  <label className="form-label flex mb-2" htmlFor="dob">
+                    Date of Birth
+                  </label>
+                  <Field
+                    as="input"
+                    type="datetime-local"
+                    id="dob"
+                    name="dob"
+                    className={`w-full h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${
+                      touched.dob && errors.dob ? "border-red-500 border-2" : ""
+                    }`}
+                  />
+                  <ErrorMessage
+                    name="dob"
+                    component="div"
+                    className="text-red-500"
+                  />
+                </div>
+              </div>
+
+              <div className="col-span-2 mt-10 relative ">
                 <div className="flex gap-x-4 absolute bottom-0 right-0">
                   <div>
                     <button
