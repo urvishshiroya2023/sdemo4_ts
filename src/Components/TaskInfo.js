@@ -284,41 +284,55 @@ const TaskInfo = () => {
           <div className="mt-5 bg-white p-5 border rounded-md">
             {taskData ? (
               <div className="grid grid-cols-5">
-                <div className={`text-[#6B7280] text-sm font-semibold `}>
-                  Priority :
-                  <span
-                    className={`font-light ml-2 py-1 px-2 rounded-md text-xs font-semibold ${priorityColor}`}
-                  >
-                    {taskData?.priority}
-                  </span>
-                </div>
+                {taskData?.priority && (
+                  <div className={`text-[#6B7280] text-sm font-semibold `}>
+                    Priority:
+                    <span
+                      className={`font-light ml-2 py-1 px-2 rounded-md text-xs font-semibold ${priorityColor}`}
+                    >
+                      {taskData.priority}
+                    </span>
+                  </div>
+                )}
 
-                <div className="text-[#6B7280] text-sm font-semibold">
-                  Status :
-                  <span className="font-light">
-                    {taskData?.taskStatus?.statusName}
-                  </span>
-                </div>
+                {taskData?.taskStatus && (
+                  <div className="text-[#6B7280] text-sm font-semibold">
+                    Status:
+                    <span className="font-light">
+                      {taskData.taskStatus.statusName}
+                    </span>
+                  </div>
+                )}
 
-                <div className="text-[#6B7280] text-sm font-semibold">
-                  Due Date
-                  <span className="font-light">
-                    : {formatDate(taskData?.dueDate)}
-                  </span>
-                </div>
+                {taskData?.dueDate && (
+                  <div className="text-[#6B7280] text-sm font-semibold">
+                    Due Date:
+                    <span className="font-light">
+                      {formatDate(taskData.dueDate)}
+                    </span>
+                  </div>
+                )}
 
-                <div className="text-[#6B7280] text-sm font-semibold">
-                  Title : <span className="font-light"> {taskData?.title}</span>
-                </div>
+                {taskData?.title && (
+                  <div className="text-[#6B7280] text-sm font-semibold">
+                    Title:
+                    <span className="font-light"> {taskData.title}</span>
+                  </div>
+                )}
 
-                <div className="text-[#6B7280] text-sm font-semibold">
-                  Module :
-                  <span className="font-light"> {taskData?.module}</span>
-                </div>
+                {taskData?.module && (
+                  <div className="text-[#6B7280] text-sm font-semibold">
+                    Module:
+                    <span className="font-light"> {taskData.module}</span>
+                  </div>
+                )}
 
-                <div className="text-[#6B7280] text-sm font-semibold">
-                  Type : <span className="font-light"> {taskData?.type}</span>
-                </div>
+                {taskData?.type && (
+                  <div className="text-[#6B7280] text-sm font-semibold">
+                    Type:
+                    <span className="font-light"> {taskData.type}</span>
+                  </div>
+                )}
 
                 {taskData?.assignedToData && (
                   <div className="text-[#6B7280] text-sm font-semibold">
@@ -353,41 +367,59 @@ const TaskInfo = () => {
                   </div>
                 ) : null}
 
-                <div className="text-[#6B7280] text-sm font-semibold">
-                  ReactJS Tags:
-                  <span className="font-light">
-                    {/* Render your ReactJS tags data here */}
-                  </span>
-                </div>
+                {taskData?.ReactJSTags && (
+                  <div className="text-[#6B7280] text-sm font-semibold">
+                    ReactJS Tags:
+                    <span className="font-light">
+                      {taskData.ReactJSTags.map((tag) => (
+                        // Render each ReactJS tag
+                        <span key={tag.id}>{tag.name}</span>
+                      ))}
+                    </span>
+                  </div>
+                )}
 
-                <div className="text-[#6B7280] text-sm font-semibold">
-                  NodeJS Tags:
-                  <span className="font-light">
-                    {/* Render your NodeJS tags data here */}
-                  </span>
-                </div>
+                {taskData?.NodeJSTags && (
+                  <div className="text-[#6B7280] text-sm font-semibold">
+                    NodeJS Tags:
+                    <span className="font-light">
+                      {taskData.NodeJSTags.map((tag) => (
+                        // Render each NodeJS tag
+                        <span key={tag.id}>{tag.name}</span>
+                      ))}
+                    </span>
+                  </div>
+                )}
 
-                <div className="text-[#6B7280] text-sm font-semibold">
-                  Size:
-                  <span className="font-light">
-                    {
-                      taskData?.taskFields.find(
-                        (field) => field.name === "size"
-                      )?.value
-                    }
-                  </span>
-                </div>
+                {/* {taskData?.taskFields.find(
+                  (field) => field.name === "size"
+                ) && (
+                  <div className="text-[#6B7280] text-sm font-semibold">
+                    Size:
+                    <span className="font-light">
+                      {
+                        taskData.taskFields.find(
+                          (field) => field.name === "size"
+                        ).value
+                      }
+                    </span>
+                  </div>
+                )}
 
-                <div className="text-[#6B7280] text-sm font-semibold">
-                  Date of Birth:
-                  <span className="font-light">
-                    {
-                      taskData?.taskFields.find(
-                        (field) => field.name === "date of birth"
-                      )?.value
-                    }
-                  </span>
-                </div>
+                {taskData?.taskFields.find(
+                  (field) => field.name === "date of birth"
+                ) && (
+                  <div className="text-[#6B7280] text-sm font-semibold">
+                    Date of Birth:
+                    <span className="font-light">
+                      {
+                        taskData.taskFields.find(
+                          (field) => field.name === "date of birth"
+                        ).value
+                      }
+                    </span>
+                  </div>
+                )} */}
               </div>
             ) : (
               <div className="h-full min-h-screen">

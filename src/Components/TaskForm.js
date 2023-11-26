@@ -17,8 +17,19 @@ const validationSchema = Yup.object().shape({
   // connectedLead: Yup.string().required('Connected Lead is required'),
 });
 
-const TaskForm = ({ onClose, formValues, formMode }) => {
+const TaskForm = ({ onClose, formValues, formMode, setShowTaskForm }) => {
   const [formData, setFormData] = useState(formValues);
+
+  const formattedDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = `${(date.getMonth() + 1).toString().padStart(2, "0")}`;
+    const day = `${date.getDate().toString().padStart(2, "0")}`;
+    const hours = `${date.getHours().toString().padStart(2, "0")}`;
+    const minutes = `${date.getMinutes().toString().padStart(2, "0")}`;
+
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  };
 
   useEffect(() => {
     setFormData(formValues);
@@ -64,7 +75,7 @@ const TaskForm = ({ onClose, formValues, formMode }) => {
       });
 
       navigate("/taskdetail");
-
+      setShowTaskForm(false);
       resetForm();
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -196,6 +207,30 @@ const TaskForm = ({ onClose, formValues, formMode }) => {
                 </div>
               </div>
 
+              {/* <div className="col-span-1">
+                <div className={`form-item vertical `}>
+                  <label className="flex form-label mb-2" htmlFor="dueDate">
+                    Due Date *
+                  </label>
+                  <Field
+                    as="input"
+                    type="datetime-local"
+                    id="dueDate"
+                    name="dueDate"
+                    className={`input border rounded w-full h-11 input-md h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${
+                      touched.dueDate && errors.dueDate
+                        ? "border-red-500 border-2"
+                        : ""
+                    }`}
+                  />
+                  <ErrorMessage
+                    name="dueDate"
+                    component="div"
+                    className="text-red-500"
+                  />
+                </div>
+              </div> */}
+
               <div className="col-span-1">
                 <div className={`form-item vertical `}>
                   <label className="flex form-label mb-2" htmlFor="dueDate">
@@ -206,6 +241,8 @@ const TaskForm = ({ onClose, formValues, formMode }) => {
                     type="datetime-local"
                     id="dueDate"
                     name="dueDate"
+                    value={formattedDate(values.dueDate)} // Format the dueDate
+                    onChange={(e) => setFieldValue("dueDate", e.target.value)}
                     className={`input border rounded w-full h-11 input-md h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${
                       touched.dueDate && errors.dueDate
                         ? "border-red-500 border-2"
@@ -343,8 +380,8 @@ const TaskForm = ({ onClose, formValues, formMode }) => {
                         : ""
                     }`}
                   >
-                    <option value="" label="Select..." />
-                    <option value="tag1" label="Tag 1" />
+                    <option value="" label="Select reactjs tags" />
+                    <option value="developing" label="Developing" />
                     <option value="tag2" label="Tag 2" />
                     {/* Add more options as needed */}
                   </Field>
@@ -371,7 +408,7 @@ const TaskForm = ({ onClose, formValues, formMode }) => {
                         : ""
                     }`}
                   >
-                    <option value="" label="Select..." />
+                    <option value="" label="Select Nodejs tags" />
                     <option value="tagA" label="Tag A" />
                     <option value="tagB" label="Tag B" />
                     {/* Add more options as needed */}

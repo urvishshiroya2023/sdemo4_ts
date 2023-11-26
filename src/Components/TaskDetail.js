@@ -69,7 +69,8 @@ const TaskDetail = () => {
       if (taskDetails) {
         // console.log('Module:', taskDetails.module);
         // console.log('Type:', taskDetails.type);
-        console.log(taskDetails);
+        console.log(taskDetails.dueDate);
+
         setFormValues((prevValues) => ({
           ...prevValues,
           module: taskDetails.module || "",
@@ -323,6 +324,7 @@ const TaskDetail = () => {
                 <TaskForm
                   formValues={formValues}
                   formMode={formMode}
+                  setShowTaskForm={setShowTaskForm}
                   onClose={() => setShowTaskForm(false)}
                 />
               </div>
