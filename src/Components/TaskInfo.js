@@ -281,91 +281,148 @@ const TaskInfo = () => {
               Task Details
             </h3>
           </div>
-          <div className="mt-5 bg-white p-5 border rounded-md">
+          <div className="mt-5">
             {taskData ? (
-              <div className="grid grid-cols-5">
-                {taskData?.priority && (
-                  <div className={`text-[#6B7280] text-sm font-semibold `}>
-                    Priority:
-                    <span
-                      className={`font-light ml-2 py-1 px-2 rounded-md text-xs font-semibold ${priorityColor}`}
-                    >
-                      {taskData.priority}
-                    </span>
-                  </div>
-                )}
+              <div className="">
+                <div className="grid grid-cols-5 bg-white p-5 border rounded-md">
+                  {taskData?.priority && (
+                    <div className={`text-[#6B7280] text-sm font-semibold `}>
+                      Priority:
+                      <span
+                        className={`font-light ml-2 py-1 px-2 rounded-md text-xs font-semibold ${priorityColor}`}
+                      >
+                        {taskData.priority}
+                      </span>
+                    </div>
+                  )}
 
-                {taskData?.taskStatus && (
-                  <div className="text-[#6B7280] text-sm font-semibold">
-                    Status:
-                    <span className="font-light">
-                      {taskData.taskStatus.statusName}
-                    </span>
-                  </div>
-                )}
+                  {taskData?.taskStatus && (
+                    <div className="text-[#6B7280] text-sm font-semibold">
+                      Status:
+                      <span className="font-light">
+                        {taskData.taskStatus.statusName}
+                      </span>
+                    </div>
+                  )}
 
-                {taskData?.dueDate && (
-                  <div className="text-[#6B7280] text-sm font-semibold">
-                    Due Date:
-                    <span className="font-light">
-                      {formatDate(taskData.dueDate)}
-                    </span>
-                  </div>
-                )}
+                  {taskData?.dueDate && (
+                    <div className="text-[#6B7280] text-sm font-semibold">
+                      Due Date:
+                      <span className="font-light">
+                        {formatDate(taskData.dueDate)}
+                      </span>
+                    </div>
+                  )}
 
-                {taskData?.title && (
-                  <div className="text-[#6B7280] text-sm font-semibold">
-                    Title:
-                    <span className="font-light"> {taskData.title}</span>
-                  </div>
-                )}
+                  {taskData?.title && (
+                    <div className="text-[#6B7280] text-sm font-semibold">
+                      Title:
+                      <span className="font-light"> {taskData.title}</span>
+                    </div>
+                  )}
 
-                {taskData?.module && (
-                  <div className="text-[#6B7280] text-sm font-semibold">
-                    Module:
-                    <span className="font-light"> {taskData.module}</span>
-                  </div>
-                )}
+                  {taskData?.module && (
+                    <div className="text-[#6B7280] text-sm font-semibold">
+                      Module:
+                      <span className="font-light"> {taskData.module}</span>
+                    </div>
+                  )}
 
-                {taskData?.type && (
-                  <div className="text-[#6B7280] text-sm font-semibold">
-                    Type:
-                    <span className="font-light"> {taskData.type}</span>
-                  </div>
-                )}
+                  {taskData?.type && (
+                    <div className="text-[#6B7280] text-sm font-semibold">
+                      Type:
+                      <span className="font-light"> {taskData.type}</span>
+                    </div>
+                  )}
 
-                {taskData?.assignedToData && (
-                  <div className="text-[#6B7280] text-sm font-semibold">
-                    Assigned To:
-                    <span className="font-light">
-                      {taskData.assignedToData.firstName}{" "}
-                      {taskData.assignedToData.lastName}
-                    </span>
-                  </div>
-                )}
+                  {taskData?.assignedToData && (
+                    <div className="text-[#6B7280] text-sm font-semibold">
+                      Assigned To:
+                      <span className="font-light">
+                        {taskData.assignedToData.firstName}{" "}
+                        {taskData.assignedToData.lastName}
+                      </span>
+                    </div>
+                  )}
 
-                {taskData?.leadModel && (
-                  <div className="text-[#6B7280] text-sm font-semibold">
-                    Connected Lead:
-                    <span className="font-light">
-                      {taskData.leadModel.title}
-                    </span>
-                  </div>
-                )}
+                  {taskData?.leadModel && (
+                    <div className="text-[#6B7280] text-sm font-semibold">
+                      Connected Lead:
+                      <span className="font-light">
+                        {taskData.leadModel.title}
+                      </span>
+                    </div>
+                  )}
+                </div>
 
-                {taskData?.taskNotes.length > 0 ? (
-                  <div className="text-[#6B7280] text-sm font-semibold">
-                    Notes:
-                    <ul>
-                      {taskData.taskNotes.map((note) => (
-                        <li key={note.id}>
-                          {note.notes} - {note.createdData?.firstName}{" "}
-                          {note.createdData?.lastName}
-                        </li>
-                      ))}
-                    </ul>
+                {/* {taskData?.taskNotes.length > 0 ? ( */}
+                <div className="grid grid-cols-3 lg:grid-cols-4 gap-4 mt-2">
+                  <div className="col-span-2 bg-white p-5 mt-5 border rounded-md">
+                    <div className="text-[#6B7280] text-sm font-semibold">
+                      <span className="text-2xl text-black">Notes</span>
+
+                      {/* <ul className="mt-3 font-light">
+                        {taskData.taskNotes.map((note) => (
+                          <>
+                            <li className="" key={note.id}>
+                              {note.notes}
+                              <span className="font-semibold ml-2">
+                                {note.createdData?.firstName}{" "}
+                                {note.createdData?.lastName}
+                              </span>
+                            </li>
+                            <div className="mb-5">{note.createdAt}</div>
+                          </>
+                        ))}
+                      </ul> */}
+
+                      {taskData?.taskNotes.length > 0 ? (
+                        <ul className="mt-3 font-light">
+                          {taskData.taskNotes.map((note) => {
+                            // Convert the date string to a Date object
+                            const createdAtDate = new Date(note.createdAt);
+
+                            // Format the date using Intl.DateTimeFormat
+                            const formattedDate = new Intl.DateTimeFormat(
+                              "en-US",
+                              {
+                                month: "long",
+                                day: "numeric",
+                                year: "numeric",
+                                hour: "numeric",
+                                minute: "numeric",
+                                hour12: true,
+                              }
+                            ).format(createdAtDate);
+
+                            return (
+                              <>
+                                <li className="" key={note.id}>
+                                  {note.notes} -{" "}
+                                  <span className="font-semibold">
+                                    {note.createdData?.firstName}{" "}
+                                    {note.createdData?.lastName}
+                                  </span>
+                                </li>
+                                <div className="mb-5">{formattedDate}</div>
+                              </>
+                            );
+                          })}
+                        </ul>
+                      ) : (
+                        <p className="mt-3 flex text-center">No Notes Found.</p>
+                      )}
+                    </div>
                   </div>
-                ) : null}
+                  <div className=" bg-white p-5 mt-5 border rounded-md">
+                    <div>
+                      <span className="text-2xl text-black">Task Activity</span>
+                    </div>
+                    <div>0</div>
+                  </div>
+                  <div></div>
+                </div>
+                {/* ) : null} */}
 
                 {taskData?.ReactJSTags && (
                   <div className="text-[#6B7280] text-sm font-semibold">

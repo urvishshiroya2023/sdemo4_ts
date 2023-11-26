@@ -103,7 +103,7 @@ const TaskForm = ({ onClose, formValues, formMode, setShowTaskForm }) => {
           onSubmit={handleSubmit}
         >
           {({ values, errors, touched, setFieldValue }) => (
-            <Form className="grid grid-cols-1 mt-3 font-semibold text-[#6B7280] md:grid-cols-2 gap-4">
+            <Form className="grid grid-cols-1 mt-3 font-semibold text-[#6B7280] test-sm md:grid-cols-2 gap-4">
               <div className="col-span-1">
                 <div className={`form-item vertical `}>
                   <label className="form-label flex mb-2" htmlFor="module">
