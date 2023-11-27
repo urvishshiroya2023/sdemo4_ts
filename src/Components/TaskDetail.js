@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Footer from "./Footer";
 import HomePageHeader from "./HomePageHeader";
+import Loader from "./Loader";
 import TaskData from "./TaskData";
 import TaskForm from "./TaskForm";
 import TasksHeader from "./TasksHeader";
-import Loader from "./Loader";
 
 const initialValues = {
   module: "",
@@ -292,11 +292,10 @@ const TaskDetail = () => {
                       <button
                         key={pageNumber}
                         onClick={() => changePage(pageNumber)}
-                        className={`${
-                          pageNumber === currentPage
-                            ? "active text-indigo-600 bg-indigo-50 py-1 px-3 rounded"
-                            : ""
-                        } mx-3`}
+                        className={`${pageNumber === currentPage
+                          ? "active text-indigo-600 bg-indigo-50 py-1 px-3 rounded"
+                          : ""
+                          } mx-3`}
                       >
                         {pageNumber}
                       </button>
@@ -333,7 +332,7 @@ const TaskDetail = () => {
         </div>
       </div>
 
-      <div>
+      <div className=" ">
         <Footer />
       </div>
     </div>

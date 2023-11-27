@@ -37,7 +37,7 @@ const HomePageHeader = () => {
                             <li className={`mx-2 ${location.pathname === '/taskdetail' ? 'bg-[#e5e7eb] text-black rounded-lg bg-opacity-80 px-3 py-2 ' : ''}`}>
                                 <Link to={"/taskdetail"}>Tasks</Link>
                             </li>
-                            <li className={`mx-2 ${location.pathname === '/deal' ? 'bg-[#e5e7eb] bg-opacity-50 ' : ''}`}>
+                            <li className={`mx-2 ${location.pathname === '/deal' ? 'bg-[#e5e7eb] text-black rounded-lg bg-opacity-80 px-3 py-2 ' : ''}`}>
                                 <Link to={"/deal"}>Deal</Link>
                             </li>
                         </ul>

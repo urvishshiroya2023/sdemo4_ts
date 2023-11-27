@@ -1,9 +1,8 @@
 import {
   BrowserRouter,
   Route,
-  RouterProvider,
   Routes,
-  createBrowserRouter,
+  createBrowserRouter
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -71,15 +70,23 @@ function App() {
     <div className="">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<ProtectedRoutes />}>
-            <Route path="/" element={<HomePage />} />
+          {/* <Route path="/" element={<ProtectedRoutes />}> */}
+          <Route element={<ProtectedRoutes />}>
+            <Route path="/" element={<HomePage />} exact />
             <Route path="/deal" element={<Deal />} />
+            <Route path="/homepage" element={<HomePage />} />
             <Route path="/leads" element={<Leads />} />
             <Route path="/contacts" element={<Contacts />} />
+            <Route path="/taskdetail" element={<TaskDetail />} />
+            <Route path="/taskdetails/:id" element={<TaskInfo />} />
+          </Route>
+          <Route>
+            <Route path="/signin" element={<SignInComponent />} />
+            <Route path="/onboarduser" element={<OnBoardComponent />} />
           </Route>
         </Routes>
       </BrowserRouter>
-      <RouterProvider router={appRouter} />
+      {/* <RouterProvider router={appRouter} /> */}
       <ToastContainer />
     </div>
   );
