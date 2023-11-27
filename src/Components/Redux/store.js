@@ -1,0 +1,11 @@
+import { configureStore } from "@reduxjs/toolkit";
+import leadSlice from "./leadSlice";
+
+
+const store = configureStore({
+    reducer: {
+        leads: leadSlice
+    }
+})
+
+export default store;
