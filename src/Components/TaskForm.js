@@ -113,11 +113,10 @@ const TaskForm = ({ onClose, formValues, formMode, setShowTaskForm }) => {
                     as="select"
                     id="module"
                     name="module"
-                    className={`w-full border rounded input input-md h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${
-                      touched.module && errors.module
-                        ? "border-red-500 border-2"
-                        : ""
-                    }`}
+                    className={`w-full font-light text-sm border font-light text-sm rounded input input-md h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${touched.module && errors.module
+                      ? "border-red-500 border-2"
+                      : ""
+                      }`}
                   >
                     <option value="" label="Module" />
                     <option value="lead" label="Lead" />
@@ -142,11 +141,10 @@ const TaskForm = ({ onClose, formValues, formMode, setShowTaskForm }) => {
                     type="text"
                     id="type"
                     name="type"
-                    className={`border w-full rounded px-2 py-1 h-11 focus:ring-indigo-600 focus:border-indigo-600 ${
-                      touched.type && errors.type
-                        ? "border-red-500 border-2"
-                        : ""
-                    }`}
+                    className={`border w-full font-light text-sm rounded px-2 py-1 h-11 focus:ring-indigo-600 focus:border-indigo-600 ${touched.type && errors.type
+                      ? "border-red-500 border-2"
+                      : ""
+                      }`}
                   >
                     <option value="" label="Type" />
                     {values.module === "lead" && (
@@ -193,11 +191,10 @@ const TaskForm = ({ onClose, formValues, formMode, setShowTaskForm }) => {
                     id="title"
                     name="title"
                     placeholder="Title"
-                    className={`w-full h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${
-                      touched.title && errors.title
-                        ? "border-red-500 border-2"
-                        : ""
-                    }`}
+                    className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${touched.title && errors.title
+                      ? "border-red-500 border-2"
+                      : ""
+                      }`}
                   />
                   <ErrorMessage
                     name="title"
@@ -243,11 +240,10 @@ const TaskForm = ({ onClose, formValues, formMode, setShowTaskForm }) => {
                     name="dueDate"
                     value={formattedDate(values.dueDate)} // Format the dueDate
                     onChange={(e) => setFieldValue("dueDate", e.target.value)}
-                    className={`input border rounded w-full h-11 input-md h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${
-                      touched.dueDate && errors.dueDate
-                        ? "border-red-500 border-2"
-                        : ""
-                    }`}
+                    className={`input border font-light text-sm rounded w-full h-11 input-md h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${touched.dueDate && errors.dueDate
+                      ? "border-red-500 border-2"
+                      : ""
+                      }`}
                   />
                   <ErrorMessage
                     name="dueDate"
@@ -266,11 +262,10 @@ const TaskForm = ({ onClose, formValues, formMode, setShowTaskForm }) => {
                     as="select"
                     id="priority"
                     name="priority"
-                    className={`w-full h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${
-                      touched.priority && errors.priority
-                        ? "border-red-500 border-2"
-                        : ""
-                    }`}
+                    className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${touched.priority && errors.priority
+                      ? "border-red-500 border-2"
+                      : ""
+                      }`}
                   >
                     <option value="none" label="None" />
                     <option value="high" label="High" />
@@ -294,11 +289,10 @@ const TaskForm = ({ onClose, formValues, formMode, setShowTaskForm }) => {
                     as="select"
                     id="assignedTo"
                     name="assignedTo"
-                    className={`w-full h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${
-                      touched.assignedTo && errors.assignedTo
-                        ? "border-red-500 border-2"
-                        : ""
-                    }`}
+                    className={`w-full h-11 border font-light text-sm rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${touched.assignedTo && errors.assignedTo
+                      ? "border-red-500 border-2"
+                      : ""
+                      }`}
                   >
                     <option value="" label="Select..." />
                     <option value="high" label="High" />
@@ -325,11 +319,10 @@ const TaskForm = ({ onClose, formValues, formMode, setShowTaskForm }) => {
                     as="select"
                     id="connectedLead"
                     name="connectedLead"
-                    className={`w-full h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${
-                      touched.connectedLead && errors.connectedLead
-                        ? "border-red-500 border-2"
-                        : ""
-                    }`}
+                    className={`w-full h-11 border font-light text-sm rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${touched.connectedLead && errors.connectedLead
+                      ? "border-red-500 border-2"
+                      : ""
+                      }`}
                   >
                     <option value="" label="Select..." />
                     <option value="high" label="High" />
@@ -352,11 +345,10 @@ const TaskForm = ({ onClose, formValues, formMode, setShowTaskForm }) => {
                   as="textarea"
                   name="descriptions"
                   placeholder="Notes"
-                  className={`border w-full h-32 rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${
-                    touched.descriptions && errors.descriptions
-                      ? "border-red-500 border-2"
-                      : ""
-                  }`}
+                  className={`border font-light text-sm w-full h-32 rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${touched.descriptions && errors.descriptions
+                    ? "border-red-500 border-2"
+                    : ""
+                    }`}
                 />
                 <ErrorMessage
                   name="descriptions"
@@ -374,11 +366,10 @@ const TaskForm = ({ onClose, formValues, formMode, setShowTaskForm }) => {
                     as="select"
                     id="reactjsTags"
                     name="reactjsTags"
-                    className={`w-full h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${
-                      touched.reactjsTags && errors.reactjsTags
-                        ? "border-red-500 border-2"
-                        : ""
-                    }`}
+                    className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${touched.reactjsTags && errors.reactjsTags
+                      ? "border-red-500 border-2"
+                      : ""
+                      }`}
                   >
                     <option value="" label="Select reactjs tags" />
                     <option value="developing" label="Developing" />
@@ -402,11 +393,10 @@ const TaskForm = ({ onClose, formValues, formMode, setShowTaskForm }) => {
                     as="select"
                     id="nodejsTags"
                     name="nodejsTags"
-                    className={`w-full h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${
-                      touched.nodejsTags && errors.nodejsTags
-                        ? "border-red-500 border-2"
-                        : ""
-                    }`}
+                    className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${touched.nodejsTags && errors.nodejsTags
+                      ? "border-red-500 border-2"
+                      : ""
+                      }`}
                   >
                     <option value="" label="Select Nodejs tags" />
                     <option value="tagA" label="Tag A" />
@@ -432,11 +422,10 @@ const TaskForm = ({ onClose, formValues, formMode, setShowTaskForm }) => {
                     id="size"
                     name="size"
                     placeholder="Size"
-                    className={`w-full h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${
-                      touched.size && errors.size
-                        ? "border-red-500 border-2"
-                        : ""
-                    }`}
+                    className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${touched.size && errors.size
+                      ? "border-red-500 border-2"
+                      : ""
+                      }`}
                   />
                   <ErrorMessage
                     name="size"
@@ -456,9 +445,8 @@ const TaskForm = ({ onClose, formValues, formMode, setShowTaskForm }) => {
                     type="datetime-local"
                     id="dob"
                     name="dob"
-                    className={`w-full h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${
-                      touched.dob && errors.dob ? "border-red-500 border-2" : ""
-                    }`}
+                    className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${touched.dob && errors.dob ? "border-red-500 border-2" : ""
+                      }`}
                   />
                   <ErrorMessage
                     name="dob"
