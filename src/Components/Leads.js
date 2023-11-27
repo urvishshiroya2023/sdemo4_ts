@@ -108,14 +108,16 @@ const Leads = () => {
                 <HomePageHeader />
             </div>
             <div className="mt-5">
-                <LeadsHeader />
+                <LeadsHeader filteredLeads={filteredLeads} />
             </div>
 
             <div>
                 <div className="flex py-5 h-full justify-center">
                     <div className="container border bg-white rounded-lg p-5">
-                        <div className="flex justify-between items-center">
-                            {/* <h1>Leads</h1> */}
+                        <h1 className="font-semibold text-lg">Leads ({filteredLeads?.length})</h1>
+                        <div className="flex mt-3 justify-between items-center">
+
+
                             <div className="flex items-center border border-gray-300 focus-within:border-indigo-600 focus-within:border-2 px-3 rounded-lg">
                                 <div className="w-6 contents h-6">
                                     <svg

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const LeadsHeader = () => {
+const LeadsHeader = ({ filteredLeads }) => {
     return (
         <div className='flex justify-center'>
             <div className='container'>
@@ -19,7 +19,7 @@ const LeadsHeader = () => {
                                         </span>
                                         <div className='text-sm '>
                                             <span className='text-[#6B7280] text-base'> Total Leads</span>
-                                            <h3><span>10</span></h3>
+                                            <h3><span>{filteredLeads?.length}</span></h3>
                                         </div>
                                     </div>
                                 </div>
@@ -37,7 +37,7 @@ const LeadsHeader = () => {
                                             </span>
                                         </span>
                                         <div className='text-sm '>
-                                            <span className='text-[#6B7280] text-base'> Completed Leads</span>
+                                            <span className='text-[#6B7280] text-base'> Open Leads</span>
                                             <h3><span>10</span></h3>
                                         </div>
                                     </div>

@@ -17,7 +17,7 @@ import { Navigate, Outlet } from "react-router-dom";
 const ProtectedRoutes = () => {
   // const { token } = useNewAuth();
   const token = localStorage.getItem("authToken")
-  console.log(token)
+  // console.log(token)
   return token ? <Outlet /> : <Navigate to="/signin" />;
   // return token ? <Body /> : <Navigate to="/signin" />;
   // return token ? <HomePage /> : <Navigate to="/signin" />;

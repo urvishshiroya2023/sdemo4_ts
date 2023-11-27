@@ -75,45 +75,54 @@ const LeadsData = ({ lead }) => {
                     ? `${lead?.contactData?.firstName} ${lead?.contactData?.lastName}`
                     : '-'}</td>
             <td className='truncate p-3'>{lead?.title ?? '-'}</td>
-            {/* <td className={`truncate p-3 capitalize`}> */}
-            {/* <span className={`py-1 px-2 rounded-md text-xs font-semibold`}> */}
-            {/* {lead?.tags.map((item) => (
-                <>
-                    {item.tagName.includes('cat') ? (
-                        <td> <span key={item.id}>{item.tagName}</span></td>
-                    ) : (
-                        <td><span key={item.id}> {item.tagName}</span></td>
-                    )}
-                </>
-            ))} */}
-            {/* </span> */}
-            {/* </td> */}
+
 
             <td className='truncate p-3'>
-                {lead?.tags.map((item) => (
+                {/* {lead?.tags.map((item) => (
                     <>
                         {item.tagName.includes('cat') && (
                             <span key={item.id}>{item.tagName}</span>
                         )}
                     </>
 
-                ))}
+                ))} */}
+                {lead?.tags.length > 0 && lead?.tags.some(item => item.tagName.includes('cat')) ? (
+                    lead?.tags.map((item) => (
+                        <>
+                            {item.tagName.includes('cat') && (
+                                <span key={item.id}>{item.tagName}</span>
+                            )}
+                        </>
+                    ))
+                ) : (
+                    '-'
+                )}
             </td>
             <td className='truncate p-3'>
-                {
+                {/* {
                     lead.tags.map((item) => (
                         !item.tagName.includes('cat') && (
-                            <span key={item.id}>{item.tagName}</span>
+                            <>
+                                <span key={item.id}>{item.tagName}</span>
+                            </>
                         )
                     ))
-                }
-
-
-
+                } */}
+                {lead?.tags.length > 0 && lead?.tags.some(item => !item.tagName.includes('cat')) ? (
+                    lead?.tags.map((item) => (
+                        !item.tagName.includes('cat') && (
+                            <>
+                                <span key={item.id}>{item.tagName}</span>
+                            </>
+                        )
+                    ))
+                ) : (
+                    '-'
+                )}
             </td>
             <td className='truncate p-3'>{lead?.budget}</td>
             <td className='truncate p-3'>{lead?.leadStatus?.statusName ?? '-'}</td>
-            <td className='truncate p-3'>{lead?.reason ?? '-'}</td>
+            <td className='truncate p-3'>{lead?.reason ?? 'NA'}</td>
 
         </tr>
 
