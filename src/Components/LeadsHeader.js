@@ -1,6 +1,6 @@
 import React from 'react'
 
-const LeadsHeader = ({ filteredLeads }) => {
+const LeadsHeader = ({ totalLeads }) => {
     return (
         <div className='flex justify-center'>
             <div className='container'>
@@ -19,7 +19,7 @@ const LeadsHeader = ({ filteredLeads }) => {
                                         </span>
                                         <div className='text-sm '>
                                             <span className='text-[#6B7280] text-base'> Total Leads</span>
-                                            <h3><span>{filteredLeads?.length}</span></h3>
+                                            <h3><span>{totalLeads}</span></h3>
                                         </div>
                                     </div>
                                 </div>

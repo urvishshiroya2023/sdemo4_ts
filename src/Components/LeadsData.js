@@ -4,6 +4,12 @@ import { Link } from 'react-router-dom';
 const LeadsData = ({ lead }) => {
 
 
+    const statusStyles = {
+        color: lead?.leadStatus?.colorCode,
+        backgroundColor: `${lead?.leadStatus?.colorCode}1A`,
+    };
+
+
     return (
 
 
@@ -121,7 +127,13 @@ const LeadsData = ({ lead }) => {
                 )}
             </td>
             <td className='truncate p-3'>{lead?.budget}</td>
-            <td className='truncate p-3'>{lead?.leadStatus?.statusName ?? '-'}</td>
+            {/* <td className='truncate p-3'><span className={`text-[${lead?.leadStatus?.colorCode}]`}>{lead?.leadStatus?.statusName ?? '-'}</span></td> */}
+            <td className={`truncate p-3`}>
+                <span className='py-1 px-2 text-xs font-semibold rounded-md' style={{ ...statusStyles }}>
+                    {lead?.leadStatus?.statusName ?? '-'}
+                </span>
+            </td>
+
             <td className='truncate p-3'>{lead?.reason ?? 'NA'}</td>
 
         </tr>

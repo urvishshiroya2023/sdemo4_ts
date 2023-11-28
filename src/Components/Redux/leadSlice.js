@@ -1,29 +1,12 @@
-// import { createSlice } from "@reduxjs/toolkit";
-
-// const leadSlice = createSlice({
-//     name: "leads",
-//     initialState: {
-
-//     },
-//     reducers: {
-
-//     }
-// });
-
-// export const { } = leadSlice.actions;
-// export default leadSlice.reducer
-
-// leadslice.js
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BASE_URL } from "../Constants";
 
-// Define an asynchronous thunk to fetch leads
 export const fetchLeads = createAsyncThunk("leads/fetchLeads", async (_, { getState }) => {
     try {
         const authToken = localStorage.getItem("authToken");
 
-        // Ensure authToken is available
+
         if (!authToken) {
             throw new Error("Authentication token not found");
         }
