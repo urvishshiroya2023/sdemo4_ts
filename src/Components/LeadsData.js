@@ -1,12 +1,30 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { deleteLead } from './Redux/leadSlice';
 
 const LeadsData = ({ lead }) => {
+    const dispatch = useDispatch();
 
 
     const statusStyles = {
         color: lead?.leadStatus?.colorCode,
         backgroundColor: `${lead?.leadStatus?.colorCode}1A`,
+    };
+
+
+
+    const handleDelete = async () => {
+        try {
+            // Dispatch the deleteLead action with the lead ID
+            await dispatch(deleteLead(lead.id));
+            toast.success('Lead deleted successfully');
+            // Optionally, you can handle success or navigate to a different page after deletion
+        } catch (error) {
+            console.error("Error deleting lead:", error);
+            toast.error('Error deleting lead');
+        }
     };
 
 
@@ -35,7 +53,7 @@ const LeadsData = ({ lead }) => {
                     </button>
 
                     {/* delete */}
-                    <span class="cursor-pointer hover:text-red-500 circle  mx-1 items-center">
+                    <span class="cursor-pointer hover:text-red-500 circle  mx-1 items-center" onClick={handleDelete}>
                         <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                         </svg>
@@ -95,8 +113,9 @@ const LeadsData = ({ lead }) => {
                 {lead?.tags.length > 0 && lead?.tags.some(item => item.tagName.includes('cat')) ? (
                     lead?.tags.map((item) => (
                         <>
+
                             {item.tagName.includes('cat') && (
-                                <span key={item.id}>{item.tagName}</span>
+                                <span className='py-1 px-2 text-xs font-semibold rounded-md mr-2' style={{ color: item?.colorName, backgroundColor: `${item?.colorName}1A` }} key={item.id}>{item.tagName}</span>
                             )}
                         </>
                     ))
@@ -117,8 +136,9 @@ const LeadsData = ({ lead }) => {
                 {lead?.tags.length > 0 && lead?.tags.some(item => !item.tagName.includes('cat')) ? (
                     lead?.tags.map((item) => (
                         !item.tagName.includes('cat') && (
+
                             <>
-                                <span key={item.id}>{item.tagName}</span>
+                                <span className='py-1 px-2 text-xs font-semibold rounded-md mr-2' style={{ color: item?.colorName, backgroundColor: `${item?.colorName}1A` }} key={item.id}>{item.tagName}</span>
                             </>
                         )
                     ))

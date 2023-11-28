@@ -319,7 +319,7 @@ const TaskDetail = () => {
               onClick={handleCloseForm}
               className="fixed top-0 right-0 w-full h-full bg-black bg-opacity-80 overlay"
             >
-              <div className="w-1/2 fixed  top-0 right-0">
+              <div className="w-1/2 fixed h-full top-0 right-0">
                 <TaskForm
                   formValues={formValues}
                   formMode={formMode}
