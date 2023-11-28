@@ -59,8 +59,6 @@ export const deleteLead = createAsyncThunk("leads/deleteLead", async (leadId, { 
     }
 });
 
-
-
 const leadSlice = createSlice({
     name: "leads",
     initialState: {

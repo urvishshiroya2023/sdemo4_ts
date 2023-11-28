@@ -180,7 +180,7 @@ const Leads = () => {
                             onClick={handleCloseForm}
                             className="fixed top-0 right-0 w-full h-full bg-black bg-opacity-80 overlay"
                         >
-                            <div className="w-1/2 fixed bg-white  top-0 right-0">
+                            <div className="w-1/2 fixed bg-white h-full p-5  top-0 right-0">
                                 <Leadsform
                                     // formValues={formValues}
                                     // formMode={formMode}
