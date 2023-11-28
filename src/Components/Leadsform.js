@@ -45,7 +45,7 @@ const Leadsform = ({ onClose }) => {
                     </span>
                 </div>
             </div>
-            <div>
+            <div className='mt-5'>
                 <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
                     {({ isSubmitting, touched, errors }) => (
                         <Form>

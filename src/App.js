@@ -12,6 +12,7 @@ import Contacts from "./Components/Contacts";
 import Deal from "./Components/Deal";
 import HomePage from "./Components/HomePage";
 import Leads from "./Components/Leads";
+import LeadsInfo from "./Components/LeadsInfo";
 import OnBoardComponent from "./Components/OnBoardComponent";
 import ProtectedRoutes from "./Components/ProtectedRoutes";
 import SignInComponent from "./Components/SignInComponent";
@@ -61,6 +62,7 @@ const appRouter = createBrowserRouter([
         path: "/taskdetails/:id",
         element: <TaskInfo />,
       },
+
     ],
   },
 ]);
@@ -79,6 +81,7 @@ function App() {
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/taskdetail" element={<TaskDetail />} />
             <Route path="/taskdetails/:id" element={<TaskInfo />} />
+            <Route path="/leaddetails/:id" element={<LeadsInfo />} />
           </Route>
           <Route>
             <Route path="/signin" element={<SignInComponent />} />
