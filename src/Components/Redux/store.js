@@ -4,6 +4,7 @@ import leadSlice, { fetchLeads } from "./leadSlice";
 const store = configureStore({
     reducer: {
         leads: leadSlice,
+        // tasks: tasksSlice,
     },
 });
 

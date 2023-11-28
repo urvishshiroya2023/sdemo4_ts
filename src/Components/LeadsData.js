@@ -5,16 +5,12 @@ import { toast } from 'react-toastify';
 import { deleteLead, fetchLeads } from './Redux/leadSlice';
 
 const LeadsData = ({ lead }) => {
-
     const dispatch = useDispatch();
-
 
     const statusStyles = {
         color: lead?.leadStatus?.colorCode,
         backgroundColor: `${lead?.leadStatus?.colorCode}1A`,
     };
-
-
 
     const handleDelete = async () => {
         try {
@@ -107,7 +103,6 @@ const LeadsData = ({ lead }) => {
                 {lead?.tags.length > 0 && lead?.tags.some(item => item.tagName.includes('cat')) ? (
                     lead?.tags.map((item) => (
                         <>
-
                             {item.tagName.includes('cat') && (
                                 <span className='py-1 px-2 text-xs font-semibold rounded-md mr-2' style={{ color: item?.colorName, backgroundColor: `${item?.colorName}1A` }} key={item.id}>{item.tagName}</span>
                             )}
@@ -122,7 +117,6 @@ const LeadsData = ({ lead }) => {
                 {lead?.tags.length > 0 && lead?.tags.some(item => !item.tagName.includes('cat')) ? (
                     lead?.tags.map((item) => (
                         !item.tagName.includes('cat') && (
-
                             <>
                                 <span className='py-1 px-2 text-xs font-semibold rounded-md mr-2' style={{ color: item?.colorName, backgroundColor: `${item?.colorName}1A` }} key={item.id}>{item.tagName}</span>
                             </>
