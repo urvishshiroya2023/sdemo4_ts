@@ -525,7 +525,7 @@ const TaskDetail = () => {
                 <>
                   <table className="table-auto w-full text-sm border-collapse">
                     <thead>
-                      <tr className="text-[#6B7280] text-left uppercase border-b">
+                      <tr className="text-[#6B7280] bg-gray-50 text-left uppercase border-b">
                         <th className="truncate p-3">Actions </th>
                         <th className="truncate p-3">Title</th>
                         <th className="truncate p-3">Due Date</th>

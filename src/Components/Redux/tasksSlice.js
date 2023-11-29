@@ -85,8 +85,6 @@ const tasksSlice = createSlice({
             })
             .addCase(editTask.fulfilled, (state, action) => {
                 state.status = "succeeded";
-
-
                 // state.tasks = state.tasks.map((task) =>
                 //     task.id === action.payload.id ? action.payload : task
                 // );
@@ -119,6 +117,4 @@ const tasksSlice = createSlice({
 // export const { fetchTasks, editTask, deleteTask } = tasksSlice.actions;
 
 export const selectTasks = (state) => state.tasks;
-
-
 export default tasksSlice.reducer;
