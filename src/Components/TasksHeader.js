@@ -1,9 +1,8 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { selectTasks } from './Redux/tasksSlice';
 
 const TasksHeader = () => {
-    const dispatch = useDispatch();
     const { data: tasks, status, error } = useSelector(selectTasks);
 
     return (
@@ -24,7 +23,7 @@ const TasksHeader = () => {
                                         </span>
                                         <div className='text-sm '>
                                             <span className='text-[#6B7280] text-base'> Total Tasks</span>
-                                            <h3><span>{tasks.length}</span></h3>
+                                            <h3><span className='text-2xl font-semibold'>{tasks.length}</span></h3>
                                         </div>
                                     </div>
                                 </div>

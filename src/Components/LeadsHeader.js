@@ -19,7 +19,7 @@ const LeadsHeader = ({ totalLeads }) => {
                                         </span>
                                         <div className='text-sm '>
                                             <span className='text-[#6B7280] text-base'> Total Leads</span>
-                                            <h3><span className='text-2xl'>{totalLeads}</span></h3>
+                                            <h3><span className='text-2xl font-semibold'>{totalLeads}</span></h3>
                                         </div>
                                     </div>
                                 </div>

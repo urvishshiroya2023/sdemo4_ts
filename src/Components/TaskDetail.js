@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import Footer from "./Footer";
 import HomePageHeader from "./HomePageHeader";
 import Loader from "./Loader";
-import { deleteTask, editTask, fetchTasks, selectTasks } from "./Redux/tasksSlice";
+import { deleteTask, fetchTaskById, fetchTasks, selectTasks } from "./Redux/tasksSlice";
 import TaskData from "./TaskData";
 import TaskForm from "./TaskForm";
 import TasksHeader from "./TasksHeader";
@@ -27,7 +27,8 @@ const initialValues = {
 const TaskDetail = () => {
   const dispatch = useDispatch();
   const { data: tasks, status, error } = useSelector(selectTasks);
-  // console.log(tasks);
+  const selectedTask = useSelector((state) => state?.tasks?.selectedTask);
+  // console.log(selectedTask);
   // const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,8 +38,15 @@ const TaskDetail = () => {
   const [formValues, setFormValues] = useState(initialValues);
   const [formMode, setFormMode] = useState(null);
 
-
   const authToken = localStorage.getItem("authToken");
+
+  const handleCloseForm = (e) => {
+    if (e.target.classList.contains("overlay")) {
+      setShowTaskForm(false);
+      setFormValues(initialValues); // Reset form values
+      setFormMode(null);
+    }
+  };
 
   // const fetchData = async () => {
   //   try {
@@ -57,37 +65,40 @@ const TaskDetail = () => {
   //   }
   // };
 
-  const handleEdit = (taskId) => {
-    const taskToEdit = tasks.find((task) => task.id === taskId);
-    setShowTaskForm(true);
-    if (taskToEdit) {
-      // dispatch(editTask({ taskId, updatedData: taskToEdit }));
-      const response = dispatch(editTask({ taskId, updatedData: taskToEdit }));
 
-      const task2Details = response;
-      console.log("Task Details:", task2Details);
+  // const handleEdit = async (taskId) => {
+  //   const taskToEdit = tasks.find((task) => task.id === taskId);
+  //   // console.log(taskToEdit)
+  //   setShowTaskForm(true);
+  //   if (taskToEdit) {
+  //     try {
+  //       const response = await dispatch(editTask({ taskId, updatedData: taskToEdit }));
+  //       console.log(response);
+  //       // Ensure the response is not undefined before proceeding
+  //       if (response) {
+  //         console.log("Task Details:", response);
 
-      if (task2Details) {
-        // console.log('Module:', taskDetails.module);
-        // console.log('Type:', taskDetails.type);
-        console.log(task2Details.dueDate);
+  //         setFormValues((prevValues) => ({
+  //           ...prevValues,
+  //           module: response.module || "",
+  //           type: response.type || "",
+  //           title: response.title || "",
+  //           dueDate: response.dueDate || "",
+  //           priority: response.priority || "",
+  //           assignedTo: response.assignedToData?.firstName || "",
+  //           connectedLead: response.connectedLead || "",
+  //           descriptions: response.descriptions || "",
+  //           Id: response.id,
+  //         }));
+  //         setFormMode("edit");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error editing task:", error);
+  //     }
+  //   }
+  // };
 
-        setFormValues((prevValues) => ({
-          ...prevValues,
-          module: task2Details.module || "",
-          type: task2Details.type || "",
-          title: task2Details.title || "",
-          dueDate: task2Details.dueDate || "",
-          priority: task2Details.priority || "",
-          assignedTo: task2Details.assignedToData?.firstName || "",
-          connectedLead: task2Details.connectedLead || "",
-          descriptions: task2Details.descriptions || "",
-          Id: task2Details.id,
-        }));
-        setFormMode("edit");
-      }
-    };
-  }
+
 
   // const handleDelete = (taskId) => {
   //   dispatch(deleteTask(taskId));
@@ -103,6 +114,7 @@ const TaskDetail = () => {
       toast.error('Error deleting lead');
     }
   }
+
 
   // const handleEdit = async (taskId) => {
   //   try {
@@ -184,6 +196,83 @@ const TaskDetail = () => {
   //   }
   // }, [authToken]);
 
+  const handleEdit = async (taskId) => {
+    try {
+      // Dispatch an action to fetch task details by ID
+      await dispatch(fetchTaskById(taskId));
+    } catch (error) {
+      console.error("Error fetching task details for editing:", error);
+      return;
+    }
+  };
+
+  // Use useEffect to trigger logic when selectedTask changes
+  useEffect(() => {
+    if (selectedTask) {
+      console.log("Task Details:", selectedTask);
+
+      // Update the form values with the fetched task details
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        module: selectedTask.module || "",
+        type: selectedTask.type || "",
+        title: selectedTask.title || "",
+        dueDate: selectedTask.dueDate || "",
+        priority: selectedTask.priority || "",
+        assignedTo: selectedTask.assignedToData?.firstName || "",
+        connectedLead: selectedTask.connectedLead || "",
+        descriptions: selectedTask.descriptions || "",
+        Id: selectedTask.id,
+      }));
+      setFormMode("edit");
+
+      // Show the task form
+      setShowTaskForm(true);
+    }
+  }, [selectedTask]); // Watch for changes in selectedTask
+
+
+  // const handleEdit = async (taskId) => {
+  //   try {
+  //     // Dispatch an action to fetch task details by ID
+  //     await dispatch(fetchTaskById(taskId));
+
+  //     // Task details are now available in the Redux state under selectedTask
+  //     let taskDetails = selectedTask;
+
+  //     // Check if taskDetails is still null
+  //     if (!taskDetails) {
+  //       // You might want to wait for a short time and try again
+  //       // or show a loading indicator
+  //       console.log("Task details not available yet. Waiting...");
+  //       return;
+  //     }
+
+  //     console.log("Task Details:", taskDetails);
+
+  //     // Update the form values with the fetched task details
+  //     setFormValues((prevValues) => ({
+  //       ...prevValues,
+  //       module: taskDetails.module || "",
+  //       type: taskDetails.type || "",
+  //       title: taskDetails.title || "",
+  //       dueDate: taskDetails.dueDate || "",
+  //       priority: taskDetails.priority || "",
+  //       assignedTo: taskDetails.assignedToData?.firstName || "",
+  //       connectedLead: taskDetails.connectedLead || "",
+  //       descriptions: taskDetails.descriptions || "",
+  //       Id: taskDetails.id,
+  //     }));
+  //     setFormMode("edit");
+
+  //     // Show the task form
+  //     setShowTaskForm(true);
+  //   } catch (error) {
+  //     console.error("Error fetching task details for editing:", error);
+  //   }
+  // };
+
+
   useEffect(() => {
     dispatch(fetchTasks()).then(() => setLoading(false));
   }, [dispatch]);
@@ -222,13 +311,7 @@ const TaskDetail = () => {
     }
   };
 
-  const handleCloseForm = (e) => {
-    if (e.target.classList.contains("overlay")) {
-      setShowTaskForm(false);
-      setFormValues(initialValues); // Reset form values
-      setFormMode(null);
-    }
-  };
+
 
   const handleSearchChange = (event) => {
     setSearchTitle(event.target.value);

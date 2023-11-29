@@ -1,10 +1,12 @@
 import axios from "axios";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as Yup from "yup";
+import { fetchTasks } from "./Redux/tasksSlice";
 
 const validationSchema = Yup.object().shape({
   // module: Yup.string().required('Module is required'),
@@ -19,7 +21,7 @@ const validationSchema = Yup.object().shape({
 
 const TaskForm = ({ onClose, formValues, formMode, setShowTaskForm }) => {
   const [formData, setFormData] = useState(formValues);
-
+  const dispatch = useDispatch();
   const formattedDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -39,6 +41,7 @@ const TaskForm = ({ onClose, formValues, formMode, setShowTaskForm }) => {
 
   const handleSubmit = async (values, { resetForm }) => {
     try {
+
       const authToken = localStorage.getItem("authToken");
       const headers = {
         "Content-Type": "application/json",
@@ -77,9 +80,14 @@ const TaskForm = ({ onClose, formValues, formMode, setShowTaskForm }) => {
       navigate("/taskdetail");
       setShowTaskForm(false);
       resetForm();
+      dispatch(fetchTasks())
     } catch (error) {
       console.error("Error submitting form:", error);
-      toast.error("Task operation failed", {
+      // toast.error("Task operation failed", {
+      //   position: toast.POSITION.TOP_CENTER,
+      //   autoClose: 2000,
+      // });
+      toast.error(`${error?.response?.data?.message}`, {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 2000,
       });
