@@ -1,6 +1,11 @@
-import React from 'react'
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectTasks } from './Redux/tasksSlice';
 
 const TasksHeader = () => {
+    const dispatch = useDispatch();
+    const { data: tasks, status, error } = useSelector(selectTasks);
+
     return (
         <div className='flex justify-center'>
             <div className='container'>
@@ -19,7 +24,7 @@ const TasksHeader = () => {
                                         </span>
                                         <div className='text-sm '>
                                             <span className='text-[#6B7280] text-base'> Total Tasks</span>
-                                            <h3><span>10</span></h3>
+                                            <h3><span>{tasks.length}</span></h3>
                                         </div>
                                     </div>
                                 </div>

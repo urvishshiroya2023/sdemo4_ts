@@ -1,9 +1,10 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from 'react-toastify';
 import Footer from "./Footer";
 import HomePageHeader from "./HomePageHeader";
 import Loader from "./Loader";
+import { deleteTask, editTask, fetchTasks, selectTasks } from "./Redux/tasksSlice";
 import TaskData from "./TaskData";
 import TaskForm from "./TaskForm";
 import TasksHeader from "./TasksHeader";
@@ -24,7 +25,10 @@ const initialValues = {
 };
 
 const TaskDetail = () => {
-  const [tasks, setTasks] = useState([]);
+  const dispatch = useDispatch();
+  const { data: tasks, status, error } = useSelector(selectTasks);
+  // console.log(tasks);
+  // const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [tasksPerPage] = useState(10);
@@ -33,106 +37,162 @@ const TaskDetail = () => {
   const [formValues, setFormValues] = useState(initialValues);
   const [formMode, setFormMode] = useState(null);
 
+
   const authToken = localStorage.getItem("authToken");
 
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(
-        "https://crmapi.sarvadhi.work/api/v1/crm/tasks",
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
-      setTasks(response?.data);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       "https://crmapi.sarvadhi.work/api/v1/crm/tasks",
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${authToken}`,
+  //         },
+  //       }
+  //     );
+  //     setTasks(response?.data);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
 
-  const handleEdit = async (taskId) => {
-    try {
-      const response = await axios.get(
-        `https://crmapi.sarvadhi.work/api/v1/crm/tasks/${taskId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
+  const handleEdit = (taskId) => {
+    const taskToEdit = tasks.find((task) => task.id === taskId);
+    setShowTaskForm(true);
+    if (taskToEdit) {
+      // dispatch(editTask({ taskId, updatedData: taskToEdit }));
+      const response = dispatch(editTask({ taskId, updatedData: taskToEdit }));
 
-      const taskDetails = response?.data?.data;
-      console.log("Task Details:", taskDetails);
+      const task2Details = response;
+      console.log("Task Details:", task2Details);
 
-      if (taskDetails) {
+      if (task2Details) {
         // console.log('Module:', taskDetails.module);
         // console.log('Type:', taskDetails.type);
-        console.log(taskDetails.dueDate);
+        console.log(task2Details.dueDate);
 
         setFormValues((prevValues) => ({
           ...prevValues,
-          module: taskDetails.module || "",
-          type: taskDetails.type || "",
-          title: taskDetails.title || "",
-          dueDate: taskDetails.dueDate || "",
-          priority: taskDetails.priority || "",
-          assignedTo: taskDetails.assignedToData?.firstName || "",
-          connectedLead: taskDetails.connectedLead || "",
-          descriptions: taskDetails.descriptions || "",
-          Id: taskDetails.id,
+          module: task2Details.module || "",
+          type: task2Details.type || "",
+          title: task2Details.title || "",
+          dueDate: task2Details.dueDate || "",
+          priority: task2Details.priority || "",
+          assignedTo: task2Details.assignedToData?.firstName || "",
+          connectedLead: task2Details.connectedLead || "",
+          descriptions: task2Details.descriptions || "",
+          Id: task2Details.id,
         }));
         setFormMode("edit");
-      } else {
-        console.log("Task details not found or undefined.");
       }
+    };
+  }
 
-      setShowTaskForm(true);
-    } catch (error) {
-      console.error("Error fetching task details for editing:", error);
-    }
-  };
+  // const handleDelete = (taskId) => {
+  //   dispatch(deleteTask(taskId));
+  // };
 
   const handleDelete = async (taskId) => {
     try {
-      const response = await axios.delete(
-        `https://crmapi.sarvadhi.work/api/v1/crm/tasks/${taskId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
-
-      // Assuming response.data contains a success message or status
-      const deleteStatus = response?.data;
-
-      // Check the delete status and update the tasks accordingly
-      if (deleteStatus === "success") {
-        // Filter out the deleted task from the tasks state
-        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
-      }
-
-      // You can also show a toast or notification for successful deletion
-      toast.success("Task deleted successfully!", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
+      await dispatch(deleteTask(taskId));
+      toast.success('Tasks deleted successfully');
+      dispatch(fetchTasks())
     } catch (error) {
-      console.error("Error deleting task:", error);
-      // Handle error, show toast, or notification for deletion failure
+      console.error("Error deleting lead:", error);
+      toast.error('Error deleting lead');
     }
-  };
+  }
+
+  // const handleEdit = async (taskId) => {
+  //   try {
+  //     const response = await axios.get(
+  //       `https://crmapi.sarvadhi.work/api/v1/crm/tasks/${taskId}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${authToken}`,
+  //         },
+  //       }
+  //     );
+
+  //     const taskDetails = response?.data?.data;
+  //     console.log("Task Details:", taskDetails);
+
+  //     if (taskDetails) {
+  //       // console.log('Module:', taskDetails.module);
+  //       // console.log('Type:', taskDetails.type);
+  //       console.log(taskDetails.dueDate);
+
+  //       setFormValues((prevValues) => ({
+  //         ...prevValues,
+  //         module: taskDetails.module || "",
+  //         type: taskDetails.type || "",
+  //         title: taskDetails.title || "",
+  //         dueDate: taskDetails.dueDate || "",
+  //         priority: taskDetails.priority || "",
+  //         assignedTo: taskDetails.assignedToData?.firstName || "",
+  //         connectedLead: taskDetails.connectedLead || "",
+  //         descriptions: taskDetails.descriptions || "",
+  //         Id: taskDetails.id,
+  //       }));
+  //       setFormMode("edit");
+  //     } else {
+  //       console.log("Task details not found or undefined.");
+  //     }
+
+  //     setShowTaskForm(true);
+  //   } catch (error) {
+  //     console.error("Error fetching task details for editing:", error);
+  //   }
+  // };
+
+  // const handleDelete = async (taskId) => {
+  //   try {
+  //     const response = await axios.delete(
+  //       `https://crmapi.sarvadhi.work/api/v1/crm/tasks/${taskId}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${authToken}`,
+  //         },
+  //       }
+  //     );
+
+  //     // Assuming response.data contains a success message or status
+  //     const deleteStatus = response?.data;
+
+  //     // Check the delete status and update the tasks accordingly
+  //     if (deleteStatus === "success") {
+  //       // Filter out the deleted task from the tasks state
+  //       setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+  //     }
+
+  //     // You can also show a toast or notification for successful deletion
+  //     toast.success("Task deleted successfully!", {
+  //       position: toast.POSITION.TOP_RIGHT,
+  //     });
+  //   } catch (error) {
+  //     console.error("Error deleting task:", error);
+  //     // Handle error, show toast, or notification for deletion failure
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (authToken) {
+  //     fetchData();
+  //   } else {
+  //     console.error("User not authenticated");
+  //   }
+  // }, [authToken]);
 
   useEffect(() => {
-    if (authToken) {
-      fetchData();
-    } else {
-      console.error("User not authenticated");
-    }
-  }, [authToken]);
+    dispatch(fetchTasks()).then(() => setLoading(false));
+  }, [dispatch]);
 
-  const totalTasks = tasks.data?.length;
+  // useEffect(() => {
+  //   dispatch(fetchTasks());
+  // }, [dispatch]);
+
+  const totalTasks = tasks?.length;
   const totalPages = Math.ceil(totalTasks / tasksPerPage);
   const maxVisibleButtons = 10;
 
@@ -174,9 +234,16 @@ const TaskDetail = () => {
     setSearchTitle(event.target.value);
   };
 
-  const filteredTasks = tasks.data?.filter((task) =>
-    task.title.toLowerCase().includes(searchTitle.toLowerCase())
+  // const filteredTasks = tasks?.data?.filter((task) =>
+  //   task?.title?.toLowerCase().includes(searchTitle.toLowerCase())
+  // );
+
+  const filteredTasks = tasks?.filter((task) =>
+    task?.title?.toLowerCase().includes(searchTitle.toLowerCase())
   );
+
+  // console.log(filteredTasks)
+
 
   return (
     <div className="bg-[#e5e7eb] bg-opacity-50 h-full min-h-screen">
@@ -258,6 +325,7 @@ const TaskDetail = () => {
                     </thead>
                     <tbody>
                       {filteredTasks && filteredTasks.length > 0 ? (
+
                         <>
                           <>
                             {filteredTasks
@@ -338,5 +406,6 @@ const TaskDetail = () => {
     </div>
   );
 };
+
 
 export default TaskDetail;

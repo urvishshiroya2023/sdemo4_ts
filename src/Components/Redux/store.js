@@ -1,11 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import leadSlice, { fetchLeads } from "./leadSlice";
-import tasksSlice, { fetchTasks } from "./tasksSlice";
-
+import tasksReducer, { fetchTasks } from "./tasksSlice";
 const store = configureStore({
     reducer: {
         leads: leadSlice,
-        tasks: tasksSlice,
+        tasks: tasksReducer,
     },
 });
 

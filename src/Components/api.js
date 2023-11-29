@@ -4,6 +4,7 @@ import { BASE_URL } from "./Constants";
 const callApi = async (method, endpoint, data = null) => {
     try {
         const authToken = localStorage.getItem("authToken");
+        // const url = `${BASE_URL}${endpoint}`;
 
         if (!authToken) {
             throw new Error("Authentication token not found");
@@ -20,6 +21,8 @@ const callApi = async (method, endpoint, data = null) => {
         if (data) {
             config.data = data;
         }
+
+        // console.log("API Request URL:", url);
 
         const response = await axios(config);
         return response.data;
