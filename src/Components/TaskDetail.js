@@ -400,7 +400,6 @@ const TaskDetail = () => {
         Id: selectedTask.id,
       }));
       setFormMode("edit");
-
       setShowTaskForm(true);
     }
   }, [selectedTask, setFormValues, setFormMode, setShowTaskForm]);

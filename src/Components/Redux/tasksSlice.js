@@ -27,6 +27,16 @@ export const fetchTaskById = createAsyncThunk("tasks/fetchTaskById", async (task
     }
 });
 
+export const addNewTask = createAsyncThunk("tasks/addNewTask", async (newTaskData) => {
+    try {
+        const response = await callApi("POST", "crm/tasks", newTaskData);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+});
+
 export const deleteTask = createAsyncThunk("tasks/deleteTask", async (taskId) => {
     try {
         const response = await callApi("DELETE", `crm/tasks/${taskId}`);
@@ -39,9 +49,11 @@ export const deleteTask = createAsyncThunk("tasks/deleteTask", async (taskId) =>
 export const editTask = createAsyncThunk("tasks/editTask", async ({ taskId, updatedData }) => {
     try {
         const response = await callApi("PUT", `crm/tasks/${taskId}`, updatedData);
-        console.log(response.data);
+        console.log(response?.data);
+        console.log(response);
         return response.data;
     } catch (error) {
+        console.log(error);
         throw error;
     }
 });
@@ -83,16 +95,49 @@ const tasksSlice = createSlice({
                 state.status = "failed";
                 state.error = action.error.message;
             })
+            // .addCase(editTask.fulfilled, (state, action) => {
+            //     state.status = "succeeded";
+            //     // state.tasks = state.tasks.map((task) =>
+            //     //     task.id === action.payload.id ? action.payload : task
+            //     // );
+            //     state.data = state.data.map((task) =>
+            //         task.id === action.payload.id ? action.payload : task
+            //     );
+            //     console.log("Fulfilled edit Payload:", state.data);
+            // })
+            // .addCase(editTask.fulfilled, (state, action) => {
+            //     state.status = "succeeded";
+            //     // Check if response indicates success
+            //     if (action.payload.success) {
+            //         // Optionally, you can include the updated task details in the API response
+            //         // and update the state accordingly.
+            //         // Example assuming the updated task details are available in action.payload.task:
+            //         const updatedTask = action.payload;
+            //         state.data = state.data.map((task) =>
+            //             task.id === updatedTask.id ? updatedTask : task
+            //         );
+
+            //     } else {
+            //         // Handle the case where success is false or no specific data payload
+            //         // You may not need to make any changes to the state in this scenario.
+            //     }
+            // })
             .addCase(editTask.fulfilled, (state, action) => {
                 state.status = "succeeded";
-                // state.tasks = state.tasks.map((task) =>
-                //     task.id === action.payload.id ? action.payload : task
-                // );
-                state.data = state.data.map((task) =>
-                    task.id === action.payload.id ? action.payload : task
-                );
-                console.log("Fulfilled edit Payload:", state.data);
+                // Check if response indicates success
+                if (action.payload.success) {
+                    // Assuming your server includes the updated data in the response
+                    const updatedTaskData = action.payload.updatedTaskData;
+                    // Update the state with the new data
+                    state.data = state.data.map((task) =>
+                        task.id === updatedTaskData.id ? updatedTaskData : task
+                    );
+                } else {
+                    // Handle the case where success is false or no specific data payload
+                    // You may not need to make any changes to the state in this scenario.
+                }
             })
+
             .addCase(editTask.rejected, (state, action) => {
                 state.status = "failed";
                 state.error = action.error.message;
@@ -107,6 +152,17 @@ const tasksSlice = createSlice({
                 state.selectedTask = null;
             })
             .addCase(fetchTaskById.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.error.message;
+            })
+            .addCase(addNewTask.pending, (state) => {
+                state.status = "loading";
+            })
+            .addCase(addNewTask.fulfilled, (state, action) => {
+                state.status = "succeeded";
+                state.data.push(action.payload);
+            })
+            .addCase(addNewTask.rejected, (state, action) => {
                 state.status = "failed";
                 state.error = action.error.message;
             });

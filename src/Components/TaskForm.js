@@ -1,4 +1,3 @@
-import axios from "axios";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -6,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as Yup from "yup";
-import { fetchTasks } from "./Redux/tasksSlice";
+import { addNewTask, editTask, fetchTasks } from "./Redux/tasksSlice";
 
 const validationSchema = Yup.object().shape({
   // module: Yup.string().required('Module is required'),
@@ -39,9 +38,63 @@ const TaskForm = ({ onClose, formValues, formMode, setShowTaskForm }) => {
 
   const navigate = useNavigate();
 
+  // const handleSubmit = async (values, { resetForm }) => {
+  //   try {
+
+  //     const authToken = localStorage.getItem("authToken");
+  //     const headers = {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${authToken}`,
+  //     };
+
+  //     let response;
+
+  //     if (formMode === "edit") {
+  //       // Update existing task
+  //       response = await axios.put(
+  //         `https://crmapi.sarvadhi.work/api/v1/crm/tasks/${formValues.Id}`,
+  //         values,
+  //         { headers }
+  //       );
+  //     } else {
+  //       // Add new task
+  //       response = await axios.post(
+  //         "https://crmapi.sarvadhi.work/api/v1/crm/tasks",
+  //         values,
+  //         { headers }
+  //       );
+  //     }
+
+  //     console.log(response.data);
+
+  //     const successMessage =
+  //       formMode === "edit"
+  //         ? "Task Edited successfully!"
+  //         : "Task added successfully!";
+
+  //     toast.success(successMessage, {
+  //       position: toast.POSITION.TOP_RIGHT,
+  //     });
+
+  //     navigate("/taskdetail");
+  //     setShowTaskForm(false);
+  //     resetForm();
+  //     dispatch(fetchTasks())
+  //   } catch (error) {
+  //     console.error("Error submitting form:", error);
+  //     // toast.error("Task operation failed", {
+  //     //   position: toast.POSITION.TOP_CENTER,
+  //     //   autoClose: 2000,
+  //     // });
+  //     toast.error(`${error?.response?.data?.message}`, {
+  //       position: toast.POSITION.TOP_CENTER,
+  //       autoClose: 2000,
+  //     });
+  //   }
+  // };
+
   const handleSubmit = async (values, { resetForm }) => {
     try {
-
       const authToken = localStorage.getItem("authToken");
       const headers = {
         "Content-Type": "application/json",
@@ -50,23 +103,35 @@ const TaskForm = ({ onClose, formValues, formMode, setShowTaskForm }) => {
 
       let response;
 
+      const updatedData = {
+        ...values,
+        // Add other fields as needed
+      };
+
+      // const updatedData = {
+      //   module: values.module,
+      //   type: values.type,
+      //   title: values.title,
+      //   dueDate: values.dueDate,
+      //   priority: values.priority,
+      //   assignedTo: values.assignedTo,
+      //   connectedLead: values.connectedLead,
+      //   descriptions: values.descriptions,
+      //   // Add other fields as needed
+      // };
+
       if (formMode === "edit") {
-        // Update existing task
-        response = await axios.put(
-          `https://crmapi.sarvadhi.work/api/v1/crm/tasks/${formValues.Id}`,
-          values,
-          { headers }
-        );
+        // Dispatch the editTask action for updating an existing task
+        const actionResult = await dispatch(editTask({ taskId: formValues.Id, updatedData }));
+        response = actionResult?.payload;
+        console.log(response)
       } else {
-        // Add new task
-        response = await axios.post(
-          "https://crmapi.sarvadhi.work/api/v1/crm/tasks",
-          values,
-          { headers }
-        );
+        // Dispatch the add new task action
+        const actionResult = await dispatch(addNewTask(values));
+        response = actionResult.payload;
       }
 
-      console.log(response.data);
+      console.log(response);
 
       const successMessage =
         formMode === "edit"
@@ -80,19 +145,16 @@ const TaskForm = ({ onClose, formValues, formMode, setShowTaskForm }) => {
       navigate("/taskdetail");
       setShowTaskForm(false);
       resetForm();
-      dispatch(fetchTasks())
+      dispatch(fetchTasks());
     } catch (error) {
       console.error("Error submitting form:", error);
-      // toast.error("Task operation failed", {
-      //   position: toast.POSITION.TOP_CENTER,
-      //   autoClose: 2000,
-      // });
       toast.error(`${error?.response?.data?.message}`, {
         position: toast.POSITION.TOP_CENTER,
         autoClose: 2000,
       });
     }
   };
+
 
   return (
     <div className="bg-white overflow-y-auto h-[100vh]">
