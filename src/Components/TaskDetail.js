@@ -48,61 +48,12 @@ const TaskDetail = () => {
     }
   };
 
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       "https://crmapi.sarvadhi.work/api/v1/crm/tasks",
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${authToken}`,
-  //         },
-  //       }
-  //     );
-  //     setTasks(response?.data);
-  //     setLoading(false);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
-
-
-  // const handleEdit = async (taskId) => {
-  //   const taskToEdit = tasks.find((task) => task.id === taskId);
-  //   // console.log(taskToEdit)
-  //   setShowTaskForm(true);
-  //   if (taskToEdit) {
-  //     try {
-  //       const response = await dispatch(editTask({ taskId, updatedData: taskToEdit }));
-  //       console.log(response);
-  //       // Ensure the response is not undefined before proceeding
-  //       if (response) {
-  //         console.log("Task Details:", response);
-
-  //         setFormValues((prevValues) => ({
-  //           ...prevValues,
-  //           module: response.module || "",
-  //           type: response.type || "",
-  //           title: response.title || "",
-  //           dueDate: response.dueDate || "",
-  //           priority: response.priority || "",
-  //           assignedTo: response.assignedToData?.firstName || "",
-  //           connectedLead: response.connectedLead || "",
-  //           descriptions: response.descriptions || "",
-  //           Id: response.id,
-  //         }));
-  //         setFormMode("edit");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error editing task:", error);
-  //     }
-  //   }
-  // };
 
 
 
-  // const handleDelete = (taskId) => {
-  //   dispatch(deleteTask(taskId));
-  // };
+
+
+
 
   const handleDelete = async (taskId) => {
     try {
@@ -116,85 +67,9 @@ const TaskDetail = () => {
   }
 
 
-  // const handleEdit = async (taskId) => {
-  //   try {
-  //     const response = await axios.get(
-  //       `https://crmapi.sarvadhi.work/api/v1/crm/tasks/${taskId}`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${authToken}`,
-  //         },
-  //       }
-  //     );
 
-  //     const taskDetails = response?.data?.data;
-  //     console.log("Task Details:", taskDetails);
 
-  //     if (taskDetails) {
-  //       // console.log('Module:', taskDetails.module);
-  //       // console.log('Type:', taskDetails.type);
-  //       console.log(taskDetails.dueDate);
 
-  //       setFormValues((prevValues) => ({
-  //         ...prevValues,
-  //         module: taskDetails.module || "",
-  //         type: taskDetails.type || "",
-  //         title: taskDetails.title || "",
-  //         dueDate: taskDetails.dueDate || "",
-  //         priority: taskDetails.priority || "",
-  //         assignedTo: taskDetails.assignedToData?.firstName || "",
-  //         connectedLead: taskDetails.connectedLead || "",
-  //         descriptions: taskDetails.descriptions || "",
-  //         Id: taskDetails.id,
-  //       }));
-  //       setFormMode("edit");
-  //     } else {
-  //       console.log("Task details not found or undefined.");
-  //     }
-
-  //     setShowTaskForm(true);
-  //   } catch (error) {
-  //     console.error("Error fetching task details for editing:", error);
-  //   }
-  // };
-
-  // const handleDelete = async (taskId) => {
-  //   try {
-  //     const response = await axios.delete(
-  //       `https://crmapi.sarvadhi.work/api/v1/crm/tasks/${taskId}`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${authToken}`,
-  //         },
-  //       }
-  //     );
-
-  //     // Assuming response.data contains a success message or status
-  //     const deleteStatus = response?.data;
-
-  //     // Check the delete status and update the tasks accordingly
-  //     if (deleteStatus === "success") {
-  //       // Filter out the deleted task from the tasks state
-  //       setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
-  //     }
-
-  //     // You can also show a toast or notification for successful deletion
-  //     toast.success("Task deleted successfully!", {
-  //       position: toast.POSITION.TOP_RIGHT,
-  //     });
-  //   } catch (error) {
-  //     console.error("Error deleting task:", error);
-  //     // Handle error, show toast, or notification for deletion failure
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (authToken) {
-  //     fetchData();
-  //   } else {
-  //     console.error("User not authenticated");
-  //   }
-  // }, [authToken]);
 
   const handleEdit = async (taskId) => {
     try {
@@ -232,54 +107,13 @@ const TaskDetail = () => {
   }, [selectedTask]); // Watch for changes in selectedTask
 
 
-  // const handleEdit = async (taskId) => {
-  //   try {
-  //     // Dispatch an action to fetch task details by ID
-  //     await dispatch(fetchTaskById(taskId));
-
-  //     // Task details are now available in the Redux state under selectedTask
-  //     let taskDetails = selectedTask;
-
-  //     // Check if taskDetails is still null
-  //     if (!taskDetails) {
-  //       // You might want to wait for a short time and try again
-  //       // or show a loading indicator
-  //       console.log("Task details not available yet. Waiting...");
-  //       return;
-  //     }
-
-  //     console.log("Task Details:", taskDetails);
-
-  //     // Update the form values with the fetched task details
-  //     setFormValues((prevValues) => ({
-  //       ...prevValues,
-  //       module: taskDetails.module || "",
-  //       type: taskDetails.type || "",
-  //       title: taskDetails.title || "",
-  //       dueDate: taskDetails.dueDate || "",
-  //       priority: taskDetails.priority || "",
-  //       assignedTo: taskDetails.assignedToData?.firstName || "",
-  //       connectedLead: taskDetails.connectedLead || "",
-  //       descriptions: taskDetails.descriptions || "",
-  //       Id: taskDetails.id,
-  //     }));
-  //     setFormMode("edit");
-
-  //     // Show the task form
-  //     setShowTaskForm(true);
-  //   } catch (error) {
-  //     console.error("Error fetching task details for editing:", error);
-  //   }
-  // };
 
 
   useEffect(() => {
     dispatch(fetchTasks()).then(() => setLoading(false));
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   dispatch(fetchTasks());
-  // }, [dispatch]);
+
 
   const totalTasks = tasks?.length;
   const totalPages = Math.ceil(totalTasks / tasksPerPage);
@@ -317,15 +151,12 @@ const TaskDetail = () => {
     setSearchTitle(event.target.value);
   };
 
-  // const filteredTasks = tasks?.data?.filter((task) =>
-  //   task?.title?.toLowerCase().includes(searchTitle.toLowerCase())
-  // );
 
   const filteredTasks = tasks?.filter((task) =>
     task?.title?.toLowerCase().includes(searchTitle.toLowerCase())
   );
 
-  // console.log(filteredTasks)
+
 
 
   return (
