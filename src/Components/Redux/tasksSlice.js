@@ -46,7 +46,6 @@ export const editTask = createAsyncThunk("tasks/editTask", async ({ taskId, upda
     }
 });
 
-
 const tasksSlice = createSlice({
     name: "tasks",
     initialState: {
