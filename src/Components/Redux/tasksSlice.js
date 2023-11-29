@@ -98,53 +98,46 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import callApi from "../api";
 
-// Define the initial state
 const initialState = {
     tasks: [],
-    status: "idle",
+    loading: false,
     error: null,
 };
 
-// Create an async thunk for fetching tasks
 export const fetchTasks = createAsyncThunk("tasks/fetchTasks", async () => {
     try {
         const response = await callApi("get", "/api/v1/crm/tasks");
-        return response.data; // Assuming your API response has a 'data' property
+        return response.data;
     } catch (error) {
         throw error;
     }
 });
 
-// Create an async thunk for deleting a task
-export const deleteTask = createAsyncThunk(
-    "tasks/deleteTask",
-    async (taskId) => {
-        try {
-            const response = await callApi("delete", `/api/v1/crm/tasks/${taskId}`);
-            return { id: taskId, ...response.data }; // Include the deleted task ID in the payload
-        } catch (error) {
-            throw error;
-        }
+export const deleteTask = createAsyncThunk("tasks/deleteTask", async (taskId) => {
+    try {
+        const response = await callApi("delete", `/api/v1/crm/tasks/${taskId}`);
+        return { id: taskId, ...response.data };
+    } catch (error) {
+        throw error;
     }
-);
+});
 
-// Create an async thunk for editing a task
-export const editTask = createAsyncThunk(
-    "tasks/editTask",
-    async ({ taskId, updatedData }) => {
-        try {
-            const response = await callApi("put", `/api/v1/crm/tasks/${taskId}`, updatedData);
-            return response.data; // Assuming your API response has a 'data' property
-        } catch (error) {
-            throw error;
-        }
+export const editTask = createAsyncThunk("tasks/editTask", async ({ taskId, updatedData }) => {
+    try {
+        const response = await callApi("put", `/api/v1/crm/tasks/${taskId}`, updatedData);
+        return response.data;
+    } catch (error) {
+        throw error;
     }
-);
+});
 
-// Create a slice of the Redux store
 const tasksSlice = createSlice({
     name: "tasks",
-    initialState,
+    initialState: {
+        data: [],
+        loading: false,
+        error: null
+    },
     reducers: {},
     extraReducers: (builder) => {
         builder
@@ -180,7 +173,9 @@ const tasksSlice = createSlice({
     },
 });
 
-// Export the async thunks and the reducer
-export const { reducer } = tasksSlice;
-export const { fetchTasks, editTask, deleteTask } = tasksSlice.actions;
-export default reducer;
+// export const { reducer: tasksReducer } = tasksSlice;
+// export const { fetchTasks, editTask, deleteTask } = tasksSlice.actions;
+
+export const selectTasks = (state) => state.tasks;
+
+export default tasksSlice.reducer;
