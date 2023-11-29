@@ -387,7 +387,6 @@ const TaskDetail = () => {
   useEffect(() => {
     if (selectedTask) {
       console.log("Task Details:", selectedTask);
-
       setFormValues((prevValues) => ({
         ...prevValues,
         module: selectedTask.module || "",

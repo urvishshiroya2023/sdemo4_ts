@@ -1,44 +1,54 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { getPriorityColor } from "./Constants";
 import HomePageHeader from "./HomePageHeader";
 import Loader from "./Loader";
+import { fetchTaskById, selectTasks } from "./Redux/tasksSlice";
 
 const TaskInfo = () => {
   const { id } = useParams();
-  const [taskData, setTaskData] = useState(null);
-  const priorityColor = getPriorityColor(taskData?.priority);
+  const dispatch = useDispatch();
+  const selectedTask = useSelector(selectTasks).selectedTask;
+
+  // const [selectedTask, setselectedTask] = useState(null);
+  const priorityColor = getPriorityColor(selectedTask?.priority);
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const authToken = localStorage.getItem("authToken");
+  //       const headers = {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${authToken}`,
+  //       };
+
+  //       const response = await axios.get(
+  //         `https://crmapi.sarvadhi.work/api/v1/crm/tasks/${id}`,
+  //         { headers }
+  //       );
+
+  //       setselectedTask(response?.data?.data);
+  //       console.log(response?.data?.data);
+  //     } catch (error) {
+  //       console.error("Error fetching task data:", error);
+  //       // Handle error as needed
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [id]);
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const authToken = localStorage.getItem("authToken");
-        const headers = {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`,
-        };
+    // Dispatch the fetchTaskById action when the component mounts
+    dispatch(fetchTaskById(id));
+  }, [dispatch, id]);
 
-        const response = await axios.get(
-          `https://crmapi.sarvadhi.work/api/v1/crm/tasks/${id}`,
-          { headers }
-        );
-
-        setTaskData(response?.data?.data);
-        console.log(response?.data?.data);
-      } catch (error) {
-        console.error("Error fetching task data:", error);
-        // Handle error as needed
-      }
-    };
-
-    fetchData();
-  }, [id]);
 
   return (
     <div className="bg-[#e5e7eb] bg-opacity-50 h-full min-h-screen">
@@ -56,87 +66,87 @@ const TaskInfo = () => {
             </h3>
           </div>
           <div className="mt-5">
-            {taskData ? (
+            {selectedTask ? (
               <div className="">
                 <div className="grid grid-cols-5 bg-white p-5 border rounded-md">
-                  {taskData?.priority && (
+                  {selectedTask?.priority && (
                     <div className={`text-[#6B7280] text-sm font-semibold `}>
                       Priority:
                       <span
                         className={`font-light ml-2 py-1 px-2 rounded-md text-xs font-semibold ${priorityColor}`}
                       >
-                        {taskData.priority}
+                        {selectedTask.priority}
                       </span>
                     </div>
                   )}
 
-                  {taskData?.taskStatus && (
+                  {selectedTask?.taskStatus && (
                     <div className="text-[#6B7280] text-sm font-semibold">
                       Status:
                       <span className="font-light">
-                        {taskData.taskStatus.statusName}
+                        {selectedTask.taskStatus.statusName}
                       </span>
                     </div>
                   )}
 
-                  {taskData?.dueDate && (
+                  {selectedTask?.dueDate && (
                     <div className="text-[#6B7280] text-sm font-semibold">
                       Due Date:
                       <span className="font-light">
-                        {formatDate(taskData.dueDate)}
+                        {formatDate(selectedTask.dueDate)}
                       </span>
                     </div>
                   )}
 
-                  {taskData?.title && (
+                  {selectedTask?.title && (
                     <div className="text-[#6B7280] text-sm font-semibold">
                       Title:
-                      <span className="font-light"> {taskData.title}</span>
+                      <span className="font-light"> {selectedTask.title}</span>
                     </div>
                   )}
 
-                  {taskData?.module && (
+                  {selectedTask?.module && (
                     <div className="text-[#6B7280] text-sm font-semibold">
                       Module:
-                      <span className="font-light"> {taskData.module}</span>
+                      <span className="font-light"> {selectedTask.module}</span>
                     </div>
                   )}
 
-                  {taskData?.type && (
+                  {selectedTask?.type && (
                     <div className="text-[#6B7280] text-sm font-semibold">
                       Type:
-                      <span className="font-light"> {taskData.type}</span>
+                      <span className="font-light"> {selectedTask.type}</span>
                     </div>
                   )}
 
-                  {taskData?.assignedToData && (
+                  {selectedTask?.assignedToData && (
                     <div className="text-[#6B7280] text-sm font-semibold">
                       Assigned To:
                       <span className="font-light">
-                        {taskData.assignedToData.firstName}{" "}
-                        {taskData.assignedToData.lastName}
+                        {selectedTask.assignedToData.firstName}{" "}
+                        {selectedTask.assignedToData.lastName}
                       </span>
                     </div>
                   )}
 
-                  {taskData?.leadModel && (
+                  {selectedTask?.leadModel && (
                     <div className="text-[#6B7280] text-sm font-semibold">
                       Connected Lead:
                       <span className="font-light">
-                        {taskData.leadModel.title}
+                        {selectedTask.leadModel.title}
                       </span>
                     </div>
                   )}
                 </div>
 
-                {/* {taskData?.taskNotes.length > 0 ? ( */}
+                {/* {selectedTask?.taskNotes.length > 0 ? ( */}
                 <div className="grid grid-cols-3 lg:grid-cols-4 gap-4 mt-2">
                   <div className="col-span-2 bg-white p-5 mt-5 border rounded-md">
                     <div className="text-[#6B7280] text-sm font-semibold">
                       <span className="text-2xl text-black">Notes</span>
 
                       {/* <ul className="mt-3 font-light">
-                        {taskData.taskNotes.map((note) => (
+                        {selectedTask.taskNotes.map((note) => (
                           <>
                             <li className="" key={note.id}>
                               {note.notes}
@@ -150,9 +160,9 @@ const TaskInfo = () => {
                         ))}
                       </ul> */}
 
-                      {taskData?.taskNotes.length > 0 ? (
+                      {selectedTask?.taskNotes.length > 0 ? (
                         <ul className="mt-3 font-light">
-                          {taskData.taskNotes.map((note) => {
+                          {selectedTask.taskNotes.map((note) => {
                             // Convert the date string to a Date object
                             const createdAtDate = new Date(note.createdAt);
 
@@ -198,11 +208,11 @@ const TaskInfo = () => {
                 </div>
                 {/* ) : null} */}
 
-                {taskData?.ReactJSTags && (
+                {selectedTask?.ReactJSTags && (
                   <div className="text-[#6B7280] text-sm font-semibold">
                     ReactJS Tags:
                     <span className="font-light">
-                      {taskData.ReactJSTags.map((tag) => (
+                      {selectedTask.ReactJSTags.map((tag) => (
                         // Render each ReactJS tag
                         <span key={tag.id}>{tag.name}</span>
                       ))}
@@ -210,11 +220,11 @@ const TaskInfo = () => {
                   </div>
                 )}
 
-                {taskData?.NodeJSTags && (
+                {selectedTask?.NodeJSTags && (
                   <div className="text-[#6B7280] text-sm font-semibold">
                     NodeJS Tags:
                     <span className="font-light">
-                      {taskData.NodeJSTags.map((tag) => (
+                      {selectedTask.NodeJSTags.map((tag) => (
                         // Render each NodeJS tag
                         <span key={tag.id}>{tag.name}</span>
                       ))}
@@ -222,14 +232,14 @@ const TaskInfo = () => {
                   </div>
                 )}
 
-                {/* {taskData?.taskFields.find(
+                {/* {selectedTask?.taskFields.find(
                   (field) => field.name === "size"
                 ) && (
                   <div className="text-[#6B7280] text-sm font-semibold">
                     Size:
                     <span className="font-light">
                       {
-                        taskData.taskFields.find(
+                        selectedTask.taskFields.find(
                           (field) => field.name === "size"
                         ).value
                       }
@@ -237,14 +247,14 @@ const TaskInfo = () => {
                   </div>
                 )}
 
-                {taskData?.taskFields.find(
+                {selectedTask?.taskFields.find(
                   (field) => field.name === "date of birth"
                 ) && (
                   <div className="text-[#6B7280] text-sm font-semibold">
                     Date of Birth:
                     <span className="font-light">
                       {
-                        taskData.taskFields.find(
+                        selectedTask.taskFields.find(
                           (field) => field.name === "date of birth"
                         ).value
                       }
