@@ -166,7 +166,7 @@ const Leadsform = ({ onClose, formMode, setShowLeadForm, formValues }) => {
 
 
     return (
-        <div>
+        <div className=''>
             <div className="font-semibold  border-b text-indigo-600">
                 <div className="pb-3">
                     <span className="border-b-2 pb-3  border-indigo-600">
@@ -305,11 +305,11 @@ const Leadsform = ({ onClose, formMode, setShowLeadForm, formValues }) => {
                                 </div>
                             </div>
 
-                            <div className="drawer-footer">
-                                <div className="text-right w-full">
+                            <div className="drawer-footer mt-3">
+                                <div className="text-right  w-full">
                                     <button
                                         type="button"
-                                        className="button bg-white border border-gray-300 dark:bg-gray-700 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 active:bg-gray-100 dark:active:bg-gray-500 dark:active:border-gray-500 text-gray-600 dark:text-gray-100 radius-round h-9 px-3 py-2 text-sm mr-2"
+                                        className="button rounded-lg  bg-white border border-gray-300 dark:bg-gray-700 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 active:bg-gray-100 dark:active:bg-gray-500 dark:active:border-gray-500 text-gray-600 dark:text-gray-100 radius-round h-9 px-3 py-2 text-sm mr-2"
                                         disabled={isSubmitting}
                                         onClick={onClose}
                                     >
@@ -317,7 +317,7 @@ const Leadsform = ({ onClose, formMode, setShowLeadForm, formValues }) => {
                                     </button>
                                     <button
                                         type="submit"
-                                        className="button bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white radius-round h-9 px-3 py-2 text-sm"
+                                        className="button bg-indigo-600  rounded-lg hover:bg-indigo-500 active:bg-indigo-700 text-white radius-round h-9 px-3 py-2 text-sm"
                                         disabled={isSubmitting}
                                     >
                                         Save

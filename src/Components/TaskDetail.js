@@ -1,6 +1,3 @@
-
-
-
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from 'react-toastify';
@@ -45,7 +42,7 @@ const TaskDetail = () => {
   const handleCloseForm = useCallback((e) => {
     if (e.target.classList.contains("overlay")) {
       setShowTaskForm(false);
-      setFormValues(initialValues); // Reset form values
+      setFormValues(initialValues);
       setFormMode(null);
     }
   }, [setShowTaskForm, setFormValues, setFormMode]);
@@ -277,7 +274,6 @@ const TaskDetail = () => {
             )}
           </div>
 
-          {/* TaskForm overlay */}
           {showTaskForm && (
             <div
               onClick={handleCloseForm}

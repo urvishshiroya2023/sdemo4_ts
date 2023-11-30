@@ -115,7 +115,6 @@ const leadSlice = createSlice({
                 state.loading = false;
                 state.error = action.error.message;
             });
-
     },
 });
 export const selectLeads = (state) => state.leads;

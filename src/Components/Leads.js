@@ -1,5 +1,3 @@
-
-
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Footer from "./Footer";
@@ -214,9 +212,9 @@ const Leads = () => {
                     {state.showLeadForm && (
                         <div
                             onClick={handleCloseForm}
-                            className="fixed top-0 right-0 w-full h-full bg-black bg-opacity-80 overlay"
+                            className="fixed top-0 right-0 w-full  h-full bg-black bg-opacity-80 overlay"
                         >
-                            <div className="w-1/2 fixed bg-white h-full p-5  top-0 right-0">
+                            <div className="w-1/2 overflow-y-scroll fixed bg-white h-full p-5  top-0 right-0">
                                 <Leadsform
                                     formValues={state.formValues}
                                     formMode={state.formMode}
