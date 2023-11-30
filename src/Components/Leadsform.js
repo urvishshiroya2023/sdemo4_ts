@@ -1,22 +1,27 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { toast } from "react-toastify";
 import * as Yup from 'yup';
+import { addNewLeads } from './Redux/leadSlice';
+import { fetchTasks } from './Redux/tasksSlice';
 
 const validationSchema = Yup.object().shape({
-    contactName: Yup.string().required('Contact Name is required'),
+    // contactName: Yup.string().required('Contact Name is required'),
     title: Yup.string().required('Title is required'),
     email: Yup.string().email('Invalid email').required('Email is required'),
     contactNumber: Yup.string().required('Contact Number is required'),
     budget: Yup.number().required('Budget is required').positive('Budget must be positive'),
-    notes: Yup.string(),
-    leadsNewCategory: Yup.string(),
-    leadCate2: Yup.string(),
-    leadsCategory: Yup.string(),
-    bhargav: Yup.string(),
-    skills: Yup.string().required('Skills is required'),
+    // notes: Yup.string()
+    // leadsNewCategory: Yup.string()
+    // leadCate2: Yup.string()
+    // leadsCategory: Yup.string()
+    // bhargav: Yup.string()
+    // skills: Yup.string().required('Skills is required')
 });
 
 const Leadsform = ({ onClose }) => {
+    const dispatch = useDispatch();
     const initialValues = {
         contactName: '',
         title: '',
@@ -31,10 +36,84 @@ const Leadsform = ({ onClose }) => {
         skills: '',
     };
 
-    const handleSubmit = (values, { setSubmitting }) => {
-        console.log('Form submitted with values:', values);
-        setSubmitting(false);
+    // const handleSubmit = (values, { setSubmitting, resetForm }) => {
+    //     console.log('Form submitted with values:', values);
+    //     setSubmitting(false);
+    //     resetForm();
+    //     onClose();
+    // };
+
+    // const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    //     try {
+    //         console.log('Form values received:', values);
+    //         await dispatch(addNewLeads(values));
+    //         console.log('Form submitted with values:', values);
+    //         setSubmitting(false);
+    //         resetForm();
+    //         onClose();
+    //         dispatch(fetchTasks());
+    //     } catch (error) {
+    //         // Handle any errors that might occur during the API call.
+    //         console.error('Error submitting form:', error);
+    //         setSubmitting(false);
+    //     }
+    // };
+
+    // const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    //     try {
+    //         console.log('Form values received:', values);
+    //         await dispatch(addNewLeads(values));
+    //         dispatch(fetchTasks());
+    //         console.log('Form submitted with values:', values);
+    //         setSubmitting(false);
+    //         resetForm();
+    //         onClose();
+
+
+    //         // Display success notification
+    //         toast.success('New leads added successfully!', {
+    //             position: toast.POSITION.TOP_RIGHT,
+    //             autoClose: 3000, // Auto-close the notification after 3000 milliseconds (3 seconds)
+    //         });
+
+    //     } catch (error) {
+    //         // Handle any errors that might occur during the API call.
+    //         console.error('Error submitting form:', error);
+
+    //         // Display error notification
+    //         toast.error('Error adding new leads. Please try again.', {
+    //             position: toast.POSITION.TOP_RIGHT,
+    //             autoClose: 3000,
+    //         });
+
+    //         setSubmitting(false);
+    //     }
+    // };
+
+    const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+        try {
+            // console.log('Form values received:', values);
+            await dispatch(addNewLeads(values));
+            // The code inside this block will only execute if dispatch(addNewLeads(values)) is successful
+            console.log('Form submitted with values:', values);
+            setSubmitting(false);
+            resetForm();
+            onClose();
+            dispatch(fetchTasks());
+        } catch (error) {
+            // Handle any errors that might occur during the API call.
+            console.error('Error submitting form:', error);
+
+            // Display error notification
+            toast.error('Error adding new leads. Please try again.', {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 3000,
+            });
+        }
     };
+
+
+
 
     return (
         <div>
@@ -60,7 +139,7 @@ const Leadsform = ({ onClose }) => {
                                 </div>
 
                                 <div className="col-span-1">
-                                    <label className="form-label mb-2">Title</label>
+                                    <label className="form-label mb-2">Title *</label>
                                     <Field className={`w-full font-light text-sm border font-light text-sm rounded px-2 h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${touched.title && errors.contactName
                                         ? "border-red-500 border-2"
                                         : ""
@@ -71,7 +150,7 @@ const Leadsform = ({ onClose }) => {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 <div className="col-span-1">
-                                    <label className="form-label mb-2">Email</label>
+                                    <label className="form-label mb-2">Email *</label>
                                     <Field className={`w-full font-light text-sm border font-light text-sm rounded px-2 h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${touched.email && errors.contactName
                                         ? "border-red-500 border-2"
                                         : ""
@@ -80,7 +159,7 @@ const Leadsform = ({ onClose }) => {
                                 </div>
 
                                 <div className="col-span-1">
-                                    <label className="form-label mb-2">Contact Number</label>
+                                    <label className="form-label mb-2">Contact Number *</label>
                                     <Field className={`w-full font-light text-sm border font-light text-sm rounded px-2 h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${touched.contactNumber && errors.contactName
                                         ? "border-red-500 border-2"
                                         : ""

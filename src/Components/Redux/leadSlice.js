@@ -28,6 +28,16 @@ export const deleteLead = createAsyncThunk("leads/deleteLead", async (leadId, { 
     }
 });
 
+export const addNewLeads = createAsyncThunk("leads/addNewLeads", async (newLeadData, { getState }) => {
+    try {
+        const response = await callApi("POST", "/crm/leads", newLeadData);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+});
+
 const leadSlice = createSlice({
     name: "leads",
     initialState: {
@@ -63,6 +73,22 @@ const leadSlice = createSlice({
                 // console.log("fufillleadid", state.selectLeads);
             })
             .addCase(fetchLeadById.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+            .addCase(addNewLeads.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(addNewLeads.fulfilled, (state, action) => {
+                // console.log(JSON.stringify(state.data.data))
+                state.loading = false;
+                // console.log(action.payload);
+                // state.data.data.push(action.payload); // Assuming the payload is the new lead data.
+                state.data.data.unshift(action.payload); // Assuming the payload is the new lead data.
+
+            })
+            .addCase(addNewLeads.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             });

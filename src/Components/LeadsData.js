@@ -28,8 +28,6 @@ const LeadsData = ({ lead }) => {
 
 
     return (
-
-
         <tr className='text-[#6B7280] border-b'>
 
             <td className={`truncate p-3`}>
@@ -157,7 +155,7 @@ const LeadsData = ({ lead }) => {
 
             <td className='truncate p-3'>
 
-                {lead?.tags.length > 0 && lead?.tags.some(item => item.tagName.includes('cat')) ? (
+                {lead?.tags?.length > 0 && lead?.tags?.some(item => item.tagName.includes('cat')) ? (
                     lead?.tags.map((item) => (
                         <>
                             {item.tagName.includes('cat') && (
@@ -171,8 +169,8 @@ const LeadsData = ({ lead }) => {
             </td>
             <td className='truncate p-3'>
 
-                {lead?.tags.length > 0 && lead?.tags.some(item => !item.tagName.includes('cat')) ? (
-                    lead?.tags.map((item) => (
+                {lead?.tags?.length > 0 && lead?.tags?.some(item => !item.tagName.includes('cat')) ? (
+                    lead?.tags?.map((item) => (
                         !item.tagName.includes('cat') && (
                             <>
                                 <span className='py-1 px-2 text-xs font-semibold rounded-md mr-2' style={{ color: item?.colorName, backgroundColor: `${item?.colorName}1A` }} key={item.id}>{item.tagName}</span>

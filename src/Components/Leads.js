@@ -15,7 +15,7 @@ const Leads = () => {
     const [leadsPerPage] = useState(10);
     const [searchTerm, setSearchTerm] = useState("");
     const [showLeadForm, setShowLeadForm] = useState(false);
-
+    // console.log(data.data);
 
     // console.log(fetchLeads);
     // console.log(selectLeads);
@@ -45,6 +45,7 @@ const Leads = () => {
             .includes(searchTerm)
     );
 
+
     const totalLeads = filteredLeads?.length || 0;
     const totalPages = Math.ceil(totalLeads / leadsPerPage);
     // const presentLeads = data?.data.length;
@@ -56,7 +57,6 @@ const Leads = () => {
         const rightOffset = Math.min(totalPages - maxVisibleButtons, leftOffset > 0 ? currentPage - leftOffset : 0);
         const startPage = 1 + leftOffset;
         const endPage = Math.min(totalPages, maxVisibleButtons + startPage);
-
         return Array.from({ length: endPage - startPage + 1 }, (_, i) => i + startPage);
     };
 
@@ -119,12 +119,12 @@ const Leads = () => {
                                     </button>
                                 </div>
                             </div>
-
                         </div>
 
                         {loading && <Loader />}
                         {error && <p>Error: {error}</p>}
                         {filteredLeads && filteredLeads.length > 0 ? (
+
                             <table className="table-auto w-full mt-5 text-sm border-collapse">
                                 <thead>
                                     <tr className="text-[#6B7280] text-left uppercase border-b">
@@ -207,6 +207,3 @@ const Leads = () => {
 };
 
 export default Leads;
-
-
-
