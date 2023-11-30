@@ -63,7 +63,7 @@ export const deleteTask = createAsyncThunk("tasks/deleteTask", async (taskId) =>
 export const editTask = createAsyncThunk("tasks/editTask", async ({ taskId, updatedData }) => {
     try {
         const response = await callApi("PUT", `crm/tasks/${taskId}`, updatedData);
-        console.log(response);
+        // console.log(response);
 
         // Assuming your server includes the updated data in the response.data property
         // const updatedTaskData = response.data;
@@ -159,7 +159,7 @@ const tasksSlice = createSlice({
             .addCase(editTask.fulfilled, (state, action) => {
                 state.status = "succeeded";
                 const updatedData = action.payload; // Assuming action.payload contains the updated data
-                console.log("edit fulfill ", action.payload)
+                // console.log("edit fulfill ", action.payload)
                 // Update the state with the new data
                 state.data = state.data.map((task) =>
                     task.id === updatedData.id ? updatedData : task

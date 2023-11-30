@@ -124,7 +124,7 @@ const TaskForm = ({ onClose, formValues, formMode, setShowTaskForm }) => {
         // Dispatch the editTask action for updating an existing task
         const actionResult = await dispatch(editTask({ taskId: formValues.Id, updatedData }));
         response = actionResult?.payload;
-        console.log(response)
+        // console.log(response)
         if (response.success) {
           dispatch(fetchTasks());
         }
@@ -134,7 +134,7 @@ const TaskForm = ({ onClose, formValues, formMode, setShowTaskForm }) => {
         response = actionResult.payload;
       }
 
-      console.log(response);
+      // console.log(response);
 
       const successMessage =
         formMode === "edit"
