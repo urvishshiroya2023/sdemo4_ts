@@ -79,10 +79,8 @@ const leadSlice = createSlice({
             })
             .addCase(fetchLeadById.fulfilled, (state, action) => {
                 state.loading = false;
-                // state.data = action.payload;
                 state.status = "succeeded";
                 state.selectLeads = action?.payload
-                // console.log("fufillleadid", state.selectLeads);
             })
             .addCase(fetchLeadById.rejected, (state, action) => {
                 state.loading = false;
@@ -95,9 +93,7 @@ const leadSlice = createSlice({
             .addCase(addNewLeads.fulfilled, (state, action) => {
                 // console.log(JSON.stringify(state.data.data))
                 state.loading = false;
-                // console.log(action.payload);
-                // state.data.data.push(action.payload); // Assuming the payload is the new lead data.
-                state.data.data.unshift(action.payload); // Assuming the payload is the new lead data.
+                state.data.data.unshift(action.payload);
 
             })
             .addCase(addNewLeads.rejected, (state, action) => {
@@ -110,15 +106,7 @@ const leadSlice = createSlice({
             })
             .addCase(editLead.fulfilled, (state, action) => {
                 state.loading = false;
-                // console.log(action.payload);
-                // Update the lead in the state.data array with the edited lead
-                // const editedLeadIndex = state.data.findIndex(lead => lead.id === action.payload.id);
-                // if (editedLeadIndex !== -1) {
-                //     state.data[editedLeadIndex] = action.payload;
-                // }
-                const updatedData = action.payload; // Assuming action.payload contains the updated data
-                // console.log("edit fulfill ", action.payload)
-                // Update the state with the new data
+                const updatedData = action.payload;
                 state.data.data = state.data.data.map((lead) =>
                     lead.id === updatedData.id ? updatedData : lead
                 );
@@ -130,7 +118,6 @@ const leadSlice = createSlice({
 
     },
 });
-// export const { leadsFetchedById } = leadSlice.actions;
 export const selectLeads = (state) => state.leads;
 
 export default leadSlice.reducer;
