@@ -31,7 +31,7 @@ export const deleteLead = createAsyncThunk("leads/deleteLead", async (leadId, { 
 export const addNewLeads = createAsyncThunk("leads/addNewLeads", async (newLeadData, { getState }) => {
     try {
         const response = await callApi("POST", "/crm/leads", newLeadData);
-        console.log(response);
+        // console.log(response);
         return response.data;
     } catch (error) {
         throw error;

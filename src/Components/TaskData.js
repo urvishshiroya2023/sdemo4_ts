@@ -144,7 +144,7 @@ const TaskData = ({ item, handleDelete, handleEdit }) => {
 
                     <span class="tooltip-wrapper">
                         <button disabled="" class="cursor-pointer mx-1 circle items-center !cursor-not-allowed">
-                            <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                            <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" strokeLinecap="round" stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <path d="M10 20.777a8.942 8.942 0 0 1 -2.48 -.969"></path>
                                 <path d="M14 3.223a9.003 9.003 0 0 1 0 17.554"></path>
