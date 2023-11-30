@@ -3,7 +3,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from "react-toastify";
 import * as Yup from 'yup';
-import { addNewLeads } from './Redux/leadSlice';
+import { addNewLeads, editLead, fetchLeads } from './Redux/leadSlice';
 import { fetchTasks } from './Redux/tasksSlice';
 
 const validationSchema = Yup.object().shape({
@@ -20,9 +20,11 @@ const validationSchema = Yup.object().shape({
     // skills: Yup.string().required('Skills is required')
 });
 
-const Leadsform = ({ onClose }) => {
+const Leadsform = ({ onClose, formMode, setShowLeadForm, formValues }) => {
+
     const dispatch = useDispatch();
     const initialValues = {
+        id: '',
         contactName: '',
         title: '',
         email: '',
@@ -90,29 +92,77 @@ const Leadsform = ({ onClose }) => {
     //     }
     // };
 
+    //main 
+    // const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    //     try {
+    //         // console.log('Form values received:', values);
+    //         await dispatch(addNewLeads(values));
+    //         // The code inside this block will only execute if dispatch(addNewLeads(values)) is successful
+    //         console.log('Form submitted with values:', values);
+    //         setSubmitting(false);
+    //         resetForm();
+    //         onClose();
+    //         dispatch(fetchTasks());
+    //     } catch (error) {
+    //         // Handle any errors that might occur during the API call.
+    //         console.error('Error submitting form:', error);
+
+    //         // Display error notification
+    //         toast.error('Error adding new leads. Please try again.', {
+    //             position: toast.POSITION.TOP_RIGHT,
+    //             autoClose: 3000,
+    //         });
+    //     }
+    // };
+
+    //update
     const handleSubmit = async (values, { setSubmitting, resetForm }) => {
         try {
-            // console.log('Form values received:', values);
-            await dispatch(addNewLeads(values));
-            // The code inside this block will only execute if dispatch(addNewLeads(values)) is successful
-            console.log('Form submitted with values:', values);
-            setSubmitting(false);
-            resetForm();
-            onClose();
-            dispatch(fetchTasks());
-        } catch (error) {
-            // Handle any errors that might occur during the API call.
-            console.error('Error submitting form:', error);
+            let response;
+            const updatedData = {
+                ...values,
+                // Add other fields as needed
+            };
+            // console.log(formValues.id)
+            // console.log(updatedData);
+            const leadId = formValues.id;
 
-            // Display error notification
-            toast.error('Error adding new leads. Please try again.', {
+            if (formMode === "edit") {
+                // Dispatch the editTask action for updating an existing task
+                const actionResult = await dispatch(editLead({ leadId, updatedData }));
+                response = actionResult?.payload;
+                // console.log(response);
+                // console.log(response)
+                if (response.success) {
+                    dispatch(fetchTasks());
+                }
+            } else {
+                // Dispatch the add new task action
+                const actionResult = await dispatch(addNewLeads(values));
+                response = actionResult.payload;
+            }
+
+            // console.log(response);
+
+            const successMessage =
+                formMode === "edit"
+                    ? "lead Edited successfully!"
+                    : "lead added successfully!";
+
+            toast.success(successMessage, {
                 position: toast.POSITION.TOP_RIGHT,
-                autoClose: 3000,
+            });
+            resetForm();
+            setShowLeadForm(false);
+            dispatch(fetchLeads());
+        } catch (error) {
+            console.error("Error submitting form:", error);
+            toast.error(`${error?.response?.data?.message}`, {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 2000,
             });
         }
     };
-
-
 
 
     return (
@@ -125,7 +175,8 @@ const Leadsform = ({ onClose }) => {
                 </div>
             </div>
             <div className='mt-5'>
-                <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
+                {/* <Formik initialValues={formValues} onSubmit={handleSubmit} validationSchema={validationSchema}> */}
+                <Formik initialValues={formMode === "edit" ? formValues : initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
                     {({ isSubmitting, touched, errors }) => (
                         <Form>
                             <div className="grid bg-white grid-cols-1 md:grid-cols-2 gap-4 mb-4">

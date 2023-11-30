@@ -31,12 +31,24 @@ export const deleteLead = createAsyncThunk("leads/deleteLead", async (leadId, { 
 export const addNewLeads = createAsyncThunk("leads/addNewLeads", async (newLeadData, { getState }) => {
     try {
         const response = await callApi("POST", "/crm/leads", newLeadData);
-        console.log(response.data);
+        console.log(response);
         return response.data;
     } catch (error) {
         throw error;
     }
 });
+
+export const editLead = createAsyncThunk("leads/editLead", async ({ leadId, updatedData }, { getState }) => {
+    try {
+        const response = await callApi("PUT", `crm/leads/${leadId}`, updatedData);
+        // console.log(updatedData);
+        // return response.data;
+        return updatedData;
+    } catch (error) {
+        throw error;
+    }
+});
+
 
 const leadSlice = createSlice({
     name: "leads",
@@ -91,7 +103,31 @@ const leadSlice = createSlice({
             .addCase(addNewLeads.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
+            })
+            .addCase(editLead.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(editLead.fulfilled, (state, action) => {
+                state.loading = false;
+                // console.log(action.payload);
+                // Update the lead in the state.data array with the edited lead
+                // const editedLeadIndex = state.data.findIndex(lead => lead.id === action.payload.id);
+                // if (editedLeadIndex !== -1) {
+                //     state.data[editedLeadIndex] = action.payload;
+                // }
+                const updatedData = action.payload; // Assuming action.payload contains the updated data
+                // console.log("edit fulfill ", action.payload)
+                // Update the state with the new data
+                state.data.data = state.data.data.map((lead) =>
+                    lead.id === updatedData.id ? updatedData : lead
+                );
+            })
+            .addCase(editLead.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
             });
+
     },
 });
 // export const { leadsFetchedById } = leadSlice.actions;

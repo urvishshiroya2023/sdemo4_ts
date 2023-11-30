@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { deleteLead, fetchLeads } from './Redux/leadSlice';
 
-const LeadsData = ({ lead }) => {
+const LeadsData = ({ lead, handleEdit }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const dispatch = useDispatch();
 
@@ -43,7 +43,7 @@ const LeadsData = ({ lead }) => {
                     </div>
 
                     {/* edit */}
-                    <button class="cursor-pointer circle items-center cursor-pointer hover:text-indigo-500">
+                    <button onClick={() => handleEdit(lead?.id)} class="cursor-pointer circle items-center cursor-pointer hover:text-indigo-500">
                         <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                         </svg>

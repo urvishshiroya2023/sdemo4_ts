@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Footer from "./Footer";
 import HomePageHeader from "./HomePageHeader";
@@ -6,7 +6,23 @@ import LeadsData from "./LeadsData";
 import LeadsHeader from "./LeadsHeader";
 import Leadsform from "./Leadsform";
 import Loader from "./Loader";
-import { fetchLeads, selectLeads } from "./Redux/leadSlice";
+import { fetchLeadById, fetchLeads, selectLeads } from "./Redux/leadSlice";
+
+const initialValues = {
+    id: '',
+    contactName: '',
+    title: '',
+    email: '',
+    contactNumber: '',
+    budget: '',
+    notes: '',
+    leadsNewCategory: '',
+    leadCate2: '',
+    leadsCategory: '',
+    bhargav: '',
+    skills: '',
+};
+
 
 const Leads = () => {
     const dispatch = useDispatch();
@@ -15,6 +31,8 @@ const Leads = () => {
     const [leadsPerPage] = useState(10);
     const [searchTerm, setSearchTerm] = useState("");
     const [showLeadForm, setShowLeadForm] = useState(false);
+    const [formMode, setFormMode] = useState(null);
+    const [formValues, setFormValues] = useState(initialValues);
     // console.log(data.data);
 
     // console.log(fetchLeads);
@@ -33,10 +51,32 @@ const Leads = () => {
     const handleCloseForm = (e) => {
         if (e.target.classList.contains("overlay")) {
             setShowLeadForm(false);
-            // setFormValues(initialValues); // Reset form values
-            // setFormMode(null);
+            setFormValues(initialValues); // Reset form values
+            setFormMode(null);
         }
     };
+
+    // const handleEdit = useCallback(async (leadId) => {
+    //     try {
+    //         await dispatch(fetchLeadById(leadId));
+    //         setShowLeadForm(true);
+    //         setFormMode("edit")
+    //     } catch (error) {
+    //         console.error("Error fetching lead details for editing:", error);
+    //     }
+    // }, [dispatch]);
+
+    const handleEdit = useCallback(async (leadId) => {
+        try {
+            await dispatch(fetchLeadById(leadId));
+            setShowLeadForm(true);
+            setFormMode("edit");
+            setFormValues(data.data.find(lead => lead.id === leadId));
+        } catch (error) {
+            console.error("Error fetching lead details for editing:", error);
+        }
+    }, [dispatch, data]);
+
 
     const filteredLeads = data?.data?.filter((lead) =>
         lead.title.toLowerCase().includes(searchTerm) ||
@@ -142,7 +182,7 @@ const Leads = () => {
                                     {filteredLeads
                                         .slice((currentPage - 1) * leadsPerPage, currentPage * leadsPerPage)
                                         .map((lead) => (
-                                            <LeadsData key={lead?.id} lead={lead} />
+                                            <LeadsData handleEdit={handleEdit} key={lead?.id} lead={lead} />
                                         ))}
                                 </tbody>
                             </table>
@@ -188,8 +228,8 @@ const Leads = () => {
                         >
                             <div className="w-1/2 fixed bg-white h-full p-5  top-0 right-0">
                                 <Leadsform
-                                    // formValues={formValues}
-                                    // formMode={formMode}
+                                    formValues={formValues}
+                                    formMode={formMode}
                                     setShowLeadForm={setShowLeadForm}
                                     onClose={() => setShowLeadForm(false)}
                                 />
