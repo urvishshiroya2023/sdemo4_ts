@@ -114,15 +114,15 @@ const LeadsData = ({ lead, handleEdit }) => {
 
                     {/* view */}
                     <Link to={`/leaddetails/${lead.id}`} className='text-decoration-none'>
-                        <span class="cursor-pointer  hover:text-green-500 circle items-center text-lg">
+                        <span className="cursor-pointer  hover:text-green-500 circle items-center text-lg">
                             <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M942.2 486.2C847.4 286.5 704.1 186 512 186c-192.2 0-335.4 100.5-430.2 300.3a60.3 60.3 0 0 0 0 51.5C176.6 737.5 319.9 838 512 838c192.2 0 335.4-100.5 430.2-300.3 7.7-16.2 7.7-35 0-51.5zM512 766c-161.3 0-279.4-81.8-362.7-254C232.6 339.8 350.7 258 512 258c161.3 0 279.4 81.8 362.7 254C791.5 684.2 673.4 766 512 766zm-4-430c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176zm0 288c-61.9 0-112-50.1-112-112s50.1-112 112-112 112 50.1 112 112-50.1 112-112 112z"></path>
                             </svg>
                         </span>
                     </Link>
 
-                    <span class="tooltip-wrapper">
-                        <button disabled="" class="cursor-pointer mx-1 circle items-center !cursor-not-allowed">
+                    <span className="tooltip-wrapper">
+                        <button disabled="" className="cursor-pointer mx-1 circle items-center !cursor-not-allowed">
                             <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <path d="M10 20.777a8.942 8.942 0 0 1 -2.48 -.969"></path>
@@ -134,8 +134,8 @@ const LeadsData = ({ lead, handleEdit }) => {
                         </button>
                     </span>
 
-                    <span class="tooltip-wrapper">
-                        <button class="cursor-pointer circle items-center cursor-pointer hover:text-emerald-500">
+                    <span className="tooltip-wrapper">
+                        <button className="cursor-pointer circle items-center cursor-pointer hover:text-emerald-500">
                             <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                                 <path fill="none" d="M0 0h24v24H0V0z"></path>
                                 <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"></path>
