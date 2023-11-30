@@ -125,6 +125,9 @@ const TaskForm = ({ onClose, formValues, formMode, setShowTaskForm }) => {
         const actionResult = await dispatch(editTask({ taskId: formValues.Id, updatedData }));
         response = actionResult?.payload;
         console.log(response)
+        if (response.success) {
+          dispatch(fetchTasks());
+        }
       } else {
         // Dispatch the add new task action
         const actionResult = await dispatch(addNewTask(values));

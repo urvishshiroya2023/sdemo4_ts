@@ -46,17 +46,36 @@ export const deleteTask = createAsyncThunk("tasks/deleteTask", async (taskId) =>
     }
 });
 
+// export const editTask = createAsyncThunk("tasks/editTask", async ({ taskId, updatedData }) => {
+//     try {
+//         const response = await callApi("PUT", `crm/tasks/${taskId}`, updatedData);
+//         console.log(response?.data);
+//         console.log(response);
+//         console.log(updatedData);
+//         return response.data;
+//     } catch (error) {
+//         console.log(error);
+//         throw error;
+//     }
+// });
+
+
 export const editTask = createAsyncThunk("tasks/editTask", async ({ taskId, updatedData }) => {
     try {
         const response = await callApi("PUT", `crm/tasks/${taskId}`, updatedData);
-        console.log(response?.data);
         console.log(response);
-        return response.data;
+
+        // Assuming your server includes the updated data in the response.data property
+        // const updatedTaskData = response.data;
+
+        // return updatedTaskData;
+        return updatedData;
     } catch (error) {
-        console.log(error);
+        console.error("Error editing task:", error);
         throw error;
     }
 });
+
 
 const tasksSlice = createSlice({
     name: "tasks",
@@ -122,21 +141,31 @@ const tasksSlice = createSlice({
             //         // You may not need to make any changes to the state in this scenario.
             //     }
             // })
+            // .addCase(editTask.fulfilled, (state, action) => {
+            //     state.status = "succeeded";
+            //     // Check if response indicates success
+            //     if (action.payload.success) {
+            //         // Assuming your server includes the updated data in the response
+            //         const updatedTaskData = action.payload.updatedTaskData;
+            //         // Update the state with the new data
+            //         state.data = state.data.map((task) =>
+            //             task.id === updatedTaskData.id ? updatedTaskData : task
+            //         );
+            //     } else {
+            //         // Handle the case where success is false or no specific data payload
+            //         // You may not need to make any changes to the state in this scenario.
+            //     }
+            // })
             .addCase(editTask.fulfilled, (state, action) => {
                 state.status = "succeeded";
-                // Check if response indicates success
-                if (action.payload.success) {
-                    // Assuming your server includes the updated data in the response
-                    const updatedTaskData = action.payload.updatedTaskData;
-                    // Update the state with the new data
-                    state.data = state.data.map((task) =>
-                        task.id === updatedTaskData.id ? updatedTaskData : task
-                    );
-                } else {
-                    // Handle the case where success is false or no specific data payload
-                    // You may not need to make any changes to the state in this scenario.
-                }
+                const updatedData = action.payload; // Assuming action.payload contains the updated data
+                console.log("edit fulfill ", action.payload)
+                // Update the state with the new data
+                state.data = state.data.map((task) =>
+                    task.id === updatedData.id ? updatedData : task
+                );
             })
+
 
             .addCase(editTask.rejected, (state, action) => {
                 state.status = "failed";
