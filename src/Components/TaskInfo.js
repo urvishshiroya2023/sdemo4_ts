@@ -11,7 +11,6 @@ const TaskInfo = () => {
   const dispatch = useDispatch();
   const selectedTask = useSelector(selectTasks).selectedTask;
 
-  // const [selectedTask, setselectedTask] = useState(null);
   const priorityColor = getPriorityColor(selectedTask?.priority);
 
   const formatDate = (dateString) => {
@@ -19,30 +18,6 @@ const TaskInfo = () => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const authToken = localStorage.getItem("authToken");
-  //       const headers = {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${authToken}`,
-  //       };
-
-  //       const response = await axios.get(
-  //         `https://crmapi.sarvadhi.work/api/v1/crm/tasks/${id}`,
-  //         { headers }
-  //       );
-
-  //       setselectedTask(response?.data?.data);
-  //       console.log(response?.data?.data);
-  //     } catch (error) {
-  //       console.error("Error fetching task data:", error);
-  //       // Handle error as needed
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [id]);
 
   useEffect(() => {
     // Dispatch the fetchTaskById action when the component mounts
@@ -145,20 +120,7 @@ const TaskInfo = () => {
                     <div className="text-[#6B7280] text-sm font-semibold">
                       <span className="text-2xl text-black">Notes</span>
 
-                      {/* <ul className="mt-3 font-light">
-                        {selectedTask.taskNotes.map((note) => (
-                          <>
-                            <li className="" key={note.id}>
-                              {note.notes}
-                              <span className="font-semibold ml-2">
-                                {note.createdData?.firstName}{" "}
-                                {note.createdData?.lastName}
-                              </span>
-                            </li>
-                            <div className="mb-5">{note.createdAt}</div>
-                          </>
-                        ))}
-                      </ul> */}
+
 
                       {selectedTask?.taskNotes.length > 0 ? (
                         <ul className="mt-3 font-light">
@@ -213,7 +175,6 @@ const TaskInfo = () => {
                     ReactJS Tags:
                     <span className="font-light">
                       {selectedTask.ReactJSTags.map((tag) => (
-                        // Render each ReactJS tag
                         <span key={tag.id}>{tag.name}</span>
                       ))}
                     </span>
@@ -225,42 +186,13 @@ const TaskInfo = () => {
                     NodeJS Tags:
                     <span className="font-light">
                       {selectedTask.NodeJSTags.map((tag) => (
-                        // Render each NodeJS tag
                         <span key={tag.id}>{tag.name}</span>
                       ))}
                     </span>
                   </div>
                 )}
 
-                {/* {selectedTask?.taskFields.find(
-                  (field) => field.name === "size"
-                ) && (
-                  <div className="text-[#6B7280] text-sm font-semibold">
-                    Size:
-                    <span className="font-light">
-                      {
-                        selectedTask.taskFields.find(
-                          (field) => field.name === "size"
-                        ).value
-                      }
-                    </span>
-                  </div>
-                )}
 
-                {selectedTask?.taskFields.find(
-                  (field) => field.name === "date of birth"
-                ) && (
-                  <div className="text-[#6B7280] text-sm font-semibold">
-                    Date of Birth:
-                    <span className="font-light">
-                      {
-                        selectedTask.taskFields.find(
-                          (field) => field.name === "date of birth"
-                        ).value
-                      }
-                    </span>
-                  </div>
-                )} */}
               </div>
             ) : (
               <div className="h-full min-h-screen">

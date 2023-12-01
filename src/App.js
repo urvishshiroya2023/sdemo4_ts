@@ -8,6 +8,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import Body from "./Components/Body";
+import ContactInfo from "./Components/ContactInfo";
 import Contacts from "./Components/Contacts";
 import Deal from "./Components/Deal";
 import HomePage from "./Components/HomePage";
@@ -82,6 +83,8 @@ function App() {
             <Route path="/taskdetail" element={<TaskDetail />} />
             <Route path="/taskdetails/:id" element={<TaskInfo />} />
             <Route path="/leaddetails/:id" element={<LeadsInfo />} />
+            <Route path="/contactdetails/:id" element={<ContactInfo />} />
+
           </Route>
           <Route>
             <Route path="/signin" element={<SignInComponent />} />

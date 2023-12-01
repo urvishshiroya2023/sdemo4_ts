@@ -27,7 +27,6 @@ const initialValues = {
 const TaskDetail = () => {
   const dispatch = useDispatch();
   const { data: tasks, status, error } = useSelector(selectTasks);
-  console.log(tasks);
   const selectedTask = useSelector((state) => state?.tasks?.selectedTask);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
