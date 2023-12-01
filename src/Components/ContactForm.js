@@ -31,20 +31,15 @@ const initialValues = {
     sourceId: ""
 };
 
-
 const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
     const [formData, setFormData] = useState(formValues);
     const dispatch = useDispatch();
-
-    // console.log(formValues);
 
     useEffect(() => {
         setFormData(formValues);
     }, [formValues]);
 
     const navigate = useNavigate();
-
-
 
     const handleSubmit = async (values, { resetForm }) => {
         console.log(values);
@@ -57,10 +52,6 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
 
             let response;
 
-            // const updatedData = {
-            //     ...values,
-            // };
-
             const updatedData = {
                 firstName: values.firstName,
                 lastName: values.lastName,
@@ -68,19 +59,17 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                 contactNumber: values.contactNumber,
                 designation: values.designation,
                 notes: values.notes,
-                address: values.address || "", // Provide a default value if it's not present in the form
+                address: values.address || "",
                 title: values.title || "",
                 zipcode: values.zipcode || "",
                 description: values.description || "",
                 sourceId: values.sourceId || "",
             };
 
-
             console.log(formValues);
             const contactId = formValues.id;
 
             if (formMode === "edit") {
-                // Dispatch the editContact action for updating an existing contact
                 const actionResult = await dispatch(editContact({ contactId, updatedData }));
                 response = actionResult?.payload;
                 if (response.success) {
@@ -291,14 +280,13 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                 </div>
                             </div>
 
-                            {/* Add more fields as needed */}
+
 
                             <div className="col-span-2 mt-10 relative">
                                 <div className="flex gap-x-4 absolute bottom-0 right-0">
                                     <div>
                                         <button
                                             className="button border rounded h-11 px-8 py-2"
-                                            // onClick={() => { setShowContactForm(false) }}
                                             onClick={onClose}                                        >
                                             Cancel
                                         </button>

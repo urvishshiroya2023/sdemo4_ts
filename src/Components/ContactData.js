@@ -10,11 +10,9 @@ const ContactData = ({ contact, handleEdit }) => {
 
     const handleDelete = async () => {
         try {
-            // Dispatch the deleteContact action with the contact ID
             await dispatch(deleteContact(contact.id));
             dispatch(fetchContacts());
             toast.success('Contact deleted successfully');
-            // Optionally, you can handle success or navigate to a different page after deletion
         } catch (error) {
             console.error("Error deleting contact:", error);
             toast.error('Error deleting contact');
@@ -24,30 +22,22 @@ const ContactData = ({ contact, handleEdit }) => {
     return (
         <tr className='text-[#6B7280] border-b'>
             <td className="truncate p-3"><div className=""><label class="checkbox-label mb-0"><input className="checkbox text-indigo-600" type="checkbox" value="" /></label></div> </td>
-
-            {/* Actions */}
             <td className={`truncate p-3`}>
                 <div className="flex text-base items-center">
-                    {/* Edit button */}
                     <button onClick={() => handleEdit(contact?.id)} className="cursor-pointer circle items-center hover:text-indigo-500">
                         <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                             <path strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                         </svg>
                     </button>
-
-                    {/* Delete button */}
                     <span className="cursor-pointer hover:text-red-500 circle mx-1 items-center" onClick={handleDelete}>
                         <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                             <path strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                         </svg>
                     </span>
-
                     {/* Modal for confirmation */}
                     {isModalOpen && (
                         {/* Add your modal code here */ }
                     )}
-
-                    {/* View button */}
                     <Link to={`/contactdetails/${contact.id}`} className='text-decoration-none'>
                         <span className="cursor-pointer hover:text-green-500 circle items-center text-lg">
                             <span className="cursor-pointer  hover:text-green-500 circle items-center text-lg">
@@ -57,44 +47,18 @@ const ContactData = ({ contact, handleEdit }) => {
                             </span>
                         </span>
                     </Link>
-
-                    {/* Additional buttons or icons */}
-                    {/* ... */}
                 </div>
             </td>
-
-            {/* NAME */}
             <td className='truncate p-3'>{`${contact?.firstName} ${contact?.lastName}`}</td>
-
-            {/* EMAIL */}
-            {/* <td className='truncate p-3'>{contact?.email ?? '-'}</td> */}
             <td className='truncate p-3'>{contact.email || '-'}</td>
-
-            {/* NUMBER */}
             <td className='truncate p-3'>{contact?.contactNumber ?? '-'}</td>
-
-            {/* SOURCE */}
             <td className='truncate p-3'>{contact?.source?.sources ?? '-'}</td>
-
-            {/* DESIGNATION */}
             <td className='truncate p-3'>{contact?.title ?? '-'}</td>
-
-            {/* HAWARD EDUCATION */}
             <td className='truncate p-3'>{/* Add logic for Haward Education */}</td>
-
-            {/* RELATION */}
             <td className='truncate p-3'>{/* Add logic for Relation */}</td>
-
-            {/* REGION */}
             <td className='truncate p-3'>{/* Add logic for Region */}</td>
-
-            {/* COMPANY */}
             <td className='truncate p-3'>{contact?.company?.companyName ?? '-'}</td>
-
-            {/* ADDRESS */}
-            {/* <td className='truncate p-3'>{(contact?.address + " " + contact?.zipcode) ?? '-'}</td> */}
             <td className='truncate p-3'>{(contact?.address || '-') + ' ' + (contact?.zipcode || '') || '-'}</td>
-
         </tr>
     );
 };

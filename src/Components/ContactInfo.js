@@ -11,7 +11,6 @@ const ContactInfo = () => {
     const selectedContact = useSelector(selectContacts).selectedContact;
 
     useEffect(() => {
-        // Dispatch the fetchContactById action when the component mounts
         dispatch(fetchContactById(id));
     }, [dispatch, id]);
 
@@ -77,8 +76,6 @@ const ContactInfo = () => {
                                         </div>
                                     )}
                                 </div>
-
-                                {/* Additional fields can be added in a similar manner */}
 
                                 {selectedContact?.leadModels && (
                                     <div className="text-[#6B7280] text-sm font-semibold mt-5">
