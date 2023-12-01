@@ -27,7 +27,7 @@ const initialValues = {
 
 const Contacts = () => {
     const { data: allContacts, loading, error } = useSelector(selectContacts);
-    console.log(error);
+    // console.log(error);
     const [state, setState] = useState({
         currentPage: 1,
         searchTerm: '',
@@ -36,6 +36,7 @@ const Contacts = () => {
     const [formValues, setFormValues] = useState(initialValues);
     const [formMode, setFormMode] = useState(null);
     const [selectedContactIds, setSelectedContactIds] = useState([]);
+    console.log(selectedContactIds);
     const dispatch = useDispatch();
 
     const handleSearchChange = useCallback((event) => {
@@ -77,6 +78,16 @@ const Contacts = () => {
         });
     };
 
+    const handleSelectAll = (event) => {
+        const allContactIds = allContacts.map((contact) => contact.id);
+
+        if (event.target.checked) {
+            setSelectedContactIds(allContactIds);
+        } else {
+            setSelectedContactIds([]);
+        }
+    };
+
     const handleEdit = useCallback(async (contactId) => {
         try {
             await dispatch(fetchContactById(contactId));
@@ -89,7 +100,6 @@ const Contacts = () => {
             console.error("Error fetching contact details for editing:", error);
         }
     }, [dispatch, allContacts]);
-
 
     const filteredContacts = useMemo(() => {
         return allContacts?.filter(
@@ -165,7 +175,7 @@ const Contacts = () => {
                                 </div>
                                 <div className="">
                                     {selectedContactIds.length > 0 && (
-                                        <button onClick={handleBulkDelete} className="border py-2 text-[#6B7280] text-sm font-semibold px-3 rounded mt-2">
+                                        <button onClick={handleBulkDelete} className="border mr-2 bg-red-500 py-2 text-white text-sm font-semibold px-3 rounded mt-2">
                                             Bulk Delete
                                         </button>
                                     )}
@@ -177,7 +187,7 @@ const Contacts = () => {
                         </div>
                         {loading && <Loader />}
                         {error && <p>Error: {error}</p>}
-                        <div className='overflow-x-scroll'>
+                        <div className=''>
                             {filteredContacts && filteredContacts.length > 0 ? (
                                 <table className="table-auto  w-full mt-5 text-sm border-collapse">
                                     <thead>
@@ -185,17 +195,17 @@ const Contacts = () => {
                                             <th className="truncate p-3">
                                                 <div className="">
                                                     <label class="checkbox-label mb-0">
-                                                        <input className="checkbox text-indigo-600" type="checkbox" value="" />
+                                                        <input className="checkbox text-indigo-600" type="checkbox" value="" onChange={handleSelectAll} />
                                                     </label>
                                                 </div>
                                             </th>
-                                            <th className="truncate p-3">Actions </th>
+                                            <th className="truncate p-3">Actions</th>
                                             <th className="truncate p-3">Name</th>
                                             <th className="truncate p-3">Email</th>
                                             <th className="truncate p-3 ">Number</th>
                                             <th className="truncate p-3">Source</th>
                                             <th className="truncate p-3">Designation</th>
-                                            <th className="truncate p-3">Haward education</th>
+                                            <th className="truncate p-3">Haward Education</th>
                                             <th className="truncate p-3">Relation</th>
                                             <th className="truncate p-3">Region</th>
                                             <th className="truncate p-3">Company</th>
