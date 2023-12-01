@@ -1,11 +1,12 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from "react-toastify";
 import ContactData from './ContactData';
 import ContactForm from './ContactForm';
 import Footer from './Footer';
 import HomePageHeader from './HomePageHeader';
 import Loader from './Loader';
-import { fetchContactById, selectContacts } from './Redux/contactSlice';
+import { deleteContact, fetchContactById, fetchContacts, selectContacts } from './Redux/contactSlice';
 
 const pageSize = 10;
 
@@ -33,7 +34,8 @@ const Contacts = () => {
     });
     const [showContactForm, setShowContactForm] = useState(false);
     const [formValues, setFormValues] = useState(initialValues);
-    const [formMode, setFormMode] = useState(null)
+    const [formMode, setFormMode] = useState(null);
+    const [selectedContactIds, setSelectedContactIds] = useState([]);
     const dispatch = useDispatch();
 
     const handleSearchChange = useCallback((event) => {
@@ -52,6 +54,29 @@ const Contacts = () => {
         setFormMode(null);
         setFormValues(initialValues)
     }
+
+    const handleBulkDelete = async () => {
+        try {
+            await Promise.all(selectedContactIds.map((id) => dispatch(deleteContact(id))));
+            dispatch(fetchContacts());
+            toast.success('Contacts deleted successfully');
+            setSelectedContactIds([]); // Clear selected contacts after deletion
+        } catch (error) {
+            console.error("Error deleting contacts:", error);
+            toast.error('Error deleting contacts');
+        }
+    };
+
+    const handleContactSelect = (contactId, isSelected) => {
+        setSelectedContactIds((prevSelectedContactIds) => {
+            if (isSelected) {
+                return [...prevSelectedContactIds, contactId];
+            } else {
+                return prevSelectedContactIds.filter((id) => id !== contactId);
+            }
+        });
+    };
+
     const handleEdit = useCallback(async (contactId) => {
         try {
             await dispatch(fetchContactById(contactId));
@@ -139,6 +164,11 @@ const Contacts = () => {
                                     />
                                 </div>
                                 <div className="">
+                                    {selectedContactIds.length > 0 && (
+                                        <button onClick={handleBulkDelete} className="border py-2 text-[#6B7280] text-sm font-semibold px-3 rounded mt-2">
+                                            Bulk Delete
+                                        </button>
+                                    )}
                                     <button onClick={() => setShowContactForm(true)} className="border py-2 text-[#6B7280] text-sm font-semibold px-3 rounded mt-2">
                                         Add New
                                     </button>
@@ -177,7 +207,7 @@ const Contacts = () => {
                                             {filteredContacts
                                                 .slice((state.currentPage - 1) * pageSize, state.currentPage * pageSize)
                                                 .map((contact) => (
-                                                    <ContactData handleEdit={handleEdit} key={contact.id} contact={contact} />
+                                                    <ContactData onContactSelect={handleContactSelect} handleEdit={handleEdit} key={contact.id} contact={contact} />
                                                 ))}
                                         </>
                                     </tbody>

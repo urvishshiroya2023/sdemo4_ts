@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { deleteContact, fetchContacts } from './Redux/contactSlice';
 
-const ContactData = ({ contact, handleEdit }) => {
+const ContactData = ({ contact, handleEdit, onContactSelect }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isSelected, setIsSelected] = useState(false);
     const dispatch = useDispatch();
 
     const handleDelete = async () => {
@@ -19,9 +20,20 @@ const ContactData = ({ contact, handleEdit }) => {
         }
     };
 
+    const handleCheckboxChange = () => {
+        setIsSelected(!isSelected);
+        onContactSelect(contact.id, !isSelected);
+    };
+
     return (
         <tr className='text-[#6B7280] border-b'>
-            <td className="truncate p-3"><div className=""><label class="checkbox-label mb-0"><input className="checkbox text-indigo-600" type="checkbox" value="" /></label></div> </td>
+            <td className="truncate p-3">
+                <div className="">
+                    <label class="checkbox-label mb-0">
+                        <input className="checkbox text-indigo-600" type="checkbox" value="" checked={isSelected}
+                            onChange={handleCheckboxChange} />
+                    </label>
+                </div> </td>
             <td className={`truncate p-3`}>
                 <div className="flex text-base items-center">
                     <button onClick={() => handleEdit(contact?.id)} className="cursor-pointer circle items-center hover:text-indigo-500">
