@@ -273,11 +273,17 @@ const initialValues = {
     email: '',
     contactNumber: '',
     notes: '',
-    designation: ''
+    designation: '',
+    address: "",
+    title: "",
+    zipcode: "",
+    description: "",
+    sourceId: ""
 };
 
 const Contacts = () => {
     const { data: allContacts, loading, error } = useSelector(selectContacts);
+    console.log(error);
     const [state, setState] = useState({
         currentPage: 1,
         searchTerm: '',
@@ -291,7 +297,19 @@ const Contacts = () => {
         setState((prevState) => ({ ...prevState, searchTerm: event.target.value.toLowerCase() }));
     }, []);
 
+    const handleCloseForm = (event) => {
+        if (event.target.classList.contains('overlay')) {
+            setFormMode(null);
+            setShowContactForm(false);
+            setFormValues(initialValues);
+        }
+    }
 
+    const onClose = () => {
+        setShowContactForm(false);
+        setFormMode(null);
+        setFormValues(initialValues)
+    }
 
     // const handleEdit = useCallback(async (contactId) => {
     //     try {
@@ -471,11 +489,12 @@ const Contacts = () => {
                     {/* TaskForm overlay */}
                     {showContactForm && (
                         <div
-                            onClick={(event) => {
-                                if (event.target.classList.contains('overlay')) {
-                                    setShowContactForm(false);
-                                }
-                            }}
+                            // onClick={(event) => {
+                            //     if (event.target.classList.contains('overlay')) {
+                            //         setShowContactForm(false);
+                            //     }
+                            // }}
+                            onClick={handleCloseForm}
                             className="fixed top-0 right-0 w-full  h-full bg-black bg-opacity-80 overlay"
                         >
                             <div className="w-1/2 overflow-y-scroll fixed bg-white h-full p-5  top-0 right-0">
@@ -483,7 +502,7 @@ const Contacts = () => {
                                     formValues={formValues}
                                     formMode={formMode}
                                     setShowContactForm={setShowContactForm}
-                                // onClose={() => setState(prevState => ({ ...prevState, showLeadForm: false }))}
+                                    onClose={onClose}
                                 />
                             </div>
                         </div>

@@ -23,6 +23,7 @@ export const fetchContactById = createAsyncThunk("contacts/fetchContactById", as
 export const addNewContact = createAsyncThunk("contacts/addNewContact", async (newContactData) => {
     try {
         const response = await callApi("POST", "crm/contacts", newContactData);
+        console.log(response.data)
         return response.data;
     } catch (error) {
         throw error;
@@ -40,7 +41,10 @@ export const deleteContact = createAsyncThunk("contacts/deleteContact", async (c
 
 export const editContact = createAsyncThunk("contacts/editContact", async ({ contactId, updatedData }) => {
     try {
+        console.log(contactId)
+        console.log(updatedData)
         const response = await callApi("PUT", `crm/contacts/${contactId}`, updatedData);
+        console.log(response)
         return updatedData;
     } catch (error) {
         console.error("Error editing contact:", error);
@@ -82,6 +86,7 @@ const contactsSlice = createSlice({
             .addCase(editContact.fulfilled, (state, action) => {
                 state.status = "succeeded";
                 const updatedData = action.payload;
+                console.log(updatedData);
                 state.data = state.data.map((contact) =>
                     contact.id === updatedData.id ? updatedData : contact
                 );
@@ -106,6 +111,7 @@ const contactsSlice = createSlice({
             })
             .addCase(addNewContact.fulfilled, (state, action) => {
                 state.status = "succeeded";
+                console.log(action.payload);
                 state.data.push(action.payload);
             })
             .addCase(addNewContact.rejected, (state, action) => {

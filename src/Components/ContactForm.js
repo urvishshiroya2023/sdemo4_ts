@@ -16,11 +16,27 @@ const validationSchema = Yup.object().shape({
     notes: Yup.string(),
 });
 
+const initialValues = {
+    id: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    contactNumber: '',
+    notes: '',
+    designation: '',
+    address: "",
+    title: "",
+    zipcode: "",
+    description: "",
+    sourceId: ""
+};
+
+
 const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
     const [formData, setFormData] = useState(formValues);
     const dispatch = useDispatch();
 
-    console.log(formValues);
+    // console.log(formValues);
 
     useEffect(() => {
         setFormData(formValues);
@@ -28,7 +44,10 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
 
     const navigate = useNavigate();
 
+
+
     const handleSubmit = async (values, { resetForm }) => {
+        console.log(values);
         try {
             const authToken = localStorage.getItem("authToken");
             const headers = {
@@ -38,10 +57,24 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
 
             let response;
 
+            // const updatedData = {
+            //     ...values,
+            // };
+
             const updatedData = {
-                ...values,
-                // Add other fields as needed
+                firstName: values.firstName,
+                lastName: values.lastName,
+                email: values.email,
+                contactNumber: values.contactNumber,
+                designation: values.designation,
+                notes: values.notes,
+                address: values.address || "", // Provide a default value if it's not present in the form
+                title: values.title || "",
+                zipcode: values.zipcode || "",
+                description: values.description || "",
+                sourceId: values.sourceId || "",
             };
+
 
             console.log(formValues);
             const contactId = formValues.id;
@@ -56,6 +89,7 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
             } else {
                 const actionResult = await dispatch(addNewContact(values));
                 response = actionResult.payload;
+                console.log(response);
             }
 
             const successMessage = formMode === "edit" ? "Contact Edited successfully!" : "Contact added successfully!";
@@ -233,6 +267,30 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                 </div>
                             </div>
 
+                            <div className="col-span-1">
+                                <div className={`form-item vertical`}>
+                                    <label className="form-label flex mb-2" htmlFor="address">
+                                        Address
+                                    </label>
+                                    <Field
+                                        as="input"
+                                        type="text"
+                                        id="address"
+                                        name="address"
+                                        placeholder="Address"
+                                        className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${touched.address && errors.address
+                                            ? "border-red-500 border-2"
+                                            : ""
+                                            }`}
+                                    />
+                                    <ErrorMessage
+                                        name="address"
+                                        component="div"
+                                        className="text-red-500"
+                                    />
+                                </div>
+                            </div>
+
                             {/* Add more fields as needed */}
 
                             <div className="col-span-2 mt-10 relative">
@@ -240,8 +298,8 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                     <div>
                                         <button
                                             className="button border rounded h-11 px-8 py-2"
-                                            onClick={() => { setShowContactForm(false) }}
-                                        >
+                                            // onClick={() => { setShowContactForm(false) }}
+                                            onClick={onClose}                                        >
                                             Cancel
                                         </button>
                                     </div>
