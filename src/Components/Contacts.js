@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import ContactData from "./ContactData";
@@ -12,6 +12,7 @@ import {
   fetchContacts,
   selectContacts,
 } from "./Redux/contactSlice";
+import callApi from "./api";
 
 const pageSize = 10;
 
@@ -42,8 +43,9 @@ const Contacts = () => {
   const [formMode, setFormMode] = useState(null);
   const [selectedContactIds, setSelectedContactIds] = useState([]);
   const [isSelected, setIsSelected] = useState(false);
+  const [tagsCategories, setTagsCategories] = useState([]);
 
-  console.log(selectedContactIds);
+  // console.log(selectedContactIds);
   const dispatch = useDispatch();
 
   const handleSearchChange = useCallback((event) => {
@@ -99,6 +101,34 @@ const Contacts = () => {
       setSelectedContactIds([]);
     }
   };
+
+  useEffect(() => {
+    const tagData = async () => {
+      try {
+        //  Get masterId from crm/module
+        const moduleResponse = await callApi("GET", "crm/module", { moduleName: "contacts" });
+
+
+        const contactItem = moduleResponse?.data?.find(item => item.moduleName === 'contacts');
+        const contactId = contactItem ? contactItem.id : null;
+
+        console.log("Contact ID:", contactId);
+        // console.log(moduleResponse.data);
+        const tagCategoryResponse = await callApi("GET", `crm/tag-category/?masterId=${contactId}`);
+        const tagCategories = tagCategoryResponse?.data;
+        setTagsCategories(tagCategories);
+        console.log(tagCategories);
+
+
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    tagData();
+  }, []);
+
+  console.log(tagsCategories);
 
   const handleEdit = useCallback(
     async (contactId) => {
@@ -221,7 +251,7 @@ const Contacts = () => {
             </div>
             {loading && <Loader />}
             {error && <p>Error: {error}</p>}
-            <div className="">
+            <div className="overflow-x-scroll">
               {filteredContacts && filteredContacts.length > 0 ? (
                 <table className="table-auto  w-full mt-5 text-sm border-collapse">
                   <thead>
@@ -244,6 +274,7 @@ const Contacts = () => {
                       <th className="truncate p-3 ">Number</th>
                       <th className="truncate p-3">Source</th>
                       <th className="truncate p-3">Designation</th>
+                      <th className="truncate p-3">Group1</th>
                       <th className="truncate p-3">Haward Education</th>
                       <th className="truncate p-3">Relation</th>
                       <th className="truncate p-3">Region</th>
@@ -264,6 +295,7 @@ const Contacts = () => {
                             handleEdit={handleEdit}
                             isSelected={selectedContactIds.includes(contact.id)}
                             setIsSelected={setIsSelected}
+                            tagsCategories={tagsCategories}
                             key={contact.id}
                             contact={contact}
                           />
@@ -287,11 +319,10 @@ const Contacts = () => {
                 <button
                   key={pageNumber}
                   onClick={() => changePage(pageNumber)}
-                  className={`${
-                    pageNumber === state.currentPage
-                      ? "active text-indigo-600 bg-indigo-50 py-1 px-3 rounded"
-                      : ""
-                  } mx-3`}
+                  className={`${pageNumber === state.currentPage
+                    ? "active text-indigo-600 bg-indigo-50 py-1 px-3 rounded"
+                    : ""
+                    } mx-3`}
                 >
                   {pageNumber}
                 </button>
@@ -314,6 +345,8 @@ const Contacts = () => {
                 <ContactForm
                   formValues={formValues}
                   formMode={formMode}
+                  // tagCategories={tagCategories}
+                  // setTagCategories={setTagCategories}
                   setShowContactForm={setShowContactForm}
                   onClose={onClose}
                 />

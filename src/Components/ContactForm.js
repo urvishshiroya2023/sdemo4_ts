@@ -1,11 +1,12 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as Yup from "yup";
 import { addNewContact, editContact, fetchContacts } from "./Redux/contactSlice";
+import callApi from "./api";
+
 
 const validationSchema = Yup.object().shape({
     firstName: Yup.string().required("First Name is required"),
@@ -24,6 +25,7 @@ const initialValues = {
     contactNumber: '',
     notes: '',
     designation: '',
+    state: "",
     address: "",
     title: "",
     zipcode: "",
@@ -33,13 +35,88 @@ const initialValues = {
 
 const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
     const [formData, setFormData] = useState(formValues);
+    const [states, setStates] = useState([]);
+    const [tagCategories, setTagCategories] = useState([]);
+    const [customCategories, setCustomCategories] = useState([]);
     const dispatch = useDispatch();
+    const statesData = useSelector((state) => state.contacts);
+    // console.log(statesData);
+    // const navigate = useNavigate();
 
     useEffect(() => {
         setFormData(formValues);
     }, [formValues]);
 
-    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const statesData = await getStates();
+                setStates(statesData);
+            } catch (error) {
+                console.error("Error fetching states:", error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        const tagData = async () => {
+            try {
+                //  Get masterId from crm/module
+                const moduleResponse = await callApi("GET", "crm/module", { moduleName: "contacts" });
+
+
+                const contactItem = moduleResponse?.data?.find(item => item.moduleName === 'contacts');
+                const contactId = contactItem ? contactItem.id : null;
+
+                console.log("Contact ID:", contactId);
+                // console.log(moduleResponse.data);
+                const tagCategoryResponse = await callApi("GET", `crm/tag-category/?masterId=${contactId}`);
+                const tagCategories = tagCategoryResponse?.data;
+                setTagCategories(tagCategories);
+                console.log(tagCategories);
+
+                const customCategories = await callApi("GET", `crm/custom-fields?masterId=${contactId}`)
+                setCustomCategories(customCategories?.data);
+                console.log(customCategories.data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        tagData();
+    }, []);
+
+    console.log(customCategories);
+
+    // useEffect(() => {
+    //     dispatch(getStates());
+    // }, [dispatch]);
+
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             await dispatch(fetchContacts());
+    //             await dispatch(getStates());
+    //         } catch (error) {
+    //             console.error("Error fetching data:", error);
+    //         }
+    //     };
+
+    //     fetchData();
+    // }, [dispatch]);
+
+    const getStates = async () => {
+        try {
+            const response = await callApi("GET", "crm/state");
+            // console.log(response.data);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    };
 
     const handleSubmit = async (values, { resetForm }) => {
         console.log(values);
@@ -280,6 +357,152 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                 </div>
                             </div>
 
+                            <div className="col-span-1">
+                                <div className={`form-item vertical`}>
+                                    <label className="form-label flex mb-2" htmlFor="state">
+                                        State
+                                    </label>
+                                    <Field
+                                        as="select"
+                                        type="text"
+                                        id="state"
+                                        name="state"
+                                        placeholder="state"
+
+                                        className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 `}
+                                    >
+                                        {states.map((state) => (
+                                            <option className="" key={state.id} value={state.stateName}>
+                                                {state.stateName}
+                                            </option>
+                                        ))}
+                                    </Field>
+                                    <ErrorMessage
+                                        name="state"
+                                        component=""
+                                        className="text-red-500"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="col-span-1">
+                                <div className={`form-item vertical`}>
+                                    <label className="form-label flex mb-2" htmlFor="state">
+                                        City
+                                    </label>
+                                    <Field
+                                        as="select"
+                                        type="text"
+                                        id="city"
+                                        name="city"
+                                        placeholder="city"
+                                        className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 `}
+                                    >
+
+                                        <option className="" value="">
+                                            city
+                                        </option>
+
+                                    </Field>
+                                    <ErrorMessage
+                                        name="city"
+                                        component=""
+                                        className="text-red-500"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="col-span-1">
+                                <div className={`form-item vertical`}>
+                                    <label className="form-label flex mb-2" htmlFor="zipcode">
+                                        Zip Code
+                                    </label>
+                                    <Field
+                                        as="input"
+                                        type="text"
+                                        id="zipcode"
+                                        name="zipcode"
+                                        placeholder="zipcode"
+                                        className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${touched.zipcode && errors.zipcode
+                                            ? "border-red-500 border-2"
+                                            : ""
+                                            }`}
+                                    />
+                                    <ErrorMessage
+                                        name="zipcode"
+                                        component="div"
+                                        className="text-red-500"
+                                    />
+                                </div>
+                            </div>
+
+
+                            <h1 className="col-span-2 text-black text-xl mt-3">Contact Other Details</h1>
+
+                            {/* <div className="contact-other"> */}
+                            {
+                                tagCategories.map((tag) => (
+                                    <div className="col-span-1">
+                                        <div className={`form-item vertical`}>
+                                            <label className="form-label capitalize flex mb-2" htmlFor="">
+                                                {tag.categoryName}
+                                            </label>
+                                            <Field
+                                                as="select"
+                                                type="text"
+                                                id=""
+                                                name=""
+                                                placeholder=""
+
+                                                className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 `}
+                                            >
+                                                {tag?.tags.map((item) => (
+                                                    <option className="" key={item.id} value={item.tagName}>
+                                                        {item.tagName}
+                                                    </option>
+                                                ))}
+                                            </Field>
+                                            {/* <ErrorMessage
+                                                    name=""
+                                                    component=""
+                                                    className="text-red-500"
+                                                /> */}
+                                        </div>
+                                    </div>
+                                ))
+                            }
+                            {/* </div> */}
+
+                            <h1 className="col-span-2 text-black text-xl mt-3">Additional Details</h1>
+
+
+                            {
+                                customCategories?.map((custom) => (
+                                    <div className="col-span-1">
+                                        <div className={`form-item vertical`}>
+                                            <label className="form-label capitalize flex mb-2" htmlFor="">
+                                                {custom.label}
+                                            </label>
+                                            <Field
+                                                as="input"
+                                                type={`${custom.inputType}`}
+                                                // type="text"
+                                                id=""
+                                                name={`${custom.name}`}
+                                                placeholder={`${custom.label}`}
+
+                                                className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 `}
+                                            >
+                                            </Field>
+                                            {/* <ErrorMessage
+                                                    name=""
+                                                    component=""
+                                                    className="text-red-500"
+                                                /> */}
+                                        </div>
+                                    </div>
+                                ))
+                            }
 
 
                             <div className="col-span-2 mt-10 relative">

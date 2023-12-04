@@ -10,6 +10,7 @@ const ContactData = ({
   onContactSelect,
   isSelected,
   setIsSelected,
+  tagsCategories
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   //   const [isSelected, setIsSelected] = useState(false);
@@ -30,6 +31,8 @@ const ContactData = ({
     setIsSelected(!isSelected);
     onContactSelect(contact.id, !isSelected);
   };
+
+  // console.log(tagCategories);
 
   return (
     <tr className="text-[#6B7280] border-b">
@@ -90,9 +93,9 @@ const ContactData = ({
           </span>
           {/* Modal for confirmation */}
           {isModalOpen &&
-            {
-              /*  modal  */
-            }}
+          {
+            /*  modal  */
+          }}
           <Link
             to={`/contactdetails/${contact.id}`}
             className="text-decoration-none"
@@ -120,9 +123,26 @@ const ContactData = ({
       <td className="truncate p-3">{contact?.contactNumber ?? "-"}</td>
       <td className="truncate p-3">{contact?.source?.sources ?? "-"}</td>
       <td className="truncate p-3">{contact?.title ?? "-"}</td>
-      <td className="truncate p-3">{/* Add logic for Haward Education */}</td>
-      <td className="truncate p-3">{/* Add logic for Relation */}</td>
-      <td className="truncate p-3">{/* Add logic for Region */}</td>
+      {/* {tagsCategories.map((tags) => (
+        <td className="truncate p-3">{ }</td>
+      ))} */}
+      {tagsCategories.map((category) => (
+        <td key={category.id} className="truncate p-3">
+          {contact.tags
+            .filter((tag) => tag.tagCategoryId === category.id)
+            .map((tag) => (
+              <span key={tag.id} style={{
+                backgroundColor: `${tag.colorName}1A`, // '1A' corresponds to 10% opacity
+              }} className={` mr-2 px-2 py-1 rounded-lg`}>
+                <span style={{ color: tag.colorName }}>{tag.tagName}</span>
+              </span>
+            ))}
+          {contact.tags.filter((tag) => tag.tagCategoryId === category.id).length === 0 && '-'}
+        </td>
+      ))}
+      {/* <td className="truncate p-3">Add logic for Haward Education</td> */}
+      {/* <td className="truncate p-3">Add logic for Relation</td> */}
+      {/* <td className="truncate p-3">Add logic for Region</td> */}
       <td className="truncate p-3">{contact?.company?.companyName ?? "-"}</td>
       <td className="truncate p-3">
         {(contact?.address || "-") + " " + (contact?.zipcode || "") || "-"}
