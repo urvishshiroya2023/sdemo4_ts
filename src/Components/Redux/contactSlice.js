@@ -11,27 +11,6 @@ export const fetchContacts = createAsyncThunk("contacts/fetchContacts", async ()
     }
 });
 
-// export const getStates = createAsyncThunk("contacts/state", async () => {
-//     try {
-//         const response = await callApi("GET", "crm/state");
-//         // console.log(response.data);
-//         return response.data;
-//     } catch (error) {
-//         throw error;
-//     }
-// });
-
-
-// const getStates = async () => {
-//     try {
-//         const allState = await callApi("GET", "crm/state")
-//         console.log(allState)
-//         return allState.data;
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
-
 export const fetchContactById = createAsyncThunk("contacts/fetchContactById", async (contactId) => {
     try {
         const response = await callApi("GET", `crm/contacts/${contactId}`);
@@ -96,18 +75,6 @@ const contactsSlice = createSlice({
                 state.status = "failed";
                 state.error = action.error.message;
             })
-            // .addCase(getStates.pending, (state) => {
-            //     state.status = "loading";
-            // })
-            // .addCase(getStates.fulfilled, (state, action) => {
-            //     state.status = "succeeded";
-            //     state.data = action.payload;
-            //     // console.log(action.payload);
-            // })
-            // .addCase(getStates.rejected, (state, action) => {
-            //     state.status = "failed";
-            //     state.error = action.error.message;
-            // })
             .addCase(deleteContact.fulfilled, (state, action) => {
                 state.status = "succeeded";
                 state.data = state.data.filter((contact) => contact.id !== action.payload.id);

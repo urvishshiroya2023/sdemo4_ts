@@ -111,24 +111,6 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
         fetchData();
     }, []);
 
-    // console.log(customCategories);
-
-    // useEffect(() => {
-    //     dispatch(getStates());
-    // }, [dispatch]);
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             await dispatch(fetchContacts());
-    //             await dispatch(getStates());
-    //         } catch (error) {
-    //             console.error("Error fetching data:", error);
-    //         }
-    //     };
-
-    //     fetchData();
-    // }, [dispatch]);
 
     const getStates = async () => {
         try {
@@ -462,44 +444,7 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
 
                             <h1 className="col-span-2 text-black text-xl mt-3">Contact Other Details</h1>
 
-                            {/* <div className="contact-other"> */}
 
-                            {/* <div className="col-span-1">
-                                <div className={`form-item vertical`}>
-                                    <label className="form-label capitalize flex mb-2" htmlFor="">
-                                        Company Name
-                                    </label>
-                                    <Field
-                                        as="select"
-                                        type="text"
-                                        id=""
-                                        name=""
-                                        placeholder="Company Name"
-                                        className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 `}
-                                    >
-                                    </Field>
-                                    
-                                </div>
-                            </div>
-
-                            <div className="col-span-1">
-                                <div className={`form-item vertical`}>
-                                    <label className="form-label capitalize flex mb-2" htmlFor="">
-                                        Contact Source
-                                    </label>
-                                    <Field
-                                        as="select"
-                                        type="text"
-                                        id=""
-                                        name=""
-                                        placeholder="Contact Source"
-
-                                        className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 `}
-                                    >
-
-                                    </Field>
-                                </div>
-                            </div> */}
 
                             {/* Company Name Dropdown */}
                             <div className="col-span-1">
@@ -521,7 +466,7 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                         ))}
                                     </Field>
                                     <ErrorMessage
-                                        name="compan"
+                                        name="company"
                                         component="div"
                                         className="text-red-500"
                                     />
@@ -544,7 +489,6 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                         {contactSources.map((source) => (
                                             <option key={source.id} value={source.sources}>
                                                 {source.sources}
-
                                             </option>
                                         ))}
                                     </Field>
