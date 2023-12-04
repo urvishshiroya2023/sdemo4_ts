@@ -29,7 +29,7 @@ const initialValues = {
   zipcode: "",
   description: "",
   sourceId: "",
-  company: ""
+  companyName: ""
 };
 
 const Contacts = () => {

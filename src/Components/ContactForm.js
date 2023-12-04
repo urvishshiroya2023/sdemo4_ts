@@ -31,7 +31,7 @@ const initialValues = {
     zipcode: "",
     description: "",
     sourceId: "",
-    company: ""
+    companyName: ""
 };
 
 const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
@@ -145,7 +145,7 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                 zipcode: values.zipcode || "",
                 description: values.description || "",
                 sourceId: values.sourceId || "",
-                company: values.company || ""
+                companyName: values.companyName || ""
             };
 
             console.log(formValues);
@@ -449,13 +449,13 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                             {/* Company Name Dropdown */}
                             <div className="col-span-1">
                                 <div className={`form-item vertical`}>
-                                    <label className="form-label capitalize flex mb-2" htmlFor="company">
+                                    <label className="form-label capitalize flex mb-2" htmlFor="companyName">
                                         Company Name
                                     </label>
                                     <Field
                                         as="select"
-                                        id="company"
-                                        name="company"
+                                        id="companyName"
+                                        name="companyName"
                                         placeholder="Company Name"
                                         className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 `}
                                     >
@@ -466,7 +466,7 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                         ))}
                                     </Field>
                                     <ErrorMessage
-                                        name="company"
+                                        name="companyName"
                                         component="div"
                                         className="text-red-500"
                                     />
@@ -505,7 +505,7 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                 tagCategories.map((tag) => (
                                     <div className="col-span-1">
                                         <div className={`form-item vertical`}>
-                                            <label className="form-label capitalize flex mb-2" htmlFor="">
+                                            <label className="form-label capitalize flex mb-2" htmlFor={`${tag.categoryName}`}>
                                                 {tag.categoryName}
                                             </label>
                                             <Field
