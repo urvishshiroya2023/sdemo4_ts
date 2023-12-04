@@ -29,6 +29,7 @@ const initialValues = {
   zipcode: "",
   description: "",
   sourceId: "",
+  company: ""
 };
 
 const Contacts = () => {
@@ -112,12 +113,12 @@ const Contacts = () => {
         const contactItem = moduleResponse?.data?.find(item => item.moduleName === 'contacts');
         const contactId = contactItem ? contactItem.id : null;
 
-        console.log("Contact ID:", contactId);
+        // console.log("Contact ID:", contactId);
         // console.log(moduleResponse.data);
         const tagCategoryResponse = await callApi("GET", `crm/tag-category/?masterId=${contactId}`);
         const tagCategories = tagCategoryResponse?.data;
         setTagsCategories(tagCategories);
-        console.log(tagCategories);
+        // console.log(tagCategories);
 
 
       } catch (error) {
@@ -128,7 +129,7 @@ const Contacts = () => {
     tagData();
   }, []);
 
-  console.log(tagsCategories);
+  // console.log(tagsCategories);
 
   const handleEdit = useCallback(
     async (contactId) => {

@@ -30,7 +30,8 @@ const initialValues = {
     title: "",
     zipcode: "",
     description: "",
-    sourceId: ""
+    sourceId: "",
+    company: ""
 };
 
 const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
@@ -38,6 +39,9 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
     const [states, setStates] = useState([]);
     const [tagCategories, setTagCategories] = useState([]);
     const [customCategories, setCustomCategories] = useState([]);
+    const [companyNames, setCompanyNames] = useState([]);
+    const [contactSources, setContactSources] = useState([]);
+
     const dispatch = useDispatch();
     const statesData = useSelector((state) => state.contacts);
     // console.log(statesData);
@@ -71,16 +75,16 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                 const contactItem = moduleResponse?.data?.find(item => item.moduleName === 'contacts');
                 const contactId = contactItem ? contactItem.id : null;
 
-                console.log("Contact ID:", contactId);
+                // console.log("Contact ID:", contactId);
                 // console.log(moduleResponse.data);
                 const tagCategoryResponse = await callApi("GET", `crm/tag-category/?masterId=${contactId}`);
                 const tagCategories = tagCategoryResponse?.data;
                 setTagCategories(tagCategories);
-                console.log(tagCategories);
+                // console.log(tagCategories);
 
                 const customCategories = await callApi("GET", `crm/custom-fields?masterId=${contactId}`)
                 setCustomCategories(customCategories?.data);
-                console.log(customCategories.data);
+                // console.log(customCategories.data);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -89,7 +93,25 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
         tagData();
     }, []);
 
-    console.log(customCategories);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const companyResponse = await callApi("GET", "crm/company");
+                const contactSourceResponse = await callApi("GET", "crm/source");
+
+                const companyNames = companyResponse?.data;
+                const contactSources = contactSourceResponse?.data;
+
+                setCompanyNames(companyNames);
+                setContactSources(contactSources);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+        fetchData();
+    }, []);
+
+    // console.log(customCategories);
 
     // useEffect(() => {
     //     dispatch(getStates());
@@ -134,13 +156,14 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                 lastName: values.lastName,
                 email: values.email,
                 contactNumber: values.contactNumber,
-                designation: values.designation,
+                designation: values.designation || "",
                 notes: values.notes,
                 address: values.address || "",
                 title: values.title || "",
                 zipcode: values.zipcode || "",
                 description: values.description || "",
                 sourceId: values.sourceId || "",
+                company: values.company || ""
             };
 
             console.log(formValues);
@@ -440,6 +463,100 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                             <h1 className="col-span-2 text-black text-xl mt-3">Contact Other Details</h1>
 
                             {/* <div className="contact-other"> */}
+
+                            {/* <div className="col-span-1">
+                                <div className={`form-item vertical`}>
+                                    <label className="form-label capitalize flex mb-2" htmlFor="">
+                                        Company Name
+                                    </label>
+                                    <Field
+                                        as="select"
+                                        type="text"
+                                        id=""
+                                        name=""
+                                        placeholder="Company Name"
+                                        className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 `}
+                                    >
+                                    </Field>
+                                    
+                                </div>
+                            </div>
+
+                            <div className="col-span-1">
+                                <div className={`form-item vertical`}>
+                                    <label className="form-label capitalize flex mb-2" htmlFor="">
+                                        Contact Source
+                                    </label>
+                                    <Field
+                                        as="select"
+                                        type="text"
+                                        id=""
+                                        name=""
+                                        placeholder="Contact Source"
+
+                                        className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 `}
+                                    >
+
+                                    </Field>
+                                </div>
+                            </div> */}
+
+                            {/* Company Name Dropdown */}
+                            <div className="col-span-1">
+                                <div className={`form-item vertical`}>
+                                    <label className="form-label capitalize flex mb-2" htmlFor="company">
+                                        Company Name
+                                    </label>
+                                    <Field
+                                        as="select"
+                                        id="company"
+                                        name="company"
+                                        placeholder="Company Name"
+                                        className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 `}
+                                    >
+                                        {companyNames.map((company) => (
+                                            <option key={company.id} value={company.companyName}>
+                                                {company.companyName}
+                                            </option>
+                                        ))}
+                                    </Field>
+                                    <ErrorMessage
+                                        name="compan"
+                                        component="div"
+                                        className="text-red-500"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Contact Source Dropdown */}
+                            <div className="col-span-1">
+                                <div className={`form-item vertical`}>
+                                    <label className="form-label capitalize flex mb-2" htmlFor="contactSource">
+                                        Contact Source
+                                    </label>
+                                    <Field
+                                        as="select"
+                                        id="contactSource"
+                                        name="contactSource"
+                                        placeholder="Contact Source"
+                                        className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 `}
+                                    >
+                                        {contactSources.map((source) => (
+                                            <option key={source.id} value={source.sources}>
+                                                {source.sources}
+
+                                            </option>
+                                        ))}
+                                    </Field>
+                                    <ErrorMessage
+                                        name="contactSource"
+                                        component="div"
+                                        className="text-red-500"
+                                    />
+                                </div>
+                            </div>
+
+
                             {
                                 tagCategories.map((tag) => (
                                     <div className="col-span-1">
