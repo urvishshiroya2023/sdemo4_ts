@@ -29,7 +29,7 @@ const initialValues = {
   zipcode: "",
   description: "",
   sourceId: "",
-  companyName: ""
+  companyName: "",
 };
 
 const Contacts = () => {
@@ -107,20 +107,24 @@ const Contacts = () => {
     const tagData = async () => {
       try {
         //  Get masterId from crm/module
-        const moduleResponse = await callApi("GET", "crm/module", { moduleName: "contacts" });
+        const moduleResponse = await callApi("GET", "crm/module", {
+          moduleName: "contacts",
+        });
 
-
-        const contactItem = moduleResponse?.data?.find(item => item.moduleName === 'contacts');
+        const contactItem = moduleResponse?.data?.find(
+          (item) => item.moduleName === "contacts"
+        );
         const contactId = contactItem ? contactItem.id : null;
 
         // console.log("Contact ID:", contactId);
         // console.log(moduleResponse.data);
-        const tagCategoryResponse = await callApi("GET", `crm/tag-category/?masterId=${contactId}`);
+        const tagCategoryResponse = await callApi(
+          "GET",
+          `crm/tag-category/?masterId=${contactId}`
+        );
         const tagCategories = tagCategoryResponse?.data;
         setTagsCategories(tagCategories);
         // console.log(tagCategories);
-
-
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -320,10 +324,11 @@ const Contacts = () => {
                 <button
                   key={pageNumber}
                   onClick={() => changePage(pageNumber)}
-                  className={`${pageNumber === state.currentPage
-                    ? "active text-indigo-600 bg-indigo-50 py-1 px-3 rounded"
-                    : ""
-                    } mx-3`}
+                  className={`${
+                    pageNumber === state.currentPage
+                      ? "active text-indigo-600 bg-indigo-50 py-1 px-3 rounded"
+                      : ""
+                  } mx-3`}
                 >
                   {pageNumber}
                 </button>
@@ -342,7 +347,7 @@ const Contacts = () => {
               onClick={handleCloseForm}
               className="fixed top-0 right-0 w-full  h-full bg-black bg-opacity-80 overlay"
             >
-              <div className="w-1/2 overflow-y-scroll fixed bg-white h-full p-5  top-0 right-0">
+              <div className="w-1/2  fixed bg-white h-full p-5  top-0 right-0">
                 <ContactForm
                   formValues={formValues}
                   formMode={formMode}
