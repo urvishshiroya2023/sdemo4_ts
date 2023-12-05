@@ -1,5 +1,5 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -50,14 +50,26 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
     const [companyNames, setCompanyNames] = useState([]);
     const [contactSources, setContactSources] = useState([]);
     const [selectedTags, setSelectedTags] = useState([]);
+
     console.log(selectedTags);
+
 
     const dispatch = useDispatch();
     const statesData = useSelector((state) => state.contacts);
 
+    // useEffect(() => {
+    //     setFieldValue("tagId", selectedTags);
+    // }, [selectedTags])
 
-    // console.log(tagCategories);
+    const formikRef = useRef();
 
+    useEffect(() => {
+        if (formikRef.current) {
+            const setFieldValue = formikRef.current.setFieldValue;
+            // Now you can use setFieldValue in your useEffect
+            setFieldValue('tagId', selectedTags);
+        }
+    }, [selectedTags]);
 
     useEffect(() => {
         setFormData(formValues);
@@ -140,7 +152,6 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
             throw error;
         }
     };
-
     const handleSubmit = async (values, { resetForm }) => {
         console.log(values);
         const tagIds = values.tagId;
@@ -153,8 +164,6 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
             };
 
             let response;
-
-
             const updatedData = {
                 firstName: values.firstName,
                 lastName: values.lastName,
@@ -166,14 +175,13 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                 title: values.designation || "",
                 zipcode: values.zipcode || "",
 
-                companiesId: values.companiesId || "", // Assuming companiesId is part of your payload
+                companiesId: values.companiesId || "",
                 companyName: values.companyName || "",
 
                 sourceId: values.sourceId || "",
                 tagId: selectedTags,
 
             };
-
             console.log(formValues);
             const contactId = formValues.id;
 
@@ -211,11 +219,6 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
         }
     };
 
-    // useEffect(() => {
-    //     console.log('Tag Categories:', tagCategories);
-    //     // Rest of the code...
-    // }, []);
-
     return (
         <div className="bg-white overflow-y-auto h-[100vh]">
             <div className="container p-4">
@@ -228,6 +231,7 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                 </div>
 
                 <Formik
+                    innerRef={formikRef}
                     initialValues={formValues}
                     validationSchema={validationSchema}
                     onSubmit={handleSubmit}
@@ -556,33 +560,7 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                         >
                                             {tag.categoryName}
                                         </label>
-                                        {/* <SelectField
-                                            name={tag.categoryName}
-                                            options={tag.tags.map((item) => ({
-                                                value: item.tagName,
-                                                label: item.tagName,
-                                            }))}
-                                            className="react-select-container"
-                                            classNamePrefix="react-select"
-                                            isMulti
-                                        /> */}
-                                        {/* <SelectField
-                                            name={tag.categoryName}
-                                            options={tag.tags.map((item) => ({
-                                                value: item.id,
-                                                label: item.tagName,
-                                            }))}
-                                            className="react-select-container"
-                                            classNamePrefix="react-select"
-                                            isMulti
-                                            onChange={(selectedOptions) => {
-                                                const tagIds = selectedOptions.map((option) => option.value);
-                                                console.log(tagIds);
-                                                setSelectedTags((prevTags) => [...prevTags, ...tagIds]);
-                                                // setFieldValue(tag.categoryName, tagIds); // Update the form field
-                                                setFieldValue("tagId", [...selectedTags, ...tagIds]);
-                                            }}
-                                        /> */}
+
                                         <SelectField
                                             name={tag.categoryName}
                                             options={tag.tags.map((item) => ({
@@ -599,40 +577,32 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                                 const tagIds = selectedOptions.map((option) => option.value);
                                                 console.log(`Tag IDs for ${tag.categoryName}:`, tagIds);
 
-                                                // const updatedTags = [...selectedTags, ...tagIds];
-                                                // console.log(updatedTags);
-
-                                                // const uniqueTags = [...new Set(updatedTags)];
-
-                                                // // Update the state with unique tag IDs
-                                                // setSelectedTags(uniqueTags);
-
                                                 if (action === 'remove-value' && removedValue) {
                                                     const removedTagId = removedValue.value;
 
                                                     // Remove the item from the selectedTags state
-                                                    setSelectedTags((prevSelectedTags) =>
-                                                        prevSelectedTags.filter((tagId) => tagId !== removedTagId)
-                                                    );
-                                                    console.log(selectedTags);
+                                                    // setSelectedTags((prevSelectedTags) =>
+                                                    //     prevSelectedTags.filter((tagId) => tagId !== removedTagId)
+                                                    // );
+                                                    // console.log(selectedTags);
+                                                    setSelectedTags((prevSelectedTags) => {
+                                                        const newSelectedTags = prevSelectedTags.filter((tagId) => tagId !== removedTagId);
+                                                        console.log(newSelectedTags);
+                                                        return newSelectedTags;
+                                                    });
                                                 } else {
                                                     // Combine existing selected tags with new ones
                                                     const updatedTags = [...selectedTags, ...tagIds];
 
                                                     // Use Set to ensure unique tag IDs
                                                     const uniqueTags = [...new Set(updatedTags)];
-                                                    console.log(uniqueTags)
+                                                    // console.log(uniqueTags)
                                                     // Update the state with unique tag IDs
                                                     setSelectedTags(uniqueTags);
                                                 }
 
-                                                // // Update the state with unique tag IDs
-                                                // setSelectedTags(uniqueTags);
-                                                // setFieldValue(tag.categoryName, tagIds);
-
-                                                // // Update the tagId field in the form
-                                                // console.log(selectedTags);
-                                                setFieldValue("tagId", selectedTags);
+                                                console.log(selectedTags);
+                                                // setFieldValue("tagId", selectedTags);
                                             }}
                                         />
 
