@@ -1,6 +1,7 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Select from 'react-select';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as Yup from "yup";
@@ -54,7 +55,7 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
     // const navigate = useNavigate();
 
     // console.log(tagCategories);
-    console.log(companyNames);
+    // console.log(companyNames);
 
     useEffect(() => {
         setFormData(formValues);
@@ -149,20 +150,6 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
 
             let response;
 
-            //   const updatedData = {
-            //     firstName: values.firstName,
-            //     lastName: values.lastName,
-            //     email: values.email,
-            //     contactNumber: values.contactNumber,
-            //     designation: values.designation || "",
-            //     notes: values.notes,
-            //     address: values.address || "",
-            //     title: values.title || "",
-            //     zipcode: values.zipcode || "",
-            //     description: values.description || "",
-            //     sourceId: values.sourceId || "",
-            //     companyName: values.companyName || "",
-            //   };
 
             const updatedData = {
                 firstName: values.firstName,
@@ -175,21 +162,11 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                 title: values.designation || "",
                 zipcode: values.zipcode || "",
 
-                // ... Add other fields from your payload ...
-
-                // stateId: values.stateId || null, // Assuming stateId is part of your payload
-
-                // Company-related fields
                 companiesId: values.companiesId || "", // Assuming companiesId is part of your payload
                 companyName: values.companyName || "",
 
-                // Source-related fields
                 sourceId: values.sourceId || "",
 
-                // Tag-related fields
-                // tagId: values.tagId.map((tag) => tag.value) || [],
-
-                // ... Add other custom fields from your payload ...
             };
 
             console.log(formValues);
@@ -560,7 +537,7 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                 </div>
                             </div>
 
-                            {tagCategories.map((tag) => (
+                            {/* {tagCategories.map((tag) => (
                                 <div className="col-span-1">
                                     <div className={`form-item vertical`}>
                                         <label
@@ -585,8 +562,70 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                         </Field>
                                     </div>
                                 </div>
+                            ))} */}
+
+                            {/* {tagCategories.map((tag) => (
+                                <div className="col-span-1" key={tag.categoryName}>
+                                    <div className={`form-item vertical`}>
+                                        <label
+                                            className="form-label capitalize flex mb-2"
+                                            htmlFor={`${tag.categoryName}`}
+                                        >
+                                            {tag.categoryName}
+                                        </label>
+                                        <Field
+                                            name={tag.categoryName}
+                                            type="input"
+                                            render={({ field }) => (
+                                                <Select
+                                                    {...field}
+                                                    isMulti
+                                                    options={tag.tags.map((item) => ({
+                                                        value: item.tagName,
+                                                        label: item.tagName,
+                                                    }))}
+                                                    className="react-select-container"
+                                                    classNamePrefix="react-select"
+                                                />
+                                            )}
+                                        />
+                                    </div>
+                                </div>
+                            ))} */}
+
+                            {tagCategories.map((tag) => (
+                                <div className="col-span-1" key={tag.categoryName}>
+                                    <div className={`form-item vertical`}>
+                                        <label
+                                            className="form-label capitalize flex mb-2"
+                                            htmlFor={`${tag.categoryName}`}
+                                        >
+                                            {tag.categoryName}
+                                        </label>
+                                        <Field
+                                            name={tag.categoryName}
+                                            render={({ field }) => {
+                                                const { value, onChange, onBlur } = field;
+
+                                                return (
+                                                    <Select
+                                                        value={value}
+                                                        onChange={(selectedOptions) => onChange(selectedOptions)}
+                                                        onBlur={onBlur}
+                                                        isMulti
+                                                        options={tag.tags.map((item) => ({
+                                                            value: item.tagName,
+                                                            label: item.tagName,
+                                                        }))}
+                                                        className="react-select-container"
+                                                        classNamePrefix="react-select"
+                                                    />
+                                                );
+                                            }}
+                                        />
+                                    </div>
+                                </div>
                             ))}
-                            {/* </div> */}
 
                             <h1 className="col-span-2 text-black text-xl mt-3">
                                 Additional Details
