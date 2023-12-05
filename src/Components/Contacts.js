@@ -30,7 +30,8 @@ const initialValues = {
   description: "",
   sourceId: "",
   companyName: "",
-  tagId: []
+  tagId: [],
+  companiesId: ""
 };
 
 const Contacts = () => {
@@ -47,7 +48,7 @@ const Contacts = () => {
   const [isSelected, setIsSelected] = useState(false);
   const [tagsCategories, setTagsCategories] = useState([]);
 
-  // console.log(selectedContactIds);
+
   const dispatch = useDispatch();
 
   const handleSearchChange = useCallback((event) => {
@@ -143,6 +144,7 @@ const Contacts = () => {
         setShowContactForm(true);
         setFormMode("edit");
         const b = allContacts.find((contact) => contact.id === contactId);
+        // console.log(b);
         setFormValues(b);
         console.log();
       } catch (error) {

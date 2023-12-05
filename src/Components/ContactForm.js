@@ -38,6 +38,7 @@ const initialValues = {
     description: "",
     sourceId: "",
     companyName: "",
+    companiesId: "",
     tagId: []
 
 };
@@ -50,23 +51,16 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
     const [companyNames, setCompanyNames] = useState([]);
     const [contactSources, setContactSources] = useState([]);
     const [selectedTags, setSelectedTags] = useState([]);
-
-    console.log(selectedTags);
-
+    // console.log(formValues);
 
     const dispatch = useDispatch();
     const statesData = useSelector((state) => state.contacts);
-
-    // useEffect(() => {
-    //     setFieldValue("tagId", selectedTags);
-    // }, [selectedTags])
 
     const formikRef = useRef();
 
     useEffect(() => {
         if (formikRef.current) {
             const setFieldValue = formikRef.current.setFieldValue;
-            // Now you can use setFieldValue in your useEffect
             setFieldValue('tagId', selectedTags);
         }
     }, [selectedTags]);
@@ -91,7 +85,6 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
     useEffect(() => {
         const tagData = async () => {
             try {
-                //  Get masterId from crm/module
                 const moduleResponse = await callApi("GET", "crm/module", {
                     moduleName: "contacts",
                 });
@@ -100,23 +93,18 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                     (item) => item.moduleName === "contacts"
                 );
                 const contactId = contactItem ? contactItem.id : null;
-
-                // console.log("Contact ID:", contactId);
-                // console.log(moduleResponse.data);
                 const tagCategoryResponse = await callApi(
                     "GET",
                     `crm/tag-category/?masterId=${contactId}`
                 );
                 const tagCategories = tagCategoryResponse?.data;
                 setTagCategories(tagCategories);
-                // console.log(tagCategories);
 
                 const customCategories = await callApi(
                     "GET",
                     `crm/custom-fields?masterId=${contactId}`
                 );
                 setCustomCategories(customCategories?.data);
-                // console.log(customCategories.data);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
@@ -169,26 +157,26 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                 lastName: values.lastName,
                 email: values.email,
                 contactNumber: values.contactNumber,
-                designation: values.designation || "",
+                title: values.title || "",
                 notes: values.notes || "",
                 address: values.address || "",
-                title: values.designation || "",
                 zipcode: values.zipcode || "",
-
                 companiesId: values.companiesId || "",
                 companyName: values.companyName || "",
-
                 sourceId: values.sourceId || "",
-                tagId: selectedTags,
+                tagId: values.tagId,
 
             };
             console.log(formValues);
+
             const contactId = formValues.id;
+            console.log(contactId);
 
             if (formMode === "edit") {
                 const actionResult = await dispatch(
                     editContact({ contactId, updatedData })
                 );
+
                 response = actionResult?.payload;
                 if (response.success) {
                     dispatch(fetchContacts());
@@ -345,8 +333,8 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                     <Field
                                         as="input"
                                         type="text"
-                                        id="designation"
-                                        name="designation"
+                                        id="title"
+                                        name="title"
                                         placeholder="Designation"
                                         className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 ${touched.designation && errors.designation
                                             ? "border-red-500 border-2"
@@ -502,8 +490,8 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                     </label>
                                     <Field
                                         as="select"
-                                        id="companyName"
-                                        name="companyName"
+                                        id="companiesId"
+                                        name="companiesId"
                                         placeholder="Company Name"
                                         className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 `}
                                     >
@@ -571,41 +559,24 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                             classNamePrefix="react-select"
                                             isMulti
                                             onChange={(selectedOptions, { action, removedValue }) => {
-                                                // console.log('Action:', action);
-                                                // console.log('Removed Value:', removedValue?.value);
                                                 console.log("caling..")
                                                 const tagIds = selectedOptions.map((option) => option.value);
                                                 console.log(`Tag IDs for ${tag.categoryName}:`, tagIds);
-
                                                 if (action === 'remove-value' && removedValue) {
                                                     const removedTagId = removedValue.value;
-
-                                                    // Remove the item from the selectedTags state
-                                                    // setSelectedTags((prevSelectedTags) =>
-                                                    //     prevSelectedTags.filter((tagId) => tagId !== removedTagId)
-                                                    // );
-                                                    // console.log(selectedTags);
                                                     setSelectedTags((prevSelectedTags) => {
                                                         const newSelectedTags = prevSelectedTags.filter((tagId) => tagId !== removedTagId);
                                                         console.log(newSelectedTags);
                                                         return newSelectedTags;
                                                     });
                                                 } else {
-                                                    // Combine existing selected tags with new ones
                                                     const updatedTags = [...selectedTags, ...tagIds];
-
-                                                    // Use Set to ensure unique tag IDs
                                                     const uniqueTags = [...new Set(updatedTags)];
-                                                    // console.log(uniqueTags)
-                                                    // Update the state with unique tag IDs
                                                     setSelectedTags(uniqueTags);
                                                 }
-
                                                 console.log(selectedTags);
-                                                // setFieldValue("tagId", selectedTags);
                                             }}
                                         />
-
                                     </div>
                                 </div>
                             ))}
@@ -626,17 +597,11 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                         <Field
                                             as="input"
                                             type={`${custom.inputType}`}
-                                            // type="text"
                                             id=""
                                             name={`${custom.name}`}
                                             placeholder={`${custom.label}`}
                                             className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 `}
                                         ></Field>
-                                        {/* <ErrorMessage
-                                                    name=""
-                                                    component=""
-                                                    className="text-red-500"
-                                                /> */}
                                     </div>
                                 </div>
                             ))}
