@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { deleteContact, fetchContacts } from "./Redux/contactSlice";
+import callApi from "./api";
 
 const ContactData = ({
   contact,
@@ -13,8 +14,10 @@ const ContactData = ({
   tagsCategories,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [companyData, setCompanyData] = useState([]);
   //   const [isSelected, setIsSelected] = useState(false);
   const dispatch = useDispatch();
+  // console.log(companyData)
 
   const handleDelete = async () => {
     try {
@@ -27,13 +30,29 @@ const ContactData = ({
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const companyResponse = await callApi("GET", "crm/company");
+
+        const companyNames = companyResponse?.data;
+
+        setCompanyData(companyNames);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+
   const handleCheckboxChange = () => {
     setIsSelected(!isSelected);
     onContactSelect(contact.id, !isSelected);
   };
 
   // console.log(tagCategories);
-  console.log(contact);
+  // console.log(contact);
 
   return (
     <tr className="text-[#6B7280] border-b">
@@ -94,9 +113,9 @@ const ContactData = ({
           </span>
           {/* Modal for confirmation */}
           {isModalOpen &&
-            {
-              /*  modal  */
-            }}
+          {
+            /*  modal  */
+          }}
           <Link
             to={`/contactdetails/${contact.id}`}
             className="text-decoration-none"
@@ -127,7 +146,7 @@ const ContactData = ({
       {/* {tagsCategories.map((tags) => (
         <td className="truncate p-3">{ }</td>
       ))} */}
-      {tagsCategories.map((category) => (
+      {/* {tagsCategories.map((category) => (
         <td key={category.id} className="truncate p-3">
           {contact.tags
             .filter((tag) => tag.tagCategoryId === category.id)
@@ -145,11 +164,48 @@ const ContactData = ({
           {contact.tags.filter((tag) => tag.tagCategoryId === category.id)
             .length === 0 && "-"}
         </td>
-      ))}
+      ))} */}
+      {tagsCategories.map((category) => {
+        const categoryTags = contact.tags.filter((tag) => tag.tagCategoryId === category.id);
+        const hasTags = categoryTags.length > 0;
+
+        return (
+          <td key={category.id} className="truncate p-3">
+            {hasTags ? (
+              categoryTags.map((tag) => (
+                <span
+                  key={tag.id}
+                  style={{
+                    backgroundColor: `${tag.colorName}1A`, // '1A' corresponds to 10% opacity
+                  }}
+                  className="mr-2 px-2 py-1 rounded-lg"
+                >
+                  <span style={{ color: tag.colorName }}>{tag.tagName}</span>
+                </span>
+              ))
+            ) : (
+              "-"
+            )}
+          </td>
+        );
+      })}
+
       {/* <td className="truncate p-3">Add logic for Haward Education</td> */}
       {/* <td className="truncate p-3">Add logic for Relation</td> */}
       {/* <td className="truncate p-3">Add logic for Region</td> */}
-      <td className="truncate p-3">{contact?.company?.companyName ?? "-"}</td>
+      {/* <td className="truncate p-3">{contact?.company?.companyName ?? "-"}</td> */}
+      <td className="truncate p-3">
+        {companyData?.map((company) => {
+          // console.log(contact);
+          if (company.id === contact?.companiesId) {
+            // console.log(company?.id);
+            // console.log(contact?.company?.companiesId);
+            // console.log(company?.companyName);
+            return company.companyName;
+          }
+          return null;
+        }) ?? "-"}
+      </td>
       <td className="truncate p-3">
         {(contact?.address || "-") + " " + (contact?.zipcode || "") || "-"}
       </td>
