@@ -49,14 +49,15 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
     const [customCategories, setCustomCategories] = useState([]);
     const [companyNames, setCompanyNames] = useState([]);
     const [contactSources, setContactSources] = useState([]);
+    const [selectedTags, setSelectedTags] = useState([]);
+    console.log(selectedTags);
 
     const dispatch = useDispatch();
     const statesData = useSelector((state) => state.contacts);
-    // console.log(statesData);
-    // const navigate = useNavigate();
 
-    console.log(tagCategories);
-    // console.log(companyNames);
+
+    // console.log(tagCategories);
+
 
     useEffect(() => {
         setFormData(formValues);
@@ -142,6 +143,8 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
 
     const handleSubmit = async (values, { resetForm }) => {
         console.log(values);
+        const tagIds = values.tagId;
+        console.log("All Tag IDs:", tagIds);
         try {
             const authToken = localStorage.getItem("authToken");
             const headers = {
@@ -167,6 +170,7 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                 companyName: values.companyName || "",
 
                 sourceId: values.sourceId || "",
+                tagId: selectedTags,
 
             };
 
@@ -183,7 +187,7 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                 }
             } else {
                 const actionResult = await dispatch(addNewContact(values));
-                response = actionResult.payload;
+                response = actionResult?.payload;
                 console.log(response);
             }
 
@@ -206,6 +210,11 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
             });
         }
     };
+
+    // useEffect(() => {
+    //     console.log('Tag Categories:', tagCategories);
+    //     // Rest of the code...
+    // }, []);
 
     return (
         <div className="bg-white overflow-y-auto h-[100vh]">
@@ -495,7 +504,7 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                         className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 `}
                                     >
                                         {companyNames.map((company) => (
-                                            <option key={company.id} value={company.companyName}>
+                                            <option key={company.id} value={company.id}>
                                                 {company.companyName}
                                             </option>
                                         ))}
@@ -538,41 +547,6 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                 </div>
                             </div>
 
-
-                            {/* {tagCategories.map((tag) => (
-                                <div className="col-span-1" key={tag.categoryName}>
-                                    <div className={`form-item vertical`}>
-                                        <label
-                                            className="form-label capitalize flex mb-2"
-                                            htmlFor={`${tag.categoryName}`}
-                                        >
-                                            {tag.categoryName}
-                                        </label>
-                                        <Field
-                                            name={tag.categoryName}
-                                            render={({ field }) => {
-                                                const { value, onChange, onBlur } = field;
-
-                                                return (
-                                                    <Select
-                                                        value={value}
-                                                        onChange={(selectedOptions) => onChange(selectedOptions)}
-                                                        onBlur={onBlur}
-                                                        isMulti
-                                                        options={tag.tags.map((item) => ({
-                                                            value: item.tagName,
-                                                            label: item.tagName,
-                                                        }))}
-                                                        className="react-select-container"
-                                                        classNamePrefix="react-select"
-                                                    />
-                                                );
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                            ))} */}
-
                             {tagCategories.map((tag) => (
                                 <div className="col-span-1" key={tag.categoryName}>
                                     <div className={`form-item vertical`}>
@@ -582,7 +556,7 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                         >
                                             {tag.categoryName}
                                         </label>
-                                        <SelectField
+                                        {/* <SelectField
                                             name={tag.categoryName}
                                             options={tag.tags.map((item) => ({
                                                 value: item.tagName,
@@ -591,7 +565,77 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                             className="react-select-container"
                                             classNamePrefix="react-select"
                                             isMulti
+                                        /> */}
+                                        {/* <SelectField
+                                            name={tag.categoryName}
+                                            options={tag.tags.map((item) => ({
+                                                value: item.id,
+                                                label: item.tagName,
+                                            }))}
+                                            className="react-select-container"
+                                            classNamePrefix="react-select"
+                                            isMulti
+                                            onChange={(selectedOptions) => {
+                                                const tagIds = selectedOptions.map((option) => option.value);
+                                                console.log(tagIds);
+                                                setSelectedTags((prevTags) => [...prevTags, ...tagIds]);
+                                                // setFieldValue(tag.categoryName, tagIds); // Update the form field
+                                                setFieldValue("tagId", [...selectedTags, ...tagIds]);
+                                            }}
+                                        /> */}
+                                        <SelectField
+                                            name={tag.categoryName}
+                                            options={tag.tags.map((item) => ({
+                                                value: item.id,
+                                                label: item.tagName,
+                                            }))}
+                                            className="react-select-container"
+                                            classNamePrefix="react-select"
+                                            isMulti
+                                            onChange={(selectedOptions, { action, removedValue }) => {
+                                                // console.log('Action:', action);
+                                                // console.log('Removed Value:', removedValue?.value);
+                                                console.log("caling..")
+                                                const tagIds = selectedOptions.map((option) => option.value);
+                                                console.log(`Tag IDs for ${tag.categoryName}:`, tagIds);
+
+                                                // const updatedTags = [...selectedTags, ...tagIds];
+                                                // console.log(updatedTags);
+
+                                                // const uniqueTags = [...new Set(updatedTags)];
+
+                                                // // Update the state with unique tag IDs
+                                                // setSelectedTags(uniqueTags);
+
+                                                if (action === 'remove-value' && removedValue) {
+                                                    const removedTagId = removedValue.value;
+
+                                                    // Remove the item from the selectedTags state
+                                                    setSelectedTags((prevSelectedTags) =>
+                                                        prevSelectedTags.filter((tagId) => tagId !== removedTagId)
+                                                    );
+                                                    console.log(selectedTags);
+                                                } else {
+                                                    // Combine existing selected tags with new ones
+                                                    const updatedTags = [...selectedTags, ...tagIds];
+
+                                                    // Use Set to ensure unique tag IDs
+                                                    const uniqueTags = [...new Set(updatedTags)];
+                                                    console.log(uniqueTags)
+                                                    // Update the state with unique tag IDs
+                                                    setSelectedTags(uniqueTags);
+                                                }
+
+                                                // // Update the state with unique tag IDs
+                                                // setSelectedTags(uniqueTags);
+                                                // setFieldValue(tag.categoryName, tagIds);
+
+                                                // // Update the tagId field in the form
+                                                // console.log(selectedTags);
+                                                setFieldValue("tagId", selectedTags);
+                                            }}
                                         />
+
                                     </div>
                                 </div>
                             ))}

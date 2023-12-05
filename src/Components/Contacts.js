@@ -30,7 +30,7 @@ const initialValues = {
   description: "",
   sourceId: "",
   companyName: "",
-  tagId: ""
+  tagId: []
 };
 
 const Contacts = () => {
@@ -326,8 +326,8 @@ const Contacts = () => {
                   key={pageNumber}
                   onClick={() => changePage(pageNumber)}
                   className={`${pageNumber === state.currentPage
-                      ? "active text-indigo-600 bg-indigo-50 py-1 px-3 rounded"
-                      : ""
+                    ? "active text-indigo-600 bg-indigo-50 py-1 px-3 rounded"
+                    : ""
                     } mx-3`}
                 >
                   {pageNumber}
