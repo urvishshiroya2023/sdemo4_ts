@@ -144,7 +144,7 @@ const Contacts = () => {
         setShowContactForm(true);
         setFormMode("edit");
         const b = allContacts.find((contact) => contact.id === contactId);
-        // console.log(b);
+        console.log(b);
         setFormValues(b);
         console.log();
       } catch (error) {
