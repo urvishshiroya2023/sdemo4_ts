@@ -1,7 +1,6 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Select from 'react-select';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as Yup from "yup";
@@ -10,6 +9,7 @@ import {
     editContact,
     fetchContacts,
 } from "./Redux/contactSlice";
+import SelectField from "./SelectFiled";
 import callApi from "./api";
 
 const validationSchema = Yup.object().shape({
@@ -38,6 +38,7 @@ const initialValues = {
     description: "",
     sourceId: "",
     companyName: "",
+    tagId: []
 
 };
 
@@ -54,7 +55,7 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
     // console.log(statesData);
     // const navigate = useNavigate();
 
-    // console.log(tagCategories);
+    console.log(tagCategories);
     // console.log(companyNames);
 
     useEffect(() => {
@@ -537,63 +538,8 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                 </div>
                             </div>
 
-                            {/* {tagCategories.map((tag) => (
-                                <div className="col-span-1">
-                                    <div className={`form-item vertical`}>
-                                        <label
-                                            className="form-label capitalize flex mb-2"
-                                            htmlFor={`${tag.categoryName}`}
-                                        >
-                                            {tag.categoryName}
-                                        </label>
-                                        <Field
-                                            as="select"
-                                            type="text"
-                                            id=""
-                                            name={tag.categoryName}
-                                            placeholder={tag.categoryName}
-                                            className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 `}
-                                        >
-                                            {tag?.tags.map((item) => (
-                                                <option className="" key={item.id} value={item.tagName}>
-                                                    {item.tagName}
-                                                </option>
-                                            ))}
-                                        </Field>
-                                    </div>
-                                </div>
-                            ))} */}
 
                             {/* {tagCategories.map((tag) => (
-                                <div className="col-span-1" key={tag.categoryName}>
-                                    <div className={`form-item vertical`}>
-                                        <label
-                                            className="form-label capitalize flex mb-2"
-                                            htmlFor={`${tag.categoryName}`}
-                                        >
-                                            {tag.categoryName}
-                                        </label>
-                                        <Field
-                                            name={tag.categoryName}
-                                            type="input"
-                                            render={({ field }) => (
-                                                <Select
-                                                    {...field}
-                                                    isMulti
-                                                    options={tag.tags.map((item) => ({
-                                                        value: item.tagName,
-                                                        label: item.tagName,
-                                                    }))}
-                                                    className="react-select-container"
-                                                    classNamePrefix="react-select"
-                                                />
-                                            )}
-                                        />
-                                    </div>
-                                </div>
-                            ))} */}
-
-                            {tagCategories.map((tag) => (
                                 <div className="col-span-1" key={tag.categoryName}>
                                     <div className={`form-item vertical`}>
                                         <label
@@ -622,6 +568,29 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                                     />
                                                 );
                                             }}
+                                        />
+                                    </div>
+                                </div>
+                            ))} */}
+
+                            {tagCategories.map((tag) => (
+                                <div className="col-span-1" key={tag.categoryName}>
+                                    <div className={`form-item vertical`}>
+                                        <label
+                                            className="form-label capitalize flex mb-2"
+                                            htmlFor={`${tag.categoryName}`}
+                                        >
+                                            {tag.categoryName}
+                                        </label>
+                                        <SelectField
+                                            name={tag.categoryName}
+                                            options={tag.tags.map((item) => ({
+                                                value: item.tagName,
+                                                label: item.tagName,
+                                            }))}
+                                            className="react-select-container"
+                                            classNamePrefix="react-select"
+                                            isMulti
                                         />
                                     </div>
                                 </div>
@@ -658,7 +627,7 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                 </div>
                             ))}
 
-                            <div className="col-span-2 mt-10 relative">
+                            <div className="col-span-2 my-10 relative">
                                 <div className="flex gap-x-4 absolute bottom-0 right-0">
                                     <div>
                                         <button
