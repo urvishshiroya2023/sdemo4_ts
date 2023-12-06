@@ -23,25 +23,25 @@ const validationSchema = Yup.object().shape({
     notes: Yup.string(),
 });
 
-const initialValues = {
-    id: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    contactNumber: "",
-    notes: "",
-    designation: "",
-    state: "",
-    address: "",
-    title: "",
-    zipcode: "",
-    description: "",
-    sourceId: "",
-    companyName: "",
-    companiesId: "",
-    tagId: []
+// const initialValues = {
+//     id: "",
+//     firstName: "",
+//     lastName: "",
+//     email: "",
+//     contactNumber: "",
+//     notes: "",
+//     designation: "",
+//     state: "",
+//     address: "",
+//     title: "",
+//     zipcode: "",
+//     description: "",
+//     sourceId: "",
+//     companyName: "",
+//     companiesId: "",
+//     tagId: []
 
-};
+// };
 
 const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
     const [formData, setFormData] = useState(formValues);

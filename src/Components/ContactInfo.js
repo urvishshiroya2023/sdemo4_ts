@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import HomePageHeader from './HomePageHeader';
@@ -9,6 +9,7 @@ const ContactInfo = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const selectedContact = useSelector(selectContacts).selectedContact;
+    console.log(selectedContact);
 
     useEffect(() => {
         dispatch(fetchContactById(id));

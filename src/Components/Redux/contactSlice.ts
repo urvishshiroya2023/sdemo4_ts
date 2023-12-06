@@ -174,8 +174,9 @@ export const fetchContactById = createAsyncThunk<FetchContactByIdResponse, numbe
   "contacts/fetchContactById",
   async (contactId) => {
     try {
-      const response = await callApi("GET", `crm/contacts/${contactId}`);
-      return response.data;
+        const response = await callApi("GET", `crm/contacts/${contactId}`);
+        console.log(response);
+      return response;
     } catch (error) {
       throw error;
     }
@@ -228,7 +229,7 @@ const contactsSlice = createSlice({
     data: [],
     loading: false,
     error: null,
-    selectedContact: null,
+    selectedContact: null as Contact | null,
   } as ContactsState,
   reducers: {},
   extraReducers: (builder) => {
@@ -269,7 +270,18 @@ const contactsSlice = createSlice({
         state.loading = false;
         state.error = action.error.message ?? "An error occurred";
       })
-      // ... other cases
+      .addCase(fetchContactById.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchContactById.fulfilled, (state, action) => {
+          state.loading = false;
+          console.log(action.payload)
+          state.selectedContact = action.payload.data; // Set the selectedContact to the fetched contact
+      })
+      .addCase(fetchContactById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message ?? "An error occurred";
+      })
   },
 });
 

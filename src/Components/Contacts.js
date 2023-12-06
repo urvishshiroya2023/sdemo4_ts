@@ -117,7 +117,6 @@ const Contacts = () => {
           (item) => item.moduleName === "contacts"
         );
         const contactId = contactItem ? contactItem.id : null;
-
         // console.log("Contact ID:", contactId);
         // console.log(moduleResponse.data);
         const tagCategoryResponse = await callApi(
@@ -135,7 +134,7 @@ const Contacts = () => {
     tagData();
   }, []);
 
-  // console.log(tagsCategories);
+
 
   const handleEdit = useCallback(
     async (contactId) => {
@@ -144,7 +143,6 @@ const Contacts = () => {
         setShowContactForm(true);
         setFormMode("edit");
         const b = allContacts.find((contact) => contact.id === contactId);
-        // console.log(b);
         setFormValues(b);
         console.log();
       } catch (error) {
