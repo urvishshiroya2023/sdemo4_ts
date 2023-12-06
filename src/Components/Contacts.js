@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import ContactData from "./ContactData";
@@ -36,7 +36,7 @@ const initialValues = {
 
 const Contacts = () => {
   const { data: allContacts, loading, error } = useSelector(selectContacts);
-  // console.log(error);
+  // console.log(allContacts);
   const [state, setState] = useState({
     currentPage: 1,
     searchTerm: "",
@@ -144,7 +144,7 @@ const Contacts = () => {
         setShowContactForm(true);
         setFormMode("edit");
         const b = allContacts.find((contact) => contact.id === contactId);
-        console.log(b);
+        // console.log(b);
         setFormValues(b);
         console.log();
       } catch (error) {

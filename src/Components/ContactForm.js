@@ -1,5 +1,5 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -51,8 +51,8 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
     const [companyNames, setCompanyNames] = useState([]);
     const [contactSources, setContactSources] = useState([]);
     const [selectedTags, setSelectedTags] = useState([]);
-    console.log(formValues.tags);
-    console.log(tagCategories);
+    // console.log(formValues.tags);
+    // console.log(tagCategories);
 
 
     const dispatch = useDispatch();
@@ -153,7 +153,7 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
     const handleSubmit = async (values, { resetForm }) => {
         console.log(values);
         const tagIds = values.tagId;
-        console.log("All Tag IDs:", tagIds);
+        // console.log("All Tag IDs:", tagIds);
         try {
             const authToken = localStorage.getItem("authToken");
             const headers = {
@@ -180,15 +180,20 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
             console.log(formValues);
 
             const contactId = formValues.id;
-            console.log(contactId);
+            // console.log(contactId);
 
             if (formMode === "edit") {
                 const actionResult = await dispatch(
                     editContact({ contactId, updatedData })
                 );
 
-                response = actionResult?.payload;
-                if (response.success) {
+                // console.log(actionResult);
+                // response = actionResult?.payload;
+                response = actionResult?.meta?.requestStatus
+                // if (response.success) {
+                //     dispatch(fetchContacts());
+                // }
+                if (response === "fulfilled") {
                     dispatch(fetchContacts());
                 }
             } else {
