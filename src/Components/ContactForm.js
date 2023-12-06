@@ -489,7 +489,6 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                 Contact Other Details
                             </h1>
 
-                            {/* Company Name Dropdown */}
                             <div className="col-span-1">
                                 <div className={`form-item vertical`}>
                                     <label
@@ -519,7 +518,6 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                 </div>
                             </div>
 
-                            {/* Contact Source Dropdown */}
                             <div className="col-span-1">
                                 <div className={`form-item vertical`}>
                                     <label
@@ -549,102 +547,6 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                 </div>
                             </div>
 
-                            {/* {tagCategories.map((tag) => (
-                                <div className="col-span-1" key={tag.categoryName}>
-                                    <div className={`form-item vertical`}>
-                                        <label
-                                            className="form-label capitalize flex mb-2"
-                                            htmlFor={`${tag.categoryName}`}
-                                        >
-                                            {tag.categoryName}
-                                        </label>
-
-                                        <SelectField
-                                            name={tag.categoryName}
-                                            options={tag.tags.map((item) => ({
-                                                value: item.id,
-                                                label: item.tagName,
-                                            }))}
-                                            className="react-select-container"
-                                            classNamePrefix="react-select"
-                                            isMulti
-
-                                            onChange={(selectedOptions, { action, removedValue }) => {
-                                                console.log("caling..")
-                                                const tagIds = selectedOptions.map((option) => option.value);
-                                                console.log(`Tag IDs for ${tag.categoryName}:`, tagIds);
-                                                if (action === 'remove-value' && removedValue) {
-                                                    const removedTagId = removedValue.value;
-                                                    setSelectedTags((prevSelectedTags) => {
-                                                        const newSelectedTags = prevSelectedTags.filter((tagId) => tagId !== removedTagId);
-                                                        console.log(newSelectedTags);
-                                                        return newSelectedTags;
-                                                    });
-                                                } else {
-                                                    const updatedTags = [...selectedTags, ...tagIds];
-                                                    const uniqueTags = [...new Set(updatedTags)];
-                                                    setSelectedTags(uniqueTags);
-                                                }
-                                                console.log(selectedTags);
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                            ))} */}
-
-                            {/* {tagCategories.map((tagCategory) => (
-                                <div className="col-span-1" key={tagCategory.categoryName}>
-                                    <div className={`form-item vertical`}>
-                                        <label
-                                            className="form-label capitalize flex mb-2"
-                                            htmlFor={`${tagCategory.categoryName}`}
-                                        >
-                                            {tagCategory.categoryName}
-                                        </label>
-
-                                        <SelectField
-                                            name={tagCategory.categoryName}
-                                            options={tagCategory.tags.map((tag) => ({
-                                                value: tag.id,
-                                                label: tag.tagName,
-                                            }))}
-                                            className="react-select-container"
-                                            classNamePrefix="react-select"
-                                            isMulti
-                                            value={
-                                                formMode === 'edit'
-                                                    ? formValues.tags
-                                                        .filter((tag) => tag.tagCategoryId === tagCategory.id)
-                                                        .map((tag) => ({
-                                                            value: tag.id,
-                                                            label: tag.tagName,
-                                                        }))
-                                                    : []
-                                            }
-                                            onChange={(selectedOptions, { action, removedValue }) => {
-                                                console.log("caling..");
-                                                const tagIds = selectedOptions.map((option) => option.value);
-                                                console.log(`Tag IDs for ${tagCategory.categoryName}:`, tagIds);
-                                                if (action === "remove-value" && removedValue) {
-                                                    const removedTagId = removedValue.value;
-                                                    setSelectedTags((prevSelectedTags) => {
-                                                        const newSelectedTags = prevSelectedTags.filter(
-                                                            (tagId) => tagId !== removedTagId
-                                                        );
-                                                        console.log(newSelectedTags);
-                                                        return newSelectedTags;
-                                                    });
-                                                } else {
-                                                    const updatedTags = [...selectedTags, ...tagIds];
-                                                    const uniqueTags = [...new Set(updatedTags)];
-                                                    setSelectedTags(uniqueTags);
-                                                }
-                                                console.log(selectedTags);
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                            ))} */}
 
                             {tagCategories.map((tagCategory) => (
                                 <div className="col-span-1" key={tagCategory.categoryName}>
@@ -689,9 +591,6 @@ const ContactForm = ({ onClose, formValues, formMode, setShowContactForm }) => {
                                     </div>
                                 </div>
                             ))}
-
-
-
 
                             <h1 className="col-span-2 text-black text-xl mt-3">
                                 Additional Details
