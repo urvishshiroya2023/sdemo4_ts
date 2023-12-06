@@ -197,6 +197,10 @@ interface SourceType {
   sources: string;
 }
 
+interface CompanyType {
+  companyName: string;
+  // Add other properties if needed
+}
 interface ContactType {
   id: number;
   firstName: string;
@@ -209,6 +213,8 @@ interface ContactType {
   companiesId: number;
   address?: string;
   zipcode?: string;
+  company?:CompanyType;
+
 }
 
 interface TagCategoryType {
@@ -384,12 +390,13 @@ const ContactData: React.FC<ContactDataProps> = ({
       })}
 
       <td className="truncate p-3">
-        {companyData?.map((company) => {
+        {/* {companyData?.map((company) => {
           if (company.id === contact?.companiesId) {
             return company.companyName;
           }
           return null;
-        }) ?? "-"}
+        }) ?? "-"} */}
+        {contact?.company?.companyName ?? "-"}
       </td>
       <td className="truncate p-3">
         {(contact?.address || "-") + " " + (contact?.zipcode || "") || "-"}

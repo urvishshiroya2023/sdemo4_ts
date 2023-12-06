@@ -152,10 +152,51 @@ interface AddNewContactPayload {
   newContactData: Omit<Contact, "id">;
 }
 
+
+
 interface EditContactPayload {
   contactId: number;
   updatedData: Partial<Contact>;
 }
+
+// interface EditContactPayload {
+//   contactId: string;
+//   updatedData: {
+//     address?: string;
+//     avatar: null | string;
+//     cityData: null | any; // You might want to replace `any` with a more specific type
+//     cityId: null | string;
+//     companiesId: null | string;
+//     company: null | string;
+//     contactFields: any[]; // You might want to replace `any` with a more specific type
+//     contactNumber?: string;
+//     createdAt: string;
+//     createdBy: string;
+//     createdData: {
+//       id: string;
+//       firstName: string;
+//       lastName: string;
+//     };
+//     description?: string;
+//     email: string;
+//     firstName: string;
+//     id: string;
+//     lastName: string;
+//     leadModels: any[]; // You might want to replace `any` with a more specific type
+//     modifiedBy: null | string;
+//     modifiedData: null | any; // You might want to replace `any` with a more specific type
+//     source: null | string;
+//     sourceId: null | string;
+//     stateData: null | any; // You might want to replace `any` with a more specific type
+//     stateId: null | string;
+//     tags: any[]; // You might want to replace `any` with a more specific type
+//     title?: string;
+//     updatedAt: string;
+//     zipcode:  string;
+//     // Add other properties as needed
+//   };
+// }
+
 
 export const fetchContacts = createAsyncThunk<FetchContactsResponse>(
   "contacts/fetchContacts",
@@ -175,7 +216,7 @@ export const fetchContactById = createAsyncThunk<FetchContactByIdResponse, numbe
   async (contactId) => {
     try {
         const response = await callApi("GET", `crm/contacts/${contactId}`);
-        console.log(response);
+        // console.log(response);
       return response;
     } catch (error) {
       throw error;
@@ -201,9 +242,12 @@ export const addNewContact = createAsyncThunk<Contact, AddNewContactPayload>(
 export const editContact = createAsyncThunk<void, EditContactPayload>(
   "contacts/editContact",
   async (payload) => {
+    console.log(payload)
     try {
       const { contactId, updatedData } = payload;
-      await callApi("PUT", `crm/contacts/${contactId}`, updatedData as any);
+      console.log(updatedData);
+      const response = await callApi("PUT", `crm/contacts/${contactId}`, updatedData as any );
+      return response
     } catch (error) {
       console.error("Error editing contact:", error);
       throw error;
@@ -261,7 +305,7 @@ const contactsSlice = createSlice({
         // const { contactId, updatedData } = action.meta.arg;
           const { contactId, updatedData } = action.meta.arg;
         //   console.log(updatedData);
-        state.data = state.data.map((contact) =>
+          state.data = state.data.map((contact) =>
           contact.id === contactId ? { ...contact, ...updatedData } : contact
         );
          
