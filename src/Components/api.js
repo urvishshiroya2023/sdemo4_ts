@@ -1,7 +1,7 @@
 import axios from "axios";
 import { BASE_URL } from "./Constants";
 
-const callApi = async (method, endpoint, data = null) => {
+const callApi = async (method, endpoint, data) => {
     try {
         const authToken = localStorage.getItem("authToken");
         // const url = `${BASE_URL}${endpoint}`;

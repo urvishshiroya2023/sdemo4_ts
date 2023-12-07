@@ -124,13 +124,25 @@
 // export default contactsSlice.reducer;
 
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { METHOD } from "../../Constant/Methods";
 import callApi from "../api";
 
 interface Contact {
-  id: number;
+   id: string;
   firstName: string;
   lastName: string;
-  // ... other properties of Contact
+  email: string;
+  contactNumber: string;
+  notes: string;
+  designation: string;
+  address: string;
+  title: string;
+  zipcode: string;
+  description: string;
+  sourceId: string;
+  companyName: string;
+  tags: [];
+  companiesId: string;
 }
 
 interface ContactsState {
@@ -155,8 +167,9 @@ interface AddNewContactPayload {
 
 
 interface EditContactPayload {
-  contactId: number;
-  updatedData: Partial<Contact>;
+  contactId: string;
+  // updatedData: Partial<Contact>;
+  updatedData:Contact;
 }
 
 // interface EditContactPayload {
@@ -197,12 +210,13 @@ interface EditContactPayload {
 //   };
 // }
 
+const PATH = "crm/contacts"
 
 export const fetchContacts = createAsyncThunk<FetchContactsResponse>(
   "contacts/fetchContacts",
   async () => {
     try {
-        const response = await callApi("GET", "crm/contacts");
+        const response = await callApi(METHOD.GET, `${PATH}`);
         // console.log(response.data);
       return response;
     } catch (error) {
@@ -211,11 +225,11 @@ export const fetchContacts = createAsyncThunk<FetchContactsResponse>(
   }
 );
 
-export const fetchContactById = createAsyncThunk<FetchContactByIdResponse, number>(
+export const fetchContactById = createAsyncThunk<FetchContactByIdResponse, string>(
   "contacts/fetchContactById",
   async (contactId) => {
     try {
-        const response = await callApi("GET", `crm/contacts/${contactId}`);
+        const response = await callApi(METHOD.GET, `${PATH}/${contactId}`);
         // console.log(response);
       return response;
     } catch (error) {
@@ -230,7 +244,7 @@ export const addNewContact = createAsyncThunk<Contact, AddNewContactPayload>(
         console.log(payload);
     try {
         // const response = await callApi("POST", "crm/contacts", payload.newContactData as any);
-        const response = await callApi("POST", "crm/contacts", payload as any);
+        const response = await callApi(METHOD.POST, `${PATH}`, payload as any);
         console.log(response);
       return response.data;
     } catch (error) {
@@ -241,12 +255,13 @@ export const addNewContact = createAsyncThunk<Contact, AddNewContactPayload>(
 
 export const editContact = createAsyncThunk<void, EditContactPayload>(
   "contacts/editContact",
-  async (payload) => {
+  // async ({ contactId, updatedData }) => {
+  async (payload:{contactId:string,updatedData:Contact}) => {
     console.log(payload)
     try {
       const { contactId, updatedData } = payload;
-      console.log(updatedData);
-      const response = await callApi("PUT", `crm/contacts/${contactId}`, updatedData as any );
+      // console.log(updatedData);
+      const response = await callApi("PUT", `${PATH}/${contactId}`, updatedData);
       return response
     } catch (error) {
       console.error("Error editing contact:", error);
@@ -256,11 +271,11 @@ export const editContact = createAsyncThunk<void, EditContactPayload>(
 );
 
 
-export const deleteContact = createAsyncThunk<void, number>(
+export const deleteContact = createAsyncThunk<void, string>(
   "contacts/deleteContact",
   async (contactId) => {
     try {
-      await callApi("DELETE", `crm/contacts/${contactId}`);
+      await callApi("DELETE", `${PATH}/${contactId}`);
     } catch (error) {
       throw error;
     }

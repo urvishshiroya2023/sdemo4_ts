@@ -202,7 +202,7 @@ interface CompanyType {
   // Add other properties if needed
 }
 interface ContactType {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
   email?: string;
@@ -210,7 +210,7 @@ interface ContactType {
   source?: SourceType;
   title?: string;
   tags: TagType[];
-  companiesId: number;
+  companiesId: string;
   address?: string;
   zipcode?: string;
   company?:CompanyType;
@@ -223,12 +223,14 @@ interface TagCategoryType {
 
 interface ContactDataProps {
   contact: ContactType;
-  handleEdit: (id: number) => void;
-  onContactSelect: (id: number, isSelected: boolean) => void;
+  handleEdit: (id: string) => void;
+  onContactSelect: (id: string, isSelected: boolean) => void;
   isSelected: boolean;
   setIsSelected: React.Dispatch<React.SetStateAction<boolean>>;
   tagsCategories: TagCategoryType[];
 }
+
+
 
 const ContactData: React.FC<ContactDataProps> = ({
   contact,
@@ -240,11 +242,11 @@ const ContactData: React.FC<ContactDataProps> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [companyData, setCompanyData] = useState < { id: number; companyName: string }[] > ([]);
-  const dispatch = useDispatch();
+  const dispatch:any = useDispatch();
   // console.log(contact);
   const handleDelete = async () => {
     try {
-      await dispatch(deleteContact(contact.id ) as any);
+      await dispatch(deleteContact(contact.id ));
       
       // dispatch(fetchContacts());
       toast.success('Contact deleted successfully');
