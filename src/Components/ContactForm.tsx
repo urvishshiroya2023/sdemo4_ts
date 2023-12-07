@@ -646,6 +646,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as Yup from "yup";
+import { METHOD } from "../Constant/Methods";
 import InputField from "./InputField";
 import {
     AddNewContactPayload,
@@ -800,7 +801,7 @@ const ContactForm: React.FC<{
     useEffect(() => {
         const tagData = async () => {
             try {
-                const moduleResponse = await callApi("GET", "crm/module", {
+                const moduleResponse = await callApi(METHOD.GET, "crm/module", {
                     moduleName: "contacts",
                 });
 
@@ -811,13 +812,13 @@ const ContactForm: React.FC<{
                 );
                 const contactId = contactItem ? contactItem.id : null;
                 const tagCategoryResponse = await callApi(
-                    "GET",
+                    METHOD.GET,
                     `crm/tag-category/?masterId=${contactId}`
                 );
                 const tagCategories = tagCategoryResponse?.data;
                 setTagCategories(tagCategories);
                 const customCategories = await callApi(
-                    "GET",
+                    METHOD.GET,
                     `crm/custom-fields?masterId=${contactId}`
                 );
                 setCustomCategories(customCategories?.data);
@@ -832,8 +833,8 @@ const ContactForm: React.FC<{
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const companyResponse = await callApi("GET", "crm/company");
-                const contactSourceResponse = await callApi("GET", "crm/source");
+                const companyResponse = await callApi(METHOD.GET, "crm/company");
+                const contactSourceResponse = await callApi(METHOD.GET, "crm/source");
                 const companyNames = companyResponse?.data;
                 const contactSources = contactSourceResponse?.data;
                 setCompanyNames(companyNames);
@@ -847,7 +848,7 @@ const ContactForm: React.FC<{
 
     const getStates = async () => {
         try {
-            const response = await callApi("GET", "crm/state");
+            const response = await callApi(METHOD.GET, "crm/state");
             return response.data;
         } catch (error) {
             throw error;
