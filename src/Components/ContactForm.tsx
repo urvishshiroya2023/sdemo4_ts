@@ -658,7 +658,6 @@ import { useAppDispatch } from "./Redux/store";
 import SelectField from "./SelectFiled";
 import callApi from "./api";
 
-
 interface FormValues {
     tags: [];
     id: string;
@@ -757,14 +756,13 @@ const ContactForm: React.FC<{
     const [formData, setFormData] = useState < FormValues > (formValues);
     const [states, setStates] = useState < State[] > ([]);  
     const [tagCategories, setTagCategories] = useState<TagCategory[]>([]);  
-    const [customCategories, setCustomCategories] = useState < CustomCategory[] > ([]);  //Replace 'any' with the actual type
-    const [companyNames, setCompanyNames] = useState < CompanyName[] > ([]);  //Replace 'any' with the actual type
-    const [contactSources, setContactSources] = useState < ContactSources[] > ([]); // Replace 'any' with the actual type
+    const [customCategories, setCustomCategories] = useState < CustomCategory[] > ([]);  
+    const [companyNames, setCompanyNames] = useState < CompanyName[] > ([]);  
+    const [contactSources, setContactSources] = useState < ContactSources[] > ([]); 
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
   
-
     const dispatch = useAppDispatch();
-    // const statesData = useSelector((state: any) => state.contacts);  //Replace 'any' with the actual type
+    // const statesData = useSelector((state: any) => state.contacts);  
     const formikRef = useRef<FormikProps<FormValues>>(null);
 
     useEffect(() => {
@@ -1075,7 +1073,6 @@ const ContactForm: React.FC<{
                                     />
                                 </div>
                             </div>
-
 
                             {tagCategories.map((tagCategory) => (
                                 <div className="col-span-1" key={tagCategory.categoryName}>

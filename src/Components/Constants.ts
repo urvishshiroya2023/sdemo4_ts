@@ -1,6 +1,6 @@
 export const BASE_URL = "https://crmapi.sarvadhi.work/api/v1/"
 
-export const getPriorityColor = (priority) => {
+export const getPriorityColor = (priority:string) => {
     switch (priority) {
         case 'low':
             return 'bg-green-100 text-green-600';
