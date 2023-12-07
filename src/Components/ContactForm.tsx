@@ -647,6 +647,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as Yup from "yup";
+import InputField from "./InputField";
 import {
     AddNewContactPayload,
     addNewContact,
@@ -656,6 +657,7 @@ import {
 import { useAppDispatch } from "./Redux/store";
 import SelectField from "./SelectFiled";
 import callApi from "./api";
+
 
 //  Define TypeScript interface for form values
 interface FormValues {
@@ -927,7 +929,7 @@ const ContactForm: React.FC<{
                 >
                     {({ values, errors, touched, setFieldValue }) => (
                         <Form className="grid grid-cols-1 mt-3 font-semibold text-[#6B7280] text-sm md:grid-cols-2 gap-4">
-                            <div className="col-span-1">
+                            {/* <div className="col-span-1">
                                 <div className={`form-item vertical`}>
                                     <label className="form-label flex mb-2" htmlFor="firstName">
                                         First Name *
@@ -1070,9 +1072,9 @@ const ContactForm: React.FC<{
                                         className="text-red-500"
                                     />
                                 </div>
-                            </div>
+                            </div> */}
 
-                            <div className="col-span-1">
+                             {/* <div className="col-span-1">
                                 <div className={`form-item vertical`}>
                                     <label className="form-label flex mb-2" htmlFor="address">
                                         Address
@@ -1094,8 +1096,17 @@ const ContactForm: React.FC<{
                                         className="text-red-500"
                                     />
                                 </div>
-                            </div>
+                            </div> */}
 
+                            <InputField type="text" name="firstName" placeholder="First Name" label="First Name *" />
+                            <InputField type="text" name="lastName" placeholder="Last Name" label="Last Name *" />
+                            <InputField type="email" name="email" placeholder="Email" label="Email *" />
+                            <InputField type="tel" name="contactNumber" placeholder="Contact Number" label="Contact Number *" />
+                            <InputField type="text" name="designation" placeholder="Designation" label="Designation" />
+                            <InputField type="textarea" name="notes" placeholder="Notes" label="Notes" />
+                            <InputField type="text" name="address" placeholder="Address" label="Address" />
+                            
+                           
                             <div className="col-span-1">
                                 <div className={`form-item vertical`}>
                                     <label className="form-label flex mb-2" htmlFor="state">
@@ -1152,7 +1163,7 @@ const ContactForm: React.FC<{
                                 </div>
                             </div>
 
-                            <div className="col-span-1">
+                            {/* <div className="col-span-1">
                                 <div className={`form-item vertical`}>
                                     <label className="form-label flex mb-2" htmlFor="zipcode">
                                         Zip Code
@@ -1174,7 +1185,8 @@ const ContactForm: React.FC<{
                                         className="text-red-500"
                                     />
                                 </div>
-                            </div>
+                            </div> */}
+                            <InputField type="text" name="zipcode" placeholder="Zip Code" label="Zip Code" />
 
                             <h1 className="col-span-2 text-black text-xl mt-3">
                                 Contact Other Details
@@ -1248,9 +1260,6 @@ const ContactForm: React.FC<{
                                         >
                                             {tagCategory.categoryName}
                                         </label>
-
-                                       
-
                                     <SelectField
                                          name={tagCategory.categoryName}
                                          options={tagCategory.tags.map((tag) => ({
