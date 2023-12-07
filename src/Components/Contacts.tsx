@@ -371,7 +371,7 @@
 // export default Contacts;
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import ContactData from "./ContactData";
 import ContactForm from "./ContactForm";
@@ -384,6 +384,7 @@ import {
     fetchContacts,
     selectContacts,
 } from "./Redux/contactSlice";
+import { useAppDispatch } from "./Redux/store";
 import callApi from "./api";
 
 interface Contact {
@@ -444,7 +445,8 @@ const Contacts: React.FC = () => {
     const [isSelected, setIsSelected] = useState(false);
     const [tagsCategories, setTagsCategories] = useState < any[] > ([]);
 
-    const dispatch = useDispatch<any>();
+    // const dispatch = useDispatch<any>();
+    const dispatch = useAppDispatch();
 
         const handleSearchChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
             setState((prevState) => ({
