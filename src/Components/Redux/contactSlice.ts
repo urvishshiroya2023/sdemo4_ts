@@ -134,15 +134,16 @@ interface Contact {
   email: string;
   contactNumber: string;
   notes: string;
-  designation: string;
-  address: string;
-  title: string;
-  zipcode: string;
-  description: string;
-  sourceId: string;
-  companyName: string;
+  designation?: string;
+  address?: string;
+  title?: string;
+  zipcode?: string;
+  description?: string;
+  sourceId?: string;
+  companyName?: string;
   tags: [];
-  companiesId: string;
+  companiesId?: string;
+  tagId: string[];
 }
 
 interface ContactsState {
@@ -160,8 +161,9 @@ interface FetchContactByIdResponse {
   data: Contact;
 }
 
-interface AddNewContactPayload {
-  newContactData: Omit<Contact, "id">;
+export interface AddNewContactPayload {
+  // newContactData: Omit<Contact, "id">;
+  newContactData: Contact;
 }
 
 
@@ -241,10 +243,10 @@ export const fetchContactById = createAsyncThunk<FetchContactByIdResponse, strin
 export const addNewContact = createAsyncThunk<Contact, AddNewContactPayload>(
   "contacts/addNewContact",
     async (payload) => {
-        console.log(payload);
+        console.log(payload.newContactData);
     try {
         // const response = await callApi("POST", "crm/contacts", payload.newContactData as any);
-        const response = await callApi(METHOD.POST, `${PATH}`, payload as any);
+        const response = await callApi(METHOD.POST, `${PATH}`, payload.newContactData as any);
         console.log(response);
       return response.data;
     } catch (error) {
@@ -261,7 +263,7 @@ export const editContact = createAsyncThunk<void, EditContactPayload>(
     try {
       const { contactId, updatedData } = payload;
       // console.log(updatedData);
-      const response = await callApi("PUT", `${PATH}/${contactId}`, updatedData);
+      const response = await callApi(METHOD.PUT, `${PATH}/${contactId}`, updatedData);
       return response
     } catch (error) {
       console.error("Error editing contact:", error);
@@ -275,7 +277,7 @@ export const deleteContact = createAsyncThunk<void, string>(
   "contacts/deleteContact",
   async (contactId) => {
     try {
-      await callApi("DELETE", `${PATH}/${contactId}`);
+      await callApi(METHOD.DELETE, `${PATH}/${contactId}`);
     } catch (error) {
       throw error;
     }

@@ -394,16 +394,16 @@ interface Contact {
     email: string;
     contactNumber: string;
     notes: string;
-    designation: string;
-    address: string;
-    title: string;
-    zipcode: string;
-    description: string;
-    sourceId: string;
-    companyName: string;
-    // tagId: string[];
+    designation?: string;
+    address?: string;
+    title?: string;
+    zipcode?: string;
+    description?: string;
+    sourceId?: string;
+    companyName?: string;
+    tagId: string[];
     tags: [];
-    companiesId: string;
+    companiesId?: string;
 }
 
 const pageSize = 10;
@@ -427,7 +427,7 @@ const initialValues: Contact = {
     description: "",
     sourceId: "",
     companyName: "",
-    // tagId: [],
+    tagId: [],
     tags: [],
     companiesId: "",
 };

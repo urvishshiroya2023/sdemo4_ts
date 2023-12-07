@@ -210,7 +210,7 @@ interface ContactType {
   source?: SourceType;
   title?: string;
   tags: TagType[];
-  companiesId: string;
+  companiesId?: string;
   address?: string;
   zipcode?: string;
   company?:CompanyType;
