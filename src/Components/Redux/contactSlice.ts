@@ -246,7 +246,7 @@ export const addNewContact = createAsyncThunk<Contact, AddNewContactPayload>(
         console.log(payload.newContactData);
     try {
         // const response = await callApi("POST", "crm/contacts", payload.newContactData as any);
-        const response = await callApi(METHOD.POST, `${PATH}`, payload.newContactData as any);
+        const response = await callApi(METHOD.POST, `${PATH}`, payload.newContactData);
         console.log(response);
       return response.data;
     } catch (error) {
