@@ -643,7 +643,6 @@
 
 import { ErrorMessage, Field, Form, Formik, FormikHelpers, FormikProps } from "formik";
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as Yup from "yup";
@@ -659,7 +658,6 @@ import SelectField from "./SelectFiled";
 import callApi from "./api";
 
 
-//  Define TypeScript interface for form values
 interface FormValues {
     tags: [];
     id: string;
@@ -720,6 +718,25 @@ interface Tag2{
     id: string;
 }
 
+interface CustomCategory {
+    label: string;
+    inputType: string;
+    name: string;
+}
+
+interface CompanyName{
+    id: string;
+    companyName:string
+}
+
+interface ContactSources{
+    id: string;
+    sources:string
+}
+
+interface Module{
+    moduleName: string;
+}
 
 const validationSchema = Yup.object().shape({
     firstName: Yup.string().required("First Name is required"),
@@ -737,17 +754,16 @@ const ContactForm: React.FC<{
     setShowContactForm: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ onClose, formValues, formMode, setShowContactForm }) => {
     const [formData, setFormData] = useState < FormValues > (formValues);
-    const [states, setStates] = useState < State[] > ([]);  //Replace 'any' with the actual type
-    const [tagCategories, setTagCategories] = useState<TagCategory[]>([]);  //Replace 'any' with the actual type
-    const [customCategories, setCustomCategories] = useState < any[] > ([]);  //Replace 'any' with the actual type
-    const [companyNames, setCompanyNames] = useState < any[] > ([]);  //Replace 'any' with the actual type
-    const [contactSources, setContactSources] = useState < any[] > ([]); // Replace 'any' with the actual type
+    const [states, setStates] = useState < State[] > ([]);  
+    const [tagCategories, setTagCategories] = useState<TagCategory[]>([]);  
+    const [customCategories, setCustomCategories] = useState < CustomCategory[] > ([]);  //Replace 'any' with the actual type
+    const [companyNames, setCompanyNames] = useState < CompanyName[] > ([]);  //Replace 'any' with the actual type
+    const [contactSources, setContactSources] = useState < ContactSources[] > ([]); // Replace 'any' with the actual type
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
-
+  
 
     const dispatch = useAppDispatch();
-    const statesData = useSelector((state: any) => state.contacts);  //Replace 'any' with the actual type
-
+    // const statesData = useSelector((state: any) => state.contacts);  //Replace 'any' with the actual type
     const formikRef = useRef<FormikProps<FormValues>>(null);
 
     useEffect(() => {
@@ -789,7 +805,9 @@ const ContactForm: React.FC<{
                 });
 
                 const contactItem = moduleResponse?.data?.find(
-                    (item: any) => item.moduleName === "contacts"
+                    // (item: any) => item.moduleName === "contacts"
+                    (item: Module) => item.moduleName === "contacts"
+                  
                 );
                 const contactId = contactItem ? contactItem.id : null;
                 const tagCategoryResponse = await callApi(
@@ -929,8 +947,6 @@ const ContactForm: React.FC<{
                 >
                     {({ values, errors, touched, setFieldValue }) => (
                         <Form className="grid grid-cols-1 mt-3 font-semibold text-[#6B7280] text-sm md:grid-cols-2 gap-4">
-                           
-
                             <InputField type="text" name="firstName" placeholder="First Name" label="First Name *" />
                             <InputField type="text" name="lastName" placeholder="Last Name" label="Last Name *" />
                             <InputField type="email" name="email" placeholder="Email" label="Email *" />
@@ -939,7 +955,6 @@ const ContactForm: React.FC<{
                             <InputField type="textarea" name="notes" placeholder="Notes" label="Notes" />
                             <InputField type="text" name="address" placeholder="Address" label="Address" />
                             
-                           
                             <div className="col-span-1">
                                 <div className={`form-item vertical`}>
                                     <label className="form-label flex mb-2" htmlFor="state">
