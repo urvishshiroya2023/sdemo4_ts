@@ -741,14 +741,11 @@ const ContactForm: React.FC<{
     const [companyNames, setCompanyNames] = useState < any[] > ([]);  //Replace 'any' with the actual type
     const [contactSources, setContactSources] = useState < any[] > ([]); // Replace 'any' with the actual type
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
-    console.log(selectedTags);
-    console.log(formValues);
-    
-    // const dispatch = useDispatch();
+
+
     const dispatch = useAppDispatch();
     const statesData = useSelector((state: any) => state.contacts);  //Replace 'any' with the actual type
 
-    // const formikRef = useRef<FormikHelpers<FormValues> | null>(null);
     const formikRef = useRef<FormikProps<FormValues>>(null);
 
     useEffect(() => {
@@ -779,7 +776,6 @@ const ContactForm: React.FC<{
                 console.error("Error fetching states:", error);
             }
         };
-
         fetchData();
     }, []);
 
@@ -799,9 +795,7 @@ const ContactForm: React.FC<{
                     `crm/tag-category/?masterId=${contactId}`
                 );
                 const tagCategories = tagCategoryResponse?.data;
-               
                 setTagCategories(tagCategories);
-
                 const customCategories = await callApi(
                     "GET",
                     `crm/custom-fields?masterId=${contactId}`
@@ -820,10 +814,8 @@ const ContactForm: React.FC<{
             try {
                 const companyResponse = await callApi("GET", "crm/company");
                 const contactSourceResponse = await callApi("GET", "crm/source");
-
                 const companyNames = companyResponse?.data;
                 const contactSources = contactSourceResponse?.data;
-
                 setCompanyNames(companyNames);
                 setContactSources(contactSources);
             } catch (error) {
@@ -887,13 +879,9 @@ const ContactForm: React.FC<{
                     dispatch(fetchContacts());
                 }
             } else {
-                // const actionResult = await dispatch(addNewContact(values));
-                // response = actionResult?.payload;
-                // console.log(response);
-                 // For adding a new contact, create the proper payload
-            const newContactPayload: AddNewContactPayload = {
-                newContactData: values,
-            };
+                    const newContactPayload: AddNewContactPayload = {
+                        newContactData: values,
+                };
 
             const actionResult = await dispatch(addNewContact(newContactPayload));
             response = actionResult?.payload;
@@ -1261,55 +1249,7 @@ const ContactForm: React.FC<{
                                             {tagCategory.categoryName}
                                         </label>
 
-                                        {/* <SelectField
-                                            name={tagCategory.categoryName}
-                                            options={tagCategory.tags.map((tag) => ({
-                                                value: tag.id,
-                                                label: tag.tagName,
-                                            }))}
-                                            className="react-select-container"
-                                            classNamePrefix="react-select"
-                                            isMulti
-                                            value={selectedTags?.filter((tagId) => tagCategory?.tags?.some((tag) => tag?.id === tagId?.id))
-                                                .map((tagId) => ({
-                                                    value: tagId,
-                                                    label: tagCategory.tags.find((tag) => tag?.id === tagId?.id)?.tagName,
-                                                }))}
-                                            // onChange={(selectedOptions, { action, removedValue }) => {
-                                            //     const tagIds = selectedOptions.map((option) => option.value);
-
-                                            //     if (action === 'remove-value' && removedValue) {
-                                            //         const removedTagId = removedValue.value;
-                                            //         setSelectedTags((prevSelectedTags) => (
-                                            //             prevSelectedTags.filter((tagId) => tagId !== removedTagId)
-                                            //         ));
-                                            //     } else {
-                                            //         const updatedTags = [...selectedTags, ...tagIds];
-                                            //         const uniqueTags = [...new Set(updatedTags)];
-                                            //         setSelectedTags(uniqueTags);
-                                            //     }
-                                            // }}
-                                            onChange={(selectedOptions: { value: string }[], { action, removedValue }: { action: string, removedValue: { value: string } }) => {
-                                                const tagIds = selectedOptions?.map((option) => option?.value);
-
-                                                if (action === 'remove-value' && removedValue) {
-                                                    const removedTagId = removedValue?.value;
-                                                    setSelectedTags((prevSelectedTags) => (
-                                                        prevSelectedTags?.filter((tagId) => tagId?.id !== removedTagId)
-                                                    ));
-                                                } else {
-                                                    const selectedTagIds = selectedTags?.map(tag => tag?.id); // Extract tag IDs
-                                                    const updatedTags = [...selectedTagIds, ...tagIds];
-                                                    //  const updatedTags = [...selectedTags, ...tagIds];
-                                                    //  const uniqueTags = [...new Set(updatedTags)];
-                                                    //  const uniqueTags = Array.from(new Set(updatedTags));
-                                                    const uniqueTags = Array.from(new Set(updatedTags.map(tagId => ({ id: tagId } as Tag2))));
-                                                    console.log(uniqueTags);
-                                                    setSelectedTags(uniqueTags);
-                                                }
-                                            }}
-                                            /> */}
-
+                                       
 
                                     <SelectField
                                          name={tagCategory.categoryName}
@@ -1337,9 +1277,6 @@ const ContactForm: React.FC<{
                                                   } else {
                                                       const selectedTagIds = selectedTags?.map(tag => tag); //Extract tag IDs
                                                        const updatedTags = [...selectedTagIds, ...tagIds];
-                                                    //  const updatedTags = [...selectedTags, ...tagIds];
-                                                    //  const uniqueTags = [...new Set(updatedTags)];
-                                                    //  const uniqueTags = Array.from(new Set(updatedTags));
                                                       const uniqueTags = Array.from(new Set(updatedTags.map(tagId => ( tagId ))));
                                                       console.log(uniqueTags);
                                                           setSelectedTags(uniqueTags);
