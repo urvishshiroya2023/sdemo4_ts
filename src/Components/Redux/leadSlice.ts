@@ -130,6 +130,7 @@ export interface contactData{
 }
 
 export interface tags{
+    tagCategoryId: any;
     id: string;
     colorName: string;
     length: number;

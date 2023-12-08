@@ -710,10 +710,15 @@ const handleEdit = useCallback(
                                             <th className="truncate p-3 ">Number</th>
                                             <th className="truncate p-3">Source</th>
                                             <th className="truncate p-3">Designation</th>
-                                            <th className="truncate p-3">Group1</th>
+                                            {
+                                            tagsCategories.map((item) => (
+                                                <th className="truncate p-3">{ item?.categoryName}</th>
+                                            ))
+                                        }
+                                            {/* <th className="truncate p-3">Group1</th>
                                             <th className="truncate p-3">Haward Education</th>
                                             <th className="truncate p-3">Relation</th>
-                                            <th className="truncate p-3">Region</th>
+                                            <th className="truncate p-3">Region</th> */}
                                             <th className="truncate p-3">Company</th>
                                             <th className="truncate p-3">Address</th>
                                         </tr>

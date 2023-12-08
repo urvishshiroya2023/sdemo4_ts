@@ -250,8 +250,8 @@
 // export default Leadsform;
 
 
-import { Field, Form, Formik } from "formik";
-import { useEffect, useState } from "react";
+import { Field, Form, Formik, FormikProps } from "formik";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import * as Yup from 'yup';
 import { METHOD } from "../Constant/Methods";
@@ -293,6 +293,7 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
     // console.log(customCategories);
     console.log(formValues);
     // const dispatch = useDispatch();
+    const formikRef = useRef<FormikProps<Lead>>(null);
     const dispatch = useAppDispatch();
     const initialValues: Lead = {
         id: '',
@@ -363,7 +364,12 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
         }
     };
 
-        
+        useEffect(() => {
+        if (formikRef.current) {
+            const setFieldValue = formikRef.current.setFieldValue;
+            setFieldValue('tagId', selectedTags);
+        }
+    }, [selectedTags]);
 
        useEffect(() => {
         if (formMode === 'edit') {
@@ -418,7 +424,7 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
              </div>
              <div className='mt-5'>
                  {/* <Formik initialValues={formValues} onSubmit={handleSubmit} validationSchema={validationSchema}> */}
-                 <Formik initialValues={formMode === "edit" ? formValues : initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
+                 <Formik innerRef={formikRef} initialValues={formMode === "edit" ? formValues : initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
                      {({ isSubmitting, touched, errors }) => (
                         <Form className="font-semibold text-[#6B7280] text-sm">
                             <div className="grid bg-white grid-cols-1 md:grid-cols-2 gap-4 mb-4">

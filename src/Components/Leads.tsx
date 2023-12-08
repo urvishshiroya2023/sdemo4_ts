@@ -246,6 +246,7 @@ import Leadsform from "./Leadsform";
 import Loader from "./Loader";
 import { contactData, fetchLeadById, fetchLeads, leadStatus, selectLeads, tags } from "./Redux/leadSlice";
 import { useAppDispatch } from "./Redux/store";
+import callApi from "./api";
 
 
 interface Lead {
@@ -307,12 +308,42 @@ const Leads: React.FC = () => {
         formMode: null as null | "edit",
         formValues: initialValues,
     });
+    const [tagsCategories, setTagsCategories] = useState < any[] > ([]);
 
-    console.log(state.formValues);
+    console.log(tagsCategories);
 
     useEffect(() => {
         dispatch(fetchLeads());
     }, [dispatch]);
+
+    useEffect(() => {
+            const tagData = async () => {
+                try {
+                    //  Get masterId from crm/module
+                    const moduleResponse = await callApi("GET", "crm/module", {
+                        moduleName: "leads",
+                    });
+
+                    const contactItem = moduleResponse?.data?.find(
+                        (item: { moduleName: string; }) => item.moduleName === "leads"
+                    );
+                    const leadId = contactItem ? contactItem.id : null;
+                    // console.log("Contact ID:", leadId);
+                    // console.log(moduleResponse.data);
+                    const tagCategoryResponse = await callApi(
+                        "GET",
+                        `crm/tag-category/?masterId=${leadId}`
+                    );
+                    const tagCategories = tagCategoryResponse?.data;
+                    setTagsCategories(tagCategories);
+                    // console.log(tagCategories);
+                } catch (error) {
+                    console.error("Error fetching data:", error);
+                }
+            };
+
+            tagData();
+        }, []);
 
     const handleSearchChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         setState((prevState) => ({ ...prevState, searchTerm: event.target.value.toLowerCase() }));
@@ -447,8 +478,15 @@ const Leads: React.FC = () => {
                                         <th className="truncate p-3">Actions </th>
                                         <th className="truncate p-3">Contact Name</th>
                                         <th className="truncate p-3">title</th>
+                                        {
+                                            tagsCategories.map((item) => (
+                                                <th className="truncate p-3">{ item?.categoryName}</th>
+                                            ))
+                                        }
+                                        {/* <th className="truncate p-3">hot</th>
+                                        <th className="truncate p-3">leads new  category</th>
                                         <th className="truncate p-3 ">lead cate 2</th>
-                                        <th className="truncate p-3">leads category</th>
+                                        <th className="truncate p-3 ">leads category</th> */}
                                         <th className="truncate p-3">budget</th>
                                         <th className="truncate p-3">status</th>
                                         <th className="truncate p-3">Reason</th>
@@ -457,7 +495,7 @@ const Leads: React.FC = () => {
                                 <tbody>
                                     {filteredLeads?.slice((state.currentPage - 1) * state.leadsPerPage, state.currentPage * state.leadsPerPage)
                                         .map((lead) => (
-                                            <LeadsData handleEdit={handleEdit} key={lead?.id} lead={lead} />
+                                            <LeadsData tagsCategories={tagsCategories} handleEdit={handleEdit} key={lead?.id} lead={lead} />
                                         ))}
                                 </tbody>
                             </table>

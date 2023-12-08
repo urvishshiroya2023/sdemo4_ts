@@ -205,9 +205,10 @@ import { useAppDispatch } from './Redux/store';
 interface LeadsDataProps {
      lead: Lead;
     handleEdit: (leadId: string) => void;
+    tagsCategories: any[];
 }
 
-const LeadsData: React.FC<LeadsDataProps> = ({ lead, handleEdit }) => {
+const LeadsData: React.FC<LeadsDataProps> = ({ lead, handleEdit,tagsCategories }) => {
     // console.log(lead);
     const [isModalOpen, setIsModalOpen] = useState(false);
     // const dispatch = useDispatch();
@@ -333,7 +334,7 @@ const LeadsData: React.FC<LeadsDataProps> = ({ lead, handleEdit }) => {
                 <td className='truncate p-3'>{lead?.title ?? '-'}</td>
 
 
-                <td className='truncate p-3'>
+                {/* <td className='truncate p-3'>
 
                     {lead?.tags?.length > 0 && lead?.tags?.some(item => item.tagName.includes('cat')) ? (
                         lead?.tags.map((item) => (
@@ -361,7 +362,34 @@ const LeadsData: React.FC<LeadsDataProps> = ({ lead, handleEdit }) => {
                     ) : (
                         '-'
                     )}
-                </td>
+                </td> */}
+            
+            {tagsCategories.map((category) => {
+        const categoryTags = lead.tags.filter(
+          (tag) => tag.tagCategoryId === category.id
+        );
+        const hasTags = categoryTags.length > 0;
+
+        return (
+          <td key={category.id} className="truncate p-3">
+            {hasTags ? (
+              categoryTags.map((tag) => (
+                <span
+                  key={tag.id}
+                  style={{
+                    backgroundColor: `${tag.colorName}1A`, // '1A' corresponds to 10% opacity
+                  }}
+                  className="mr-2 px-2 py-1 rounded-lg"
+                >
+                  <span style={{ color: tag.colorName }}>{tag.tagName}</span>
+                </span>
+              ))
+            ) : (
+              "-"
+            )}
+          </td>
+        );
+      })}
 
                 <td className='truncate p-3'>{lead?.budget}</td>
 
