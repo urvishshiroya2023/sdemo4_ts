@@ -694,7 +694,7 @@ interface Tag {
   masterId: number;
 }
 
-interface TagCategory {
+export interface TagCategory {
   id: string;
   categoryName: string;
   master: {
@@ -718,7 +718,7 @@ interface Tag2{
     id: string;
 }
 
-interface CustomCategory {
+export interface CustomCategory {
     label: string;
     inputType: string;
     name: string;
@@ -734,7 +734,7 @@ interface ContactSources{
     sources:string
 }
 
-interface Module{
+export interface Module{
     moduleName: string;
 }
 

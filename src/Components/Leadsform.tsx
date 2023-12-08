@@ -250,13 +250,18 @@
 // export default Leadsform;
 
 
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import * as Yup from 'yup';
+import { METHOD } from "../Constant/Methods";
+import { CustomCategory, Module, TagCategory } from "./ContactForm";
 import InputField from "./InputField";
 import { Lead, addNewLeads, editLead, fetchLeads } from './Redux/leadSlice';
 import { useAppDispatch } from './Redux/store';
 import { fetchTasks } from './Redux/tasksSlice';
+import SelectField from "./SelectFiled";
+import callApi from "./api";
 
 
 const validationSchema = Yup.object().shape({
@@ -281,6 +286,12 @@ interface LeadsFormProps {
 }
 
 const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadForm, formValues }) => {
+     const [tagCategories, setTagCategories] = useState<TagCategory[]>([]);  
+     const [customCategories, setCustomCategories] = useState<CustomCategory[]>([]);  
+     const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    // console.log(selectedTags);
+    // console.log(customCategories);
+    console.log(formValues);
     // const dispatch = useDispatch();
     const dispatch = useAppDispatch();
 
@@ -316,6 +327,8 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
             const updatedData = {
                 ...values,
             };
+
+            console.log(formValues);
             const leadId = formValues.id;
 
             if (formMode === "edit") {
@@ -351,6 +364,39 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
         }
     };
 
+    useEffect(() => {
+        const tagData = async () => {
+            try {
+                const moduleResponse = await callApi(METHOD.GET, "crm/module", {
+                    moduleName: "contacts",
+                });
+
+                const leadsItem = moduleResponse?.data?.find(
+                    // (item: any) => item.moduleName === "contacts"
+                    (item: Module) => item.moduleName === "leads"
+                  
+                );
+                const leadsId = leadsItem ? leadsItem.id : null;
+                const tagCategoryResponse = await callApi(
+                    METHOD.GET,
+                    `crm/tag-category/?masterId=${leadsId}`
+                );
+                const tagCategories = tagCategoryResponse?.data;
+                setTagCategories(tagCategories);
+                const customCategories = await callApi(
+                    METHOD.GET,
+                    `crm/custom-fields?masterId=${leadsId}`
+                );
+                setCustomCategories(customCategories?.data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        tagData();
+    }, []);
+
+
     return (
         <div className=''>
             <div className=''>
@@ -372,45 +418,112 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">   
-                                <InputField type="email" name="email" placeholder="Contact Name" label="Email *" />
+                                <InputField type="email" name="email" placeholder="Email" label="Email *" />
                                 <InputField type="contactNumber" name="contactNumber" placeholder="Contact Number" label="Contact Number *" />   
                             </div>
 
                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"> 
                                 <InputField type="number" name="budget" placeholder="Budget" label="Budget *" />
                                 <InputField type="textarea" name="notes" placeholder="Notes" label="Notes" />
+                                </div>
+                                
+                            <div className="grid grid-cols-1 mt-5 md:grid-cols-2 gap-4 mb-4">
+                                {tagCategories.map((tagCategory) => (
+                                <div className="" key={tagCategory.categoryName}>
+                                    <div className={`form-item vertical`}>
+                                        <label
+                                            className="form-label capitalize flex mb-2"
+                                            htmlFor={`${tagCategory.categoryName}`}
+                                        >
+                                            {tagCategory.categoryName}
+                                        </label>
+                                    <SelectField
+                                         name={tagCategory.categoryName}
+                                         options={tagCategory.tags.map((tag) => ({
+                                             value: tag.id,
+                                             label: tag.tagName,
+                                         }))}
+                                         className="react-select-container"
+                                         classNamePrefix="react-select"
+                                         isMulti
+                                         value={selectedTags?.filter((tagId) => tagCategory?.tags?.some((tag) => tag?.id === tagId))
+                                             .map((tagId) => ({
+                                                 value: tagId,
+                                                 label: tagCategory.tags.find((tag) => tag?.id === tagId)?.tagName,
+                                             }))}
+                                        
+                                         onChange={(selectedOptions: { value: string }[], { action, removedValue }: { action: string, removedValue: { value: string } }) => {
+                                                  const tagIds = selectedOptions?.map((option) => option?.value);
+                                             console.log(tagIds);
+                                                  if (action === 'remove-value' && removedValue) {
+                                                      const removedTagId = removedValue?.value;
+                                                      setSelectedTags((prevSelectedTags) => (
+                                                          prevSelectedTags?.filter((tagId) => tagId !== removedTagId)
+                                                      ));
+                                                  } else {
+                                                      const selectedTagIds = selectedTags?.map(tag => tag); //Extract tag IDs
+                                                       const updatedTags = [...selectedTagIds, ...tagIds];
+                                                      const uniqueTags = Array.from(new Set(updatedTags.map(tagId => ( tagId ))));
+                                                      console.log(uniqueTags);
+                                                          setSelectedTags(uniqueTags);
+                                                      }
+                                              }}
+                                        />
+                                        
+                                    </div>
+                                </div>
+                                ))}
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 <div className="col-span-1">
                                     <label className="form-label mb-2">Leads New Category</label>
-                                    {/* Add the Field and ErrorMessage components for Leads New Category */}
                                 </div>
 
                                 <div className="col-span-1">
                                     <label className="form-label mb-2">Lead Cate 2</label>
-                                    {/* Add the Field and ErrorMessage components for Lead Cate 2 */}
                                 </div>
-                            </div>
+                            </div> */}
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 <div className="col-span-1">
                                     <label className="form-label mb-2">Leads Category</label>
-                                    {/* Add the Field and ErrorMessage components for Leads Category */}
                                 </div>
 
                                 <div className="col-span-1">
                                     <label className="form-label mb-2">Bhargav</label>
-                                    {/* Add the Field and ErrorMessage components for Bhargav */}
                                 </div>
-                            </div>
+                            </div> */}
 
                             <div className="mb-2">
                                 <h5 className="text-black text-xl">Additional Details</h5>
                                 <p></p>
+                                </div>
+                                
+                            <div className="grid grid-cols-1 mt-5 md:grid-cols-2 gap-4 mb-4">
+                            {customCategories?.map((custom) => (
+                                <div className="col-span-1">
+                                    <div className={`form-item vertical`}>
+                                        <label
+                                            className="form-label capitalize flex mb-2"
+                                            htmlFor=""
+                                        >
+                                            {custom.label}
+                                        </label>
+                                        <Field
+                                            as="input"
+                                            type={`${custom.inputType}`}
+                                            id=""
+                                            name={`${custom.name}`}
+                                            placeholder={`${custom.label}`}
+                                            className={`w-full font-light text-sm h-11 border rounded px-2 py-1 focus:ring-indigo-600 focus:border-indigo-600 `}
+                                        ></Field>
+                                    </div>
+                                </div>
+                            ))}
                             </div>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                            {/* <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                                 <div>
                                     <label className="form-label mb-2">Bhargav</label>
                                     <Field className={`w-full font-light text-sm border font-light text-sm rounded px-2 h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${touched.bhargav && errors.contactName
@@ -428,7 +541,7 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
                                         }`} type="text" name="skills" />
                                     <ErrorMessage name="skills" component="div" className="text-red-600 text-sm mt-1" />
                                 </div>
-                            </div>
+                            </div> */}
 
                             <div className="drawer-footer mt-3">
                                 <div className="text-right  w-full">

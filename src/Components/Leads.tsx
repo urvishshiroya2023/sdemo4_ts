@@ -308,6 +308,8 @@ const Leads: React.FC = () => {
         formValues: initialValues,
     });
 
+    console.log(state.formValues);
+
     useEffect(() => {
         dispatch(fetchLeads());
     }, [dispatch]);
@@ -340,7 +342,9 @@ const Leads: React.FC = () => {
                     formMode: "edit",
                     // formValues: data.data.find((lead) => lead.id === leadId) || initialValues,
                     formValues: data?.find((lead: { id: string; }) => lead.id === leadId) || initialValues,
+                    
                 }));
+               
             } catch (error) {
                 console.error("Error fetching lead details for editing:", error);
             }
