@@ -1,9 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { METHOD } from "../../Constant/Methods";
 import callApi from "../api";
+
+const LEADPATH = "crm/leads"
 
 export const fetchLeads = createAsyncThunk("leads/fetchLeads", async (_, { getState }) => {
     try {
-        const response = await callApi("GET", "/crm/leads");
+        const response = await callApi(METHOD.GET, `${LEADPATH}`);
         return response;
     } catch (error) {
         throw error;
@@ -12,7 +15,7 @@ export const fetchLeads = createAsyncThunk("leads/fetchLeads", async (_, { getSt
 
 export const fetchLeadById = createAsyncThunk("leads/fetchLeadById", async (leadId, { getState }) => {
     try {
-        const response = await callApi("GET", `/crm/leads/${leadId}`);
+        const response = await callApi(METHOD.GET, `${LEADPATH}/${leadId}`);
         return response.data;
     } catch (error) {
         throw error;
@@ -21,7 +24,7 @@ export const fetchLeadById = createAsyncThunk("leads/fetchLeadById", async (lead
 
 export const deleteLead = createAsyncThunk("leads/deleteLead", async (leadId, { getState }) => {
     try {
-        await callApi("DELETE", `/crm/leads/${leadId}`);
+        await callApi(METHOD.DELETE, `${LEADPATH}/${leadId}`);
         return leadId;
     } catch (error) {
         throw error;
@@ -30,7 +33,7 @@ export const deleteLead = createAsyncThunk("leads/deleteLead", async (leadId, { 
 
 export const addNewLeads = createAsyncThunk("leads/addNewLeads", async (newLeadData, { getState }) => {
     try {
-        const response = await callApi("POST", "/crm/leads", newLeadData);
+        const response = await callApi(METHOD.POST, `${LEADPATH}`, newLeadData);
         // console.log(response);
         return response.data;
     } catch (error) {
@@ -40,7 +43,7 @@ export const addNewLeads = createAsyncThunk("leads/addNewLeads", async (newLeadD
 
 export const editLead = createAsyncThunk("leads/editLead", async ({ leadId, updatedData }, { getState }) => {
     try {
-        const response = await callApi("PUT", `crm/leads/${leadId}`, updatedData);
+        const response = await callApi(METHOD.PUT, `${LEADPATH}/${leadId}`, updatedData);
         // console.log(updatedData);
         // return response.data;
         return updatedData;

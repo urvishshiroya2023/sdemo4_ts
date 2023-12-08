@@ -1,8 +1,8 @@
-import { Link, useLocation } from 'react-router-dom'
-import logo from "../Images/logo-light-full.png"
-import Logout from "./Logout"
+import { Link, useLocation } from 'react-router-dom';
+import logo from "../Images/logo-light-full.png";
+import Logout from "./Logout";
 
-const HomePageHeader = () => {
+const HomePageHeader: React.FC  = () => {
     const location = useLocation();
 
     return (
@@ -14,15 +14,6 @@ const HomePageHeader = () => {
                             <img src={logo} alt='logo' /></Link>
                     </div>
                     <div className=''>
-                        {/* <ul className='text-[#6B7280] font-medium flex justify-between'>
-                            <li className='mx-2 active:bg-violet-700'><Link to={"/homepage"}>Dashboard</Link></li>
-                            <li className='mx-2'>Contacts</li>
-                            <li className='mx-2'>Leads</li>
-                            <li className='mx-2 active:bg-violet-700'>
-                                <Link to={"/taskdetail"}>Task</Link>
-                            </li>
-                            <li className='mx-2'>Deal</li>
-                        </ul> */}
                         <ul className='text-[#6B7280] font-medium flex justify-between items-center'>
                             <li className={`mx-2 ${location.pathname === '/homepage' ? 'bg-[#e5e7eb] text-black rounded-lg bg-opacity-80 px-3 py-2 ' : ''}`}>
                                 <Link to={"/homepage"}>Dashboard</Link>
