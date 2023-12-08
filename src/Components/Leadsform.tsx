@@ -255,7 +255,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import * as Yup from 'yup';
 import { METHOD } from "../Constant/Methods";
-import { CustomCategory, Module, TagCategory } from "./ContactForm";
+import { CustomCategory, Module, Tag2, TagCategory } from "./ContactForm";
 import InputField from "./InputField";
 import { Lead, addNewLeads, editLead, fetchLeads } from './Redux/leadSlice';
 import { useAppDispatch } from './Redux/store';
@@ -289,12 +289,11 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
      const [tagCategories, setTagCategories] = useState<TagCategory[]>([]);  
      const [customCategories, setCustomCategories] = useState<CustomCategory[]>([]);  
      const [selectedTags, setSelectedTags] = useState<string[]>([]);
-    // console.log(selectedTags);
+    console.log(selectedTags);
     // console.log(customCategories);
     console.log(formValues);
     // const dispatch = useDispatch();
     const dispatch = useAppDispatch();
-
     const initialValues: Lead = {
         id: '',
         contactName: '',
@@ -363,6 +362,16 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
             });
         }
     };
+
+        
+
+       useEffect(() => {
+        if (formMode === 'edit') {
+            const existingTags = formValues?.tags?.map((tag : Tag2) => tag?.id);
+            console.log(existingTags);
+            setSelectedTags(existingTags);
+        }
+    }, [formMode, formValues]);
 
     useEffect(() => {
         const tagData = async () => {

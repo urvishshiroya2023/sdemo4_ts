@@ -714,7 +714,7 @@ export interface TagCategory {
   } | null;
 }
 
-interface Tag2{
+export interface Tag2{
     id: string;
 }
 
