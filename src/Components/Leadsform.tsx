@@ -367,72 +367,18 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
                      {({ isSubmitting, touched, errors }) => (
                         <Form className="font-semibold text-[#6B7280] text-sm">
                             <div className="grid bg-white grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                {/* <div className="col-span-1">
-                                    <label className="form-label mb-2">Contact Name</label>
-                                    <Field className={`w-full font-light text-sm border font-light text-sm rounded px-2 h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${touched.contactName && errors.contactName
-                                        ? "border-red-500 border-2"
-                                        : ""
-                                        }`} type="text" name="contactName" />
-                                    <ErrorMessage name="contactName" component="div" className="text-red-600 text-sm mt-1" />
-                                    </div> */}
-
                                 <InputField type="text" name="contactName" placeholder="Contact Name" label="Contact Name" />
                                 <InputField type="text" name="title" placeholder="Title" label="Title *" />
-
-                                 {/* <div className="col-span-1">
-                                     <label className="form-label mb-2">Title *</label>
-                                     <Field className={`w-full font-light text-sm border font-light text-sm rounded px-2 h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${touched.title && errors.contactName
-                                        ? "border-red-500 border-2"
-                                        : ""
-                                        }`} type="text" name="title" />
-                                    <ErrorMessage name="title" component="div" className="text-red-600 text-sm mt-1" />
-                                </div> */}
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                {/* <div className="col-span-1">
-                                    <label className="form-label mb-2">Email *</label>
-                                    <Field className={`w-full font-light text-sm border font-light text-sm rounded px-2 h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${touched.email && errors.contactName
-                                        ? "border-red-500 border-2"
-                                        : ""
-                                        }`} type="text" name="email" />
-                                    <ErrorMessage name="email" component="div" className="text-red-600 text-sm mt-1" />
-                                </div> */}
-                                    
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">   
                                 <InputField type="email" name="email" placeholder="Contact Name" label="Email *" />
-                                <InputField type="contactNumber" name="contactNumber" placeholder="Contact Number" label="Contact Number *" />
-
-                                 {/* <div className="col-span-1">
-                                     <label className="form-label mb-2">Contact Number *</label>
-                                     <Field className={`w-full font-light text-sm border font-light text-sm rounded px-2 h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${touched.contactNumber && errors.contactName
-                                         ? "border-red-500 border-2"
-                                        : ""
-                                        }`} type="text" name="contactNumber" />
-                                    <ErrorMessage name="contactNumber" component="div" className="text-red-600 text-sm mt-1" />
-                                </div> */}
+                                <InputField type="contactNumber" name="contactNumber" placeholder="Contact Number" label="Contact Number *" />   
                             </div>
 
-                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                 {/* <div className="col-span-1">
-                                     <label className="form-label mb-2">Budget</label>
-                                     <Field className={`w-full font-light text-sm border font-light text-sm rounded px-2 h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${touched.budget && errors.contactName
-                                        ? "border-red-500 border-2"
-                                        : ""
-                                        }`} type="number" name="budget" />
-                                    <ErrorMessage name="budget" component="div" className="text-red-600 text-sm mt-1" />
-                                </div> */}
-                                    
+                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"> 
                                 <InputField type="number" name="budget" placeholder="Budget" label="Budget *" />
                                 <InputField type="textarea" name="notes" placeholder="Notes" label="Notes" />
-
-                                {/* <div className="col-span-1">
-                                    <label className="form-label mb-2">Notes</label>
-                                    <Field className={`w-full font-light text-sm border font-light text-sm rounded px-2 h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${touched.notes && errors.contactName
-                                        ? "border-red-500 border-2"
-                                        : ""
-                                        }`} as="textarea" name="notes" />
-                                    <ErrorMessage name="notes" component="div" className="text-red-600 text-sm mt-1" />
-                                </div> */}
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -458,8 +404,6 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
                                     {/* Add the Field and ErrorMessage components for Bhargav */}
                                 </div>
                             </div>
-
-                            
 
                             <div className="mb-2">
                                 <h5 className="text-black text-xl">Additional Details</h5>

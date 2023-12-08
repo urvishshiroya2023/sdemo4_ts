@@ -558,7 +558,7 @@ const Contacts: React.FC = () => {
         //     [dispatch, allContacts]
     // );
     
-    const handleEdit = useCallback(
+const handleEdit = useCallback(
   async (contactId: string) => {
     try {
       await dispatch(fetchContactById(contactId));
