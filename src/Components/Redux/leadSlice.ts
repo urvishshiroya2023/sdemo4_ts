@@ -124,19 +124,19 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { METHOD } from "../../Constant/Methods";
 import callApi from "../api";
 
-interface contactData{
+export interface contactData{
     firstName: string;
     lastName: string;
 }
 
-interface tags{
+export interface tags{
     id: string;
     colorName: string;
     length: number;
     tagName: string;
 }
 
-interface leadStatus{
+export interface leadStatus{
     statusName: string
     colorCode:string
 }
@@ -174,7 +174,6 @@ const LEADPATH = "crm/leads";
 export const fetchLeads = createAsyncThunk < Lead[] > ("leads/fetchLeads", async (_, { getState }) => {
     try {
         const response = await callApi(METHOD.GET, `${LEADPATH}`);
-        // console.log(response.data);
         return response.data;
     } catch (error) {
         throw error;
@@ -216,7 +215,6 @@ export const editLead = createAsyncThunk < Lead, { leadId: string; updatedData: 
     async ({ leadId, updatedData }, { getState }) => {
         try {
             const response = await callApi(METHOD.PUT, `${LEADPATH}/${leadId}`, updatedData);
-            // console.log(updatedData);
             return response.data;
         } catch (error) {
             throw error;
@@ -242,7 +240,6 @@ const leadSlice = createSlice({
             })
             .addCase(fetchLeads.fulfilled, (state, action) => {
                 state.loading = false;
-                // console.log(action.payload);
                 state.data = action.payload;
             })
             .addCase(fetchLeads.rejected, (state, action) => {
@@ -280,11 +277,9 @@ const leadSlice = createSlice({
             })
             .addCase(editLead.fulfilled, (state, action) => {
                 state.loading = false;
-                // const updatedData = action.payload;
                 const updatedData = action?.meta?.arg?.updatedData;
-                // console.log(updatedData);
                 state.data = state.data.map((lead) => (lead.id === updatedData.id ? updatedData : lead));
-                // console.log(state.data);
+
             })
             .addCase(editLead.rejected, (state, action) => {
                 state.loading = false;

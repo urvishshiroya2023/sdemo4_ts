@@ -244,7 +244,7 @@ import LeadsData from "./LeadsData";
 import LeadsHeader from "./LeadsHeader";
 import Leadsform from "./Leadsform";
 import Loader from "./Loader";
-import { fetchLeadById, fetchLeads, selectLeads } from "./Redux/leadSlice";
+import { contactData, fetchLeadById, fetchLeads, leadStatus, selectLeads, tags } from "./Redux/leadSlice";
 import { useAppDispatch } from "./Redux/store";
 
 
@@ -261,7 +261,11 @@ interface Lead {
     leadsCategory: string;
     bhargav: string;
     skills: string;
-    
+    leadsActivity: any[];
+    reason: string
+    tags: tags[];
+    leadStatus: leadStatus;
+    contactData: contactData;
 }
 
 const initialValues: Lead = {
@@ -277,7 +281,17 @@ const initialValues: Lead = {
     leadsCategory: "",
     bhargav: "",
     skills: "",
-   
+    leadsActivity: [],
+    reason: "",
+    tags: [],
+    leadStatus: {
+        statusName: "",
+        colorCode: ""
+    },
+    contactData: {
+        firstName: "",
+        lastName: ""
+    }
 };
 
 const Leads: React.FC = () => {
