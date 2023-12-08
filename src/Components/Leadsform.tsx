@@ -420,7 +420,7 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
                                     <ErrorMessage name="bhargav" component="div" className="text-red-600 text-sm mt-1" />
                                 </div>
 
-                                 <div>
+                                <div>
                                      <label className="form-label mb-2">Skills</label>
                                      <Field className={`w-full font-light text-sm border font-light text-sm rounded px-2 h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${touched.skills && errors.contactName
                                         ? "border-red-500 border-2"
