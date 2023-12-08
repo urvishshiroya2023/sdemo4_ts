@@ -199,13 +199,14 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { TagCategory } from './Leads';
 import { deleteLead, fetchLeads, Lead } from './Redux/leadSlice';
 import { useAppDispatch } from './Redux/store';
 
 interface LeadsDataProps {
      lead: Lead;
     handleEdit: (leadId: string) => void;
-    tagsCategories: any[];
+    tagsCategories: TagCategory[];
 }
 
 const LeadsData: React.FC<LeadsDataProps> = ({ lead, handleEdit,tagsCategories }) => {
@@ -367,7 +368,7 @@ const LeadsData: React.FC<LeadsDataProps> = ({ lead, handleEdit,tagsCategories }
             {tagsCategories.map((category) => {
         const categoryTags = lead.tags.filter(
           (tag) => tag.tagCategoryId === category.id
-        );
+        ); 
         const hasTags = categoryTags.length > 0;
 
         return (

@@ -248,7 +248,13 @@ import { contactData, fetchLeadById, fetchLeads, leadStatus, selectLeads, tags }
 import { useAppDispatch } from "./Redux/store";
 import callApi from "./api";
 
-
+interface leadsActivity{
+    id: string;
+    createdBy: string;
+    status: string;
+    createdDate: string;
+    length:number
+}
 interface Lead {
     id: string;
     contactName: string;
@@ -262,12 +268,16 @@ interface Lead {
     leadsCategory: string;
     bhargav: string;
     skills: string;
-    leadsActivity: any[];
+    leadsActivity: leadsActivity[];
     reason: string
     tags: tags[];
     leadStatus: leadStatus;
     contactData: contactData;
 }
+
+export interface TagCategory{
+    id: string;
+    categoryName:string}
 
 const initialValues: Lead = {
     id: "",
@@ -308,7 +318,7 @@ const Leads: React.FC = () => {
         formMode: null as null | "edit",
         formValues: initialValues,
     });
-    const [tagsCategories, setTagsCategories] = useState < any[] > ([]);
+    const [tagsCategories, setTagsCategories] = useState < TagCategory[] > ([]);
 
     console.log(tagsCategories);
 
