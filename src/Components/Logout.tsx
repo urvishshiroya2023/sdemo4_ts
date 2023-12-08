@@ -29,7 +29,6 @@ const Logout: React.FC = () => {
         localStorage.removeItem("authToken");
         navigate('/signin');
     }
-
     return (
         <div className='bg-green-400 rounded'>
             <button className='px-5 py-2' onClick={handleOnClick}>Logout</button>
