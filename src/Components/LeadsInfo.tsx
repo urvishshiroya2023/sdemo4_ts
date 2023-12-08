@@ -186,7 +186,7 @@ const TimeAgo: React.FC<TimeAgoProps> = ({ createdDate }) => {
 };
 
 const LeadsInfo: React.FC = () => {
-    const { id } = useParams < { id: string   } > ();
+    const { id } = useParams < { id: string} > ();
     // const dispatch = useDispatch();
     const dispatch = useAppDispatch();
     const selectedLead = useSelector(selectLeads).selectLeads;
