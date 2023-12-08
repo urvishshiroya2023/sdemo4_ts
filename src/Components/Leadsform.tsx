@@ -333,6 +333,7 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
 
             if (formMode === "edit") {
                 const actionResult = await dispatch(editLead({ leadId, updatedData }));
+                console.log(actionResult);
                 response = actionResult?.meta?.requestStatus;
 
                 if (response === "fulfilled") {
