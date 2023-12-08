@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -15,11 +15,9 @@ const LeadsData = ({ lead, handleEdit }) => {
 
     const handleDelete = async () => {
         try {
-            // Dispatch the deleteLead action with the lead ID
             await dispatch(deleteLead(lead.id));
             dispatch(fetchLeads());
             toast.success('Lead deleted successfully');
-            // Optionally, you can handle success or navigate to a different page after deletion
         } catch (error) {
             console.error("Error deleting lead:", error);
             toast.error('Error deleting lead');
@@ -29,7 +27,6 @@ const LeadsData = ({ lead, handleEdit }) => {
 
     return (
         <tr className='text-[#6B7280] border-b'>
-
             <td className={`truncate p-3`}>
                 <div class="flex text-base items-center">
                     <div>

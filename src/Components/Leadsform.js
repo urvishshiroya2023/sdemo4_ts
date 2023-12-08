@@ -1,5 +1,4 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import React from 'react';
 import { useDispatch } from 'react-redux';
 import { toast } from "react-toastify";
 import * as Yup from 'yup';
@@ -130,10 +129,14 @@ const Leadsform = ({ onClose, formMode, setShowLeadForm, formValues }) => {
             if (formMode === "edit") {
                 // Dispatch the editTask action for updating an existing task
                 const actionResult = await dispatch(editLead({ leadId, updatedData }));
-                response = actionResult?.payload;
-                // console.log(response);
+                // response = actionResult?.payload;
+                response = actionResult?.meta?.requestStatus;
+                // console.log(actionResult);
                 // console.log(response)
-                if (response.success) {
+                // if (response.success) {
+                //     dispatch(fetchTasks());
+                // }
+                if (response.success === "fulfilled") {
                     dispatch(fetchTasks());
                 }
             } else {
