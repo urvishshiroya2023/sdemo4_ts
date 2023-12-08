@@ -129,9 +129,25 @@ interface contactData{
     lastName: string;
 }
 
-interface Lead {
+interface tags{
+    id: string;
+    colorName: string;
+    length: number;
+    tagName: string;
+}
+
+interface leadStatus{
+    statusName: string
+    colorCode:string
+}
+
+export interface Lead {
+    leadsActivity: any[];
+    reason: string;
+    tags: tags[];
+    leadStatus: leadStatus;
     contactData: contactData;
-      id: string;
+    id: string ;
     contactName: string;
     title: string;
     email: string;
