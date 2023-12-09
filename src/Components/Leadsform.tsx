@@ -16,7 +16,7 @@ interface LeadsFormProps {
     onClose: () => void;
     formMode: 'edit' | null;
     setShowLeadForm: (show: boolean) => void;
-    formValues: Lead; // Assuming you have a type for your lead data
+    formValues: Lead; 
 }
 
 interface ContactOptions{
@@ -40,18 +40,9 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
     contactNumber: isContactSelected? Yup.string().required('Contact Number is required')
         : Yup.string(),
     budget: Yup.number().required('Budget is required').positive('Budget must be positive'),
-    // notes: Yup.string()
-    // leadsNewCategory: Yup.string()
-    // leadCate2: Yup.string()
-    // leadsCategory: Yup.string()
-    // bhargav: Yup.string()
-    // skills: Yup.string().required('Skills is required')
+
 });
 
-    // console.log(contactOptions);
-    // console.log(customCategories);
-    // console.log(formValues);
-    // const dispatch = useDispatch();
     const formikRef = useRef<FormikProps<Lead>>(null);
     const dispatch = useAppDispatch();
     const initialValues: Lead = {
@@ -101,7 +92,6 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
                     dispatch(fetchTasks());
                 }
             } else {
-                // const actionResult = await dispatch(addNewLeads(values));
                 const actionResult = await dispatch(addNewLeads({ newLeadData: values }));
                 response = actionResult.payload;
             }
@@ -163,7 +153,6 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
                 });
 
                 const leadsItem = moduleResponse?.data?.find(
-                    // (item: any) => item.moduleName === "contacts"
                     (item: Module) => item.moduleName === "leads"
                   
                 );
@@ -199,68 +188,13 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
                  </div>
              </div>
              <div className='mt-5'>
-                 {/* <Formik initialValues={formValues} onSubmit={handleSubmit} validationSchema={validationSchema}> */}
                  <Formik innerRef={formikRef} initialValues={formMode === "edit" ? formValues : initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
                      {({ isSubmitting, touched, errors }) => (
                         <Form className="font-semibold text-[#6B7280] text-sm">
                             <div className="grid bg-white grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                {/* <InputField type="text" name="contactName" placeholder="Contact Name" label="Contact Name" /> */}
                                 <div className="col-span-1">
                                     <label className="form-label mb-2">Contact Name</label>
-                                    {/* <Field
-                                        as="select" 
-                                        className={`w-full mt-2 font-light text-sm border font-light text-sm rounded px-2 h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${touched.contactName && errors.contactName
-                                        ? "border-red-500 border-2"
-                                        : ""
-                                        }`}
-                                            name="contactName"
-                                            onChange={(e: { target: { value: any; }; }) => {
-                                                const selectedContact = e.target.value;
-                                                setIsContactSelected(!!selectedContact);
-                                            }}
-                                    >
-                                        <option value="" label="Select a contact" />
-                                        {contactOptions.map((contact, index) => (
-                                        <option key={index} value={contact.firstName + "" +contact.lastName} label={contact.firstName + "" +contact.lastName} />
-                                        ))}
-                                    </Field> */}
-                                        {/* <Field
-                                            as="select"
-                                            className={`w-full mt-2 font-light text-sm border font-light text-sm rounded px-2 h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${touched.contactName && errors.contactName
-                                                ? "border-red-500 border-2"
-                                                : ""
-                                            }`}
-                                            name="contactName"
-                                            value={formikRef.current?.values.contactName}  
-                                         
-                                            onChange={async (e: { target: { value: any; }; }) => {
-                                                const selectedContact = e.target.value;
-                                                console.log(selectedContact);
-                                                    setIsContactSelected(!!selectedContact);
-                                                    const [firstName, lastName] = selectedContact.split(" "); 
 
-                                                    formikRef.current?.setFieldValue('contactData.firstName', firstName?.trim());  
-                                                    formikRef.current?.setFieldValue('contactData.lastName', lastName?.trim());  
-                                                   
-
-                                                    if (selectedContact) {
-                                                        try {
-                                                            const response = await callApi(METHOD.GET, `/crm/contacts?firstName=${firstName}&lastName=${lastName}`);
-                                                            const contactDetails = response?.data[0]; 
-                                                            if (contactDetails) {
-                                                                formikRef.current?.setFieldValue('contactNumber', contactDetails.contactNumber);  
-                                                            }
-                                                        } catch (error) {
-                                                            console.error("Error fetching contact details:", error);
-                                                        }
-                                                    }
-                                                }}
-                                        >
-                                            <option value="" label="Select a contact" />
-                                            {contactOptions.map((contact, index) => (
-                                                <option key={index} value={`${contact.firstName} ${contact.lastName}`} label={`${contact.firstName} ${contact.lastName}`} />
-                                            ))}
-                                        </Field> */}
                                        <Field
                                             as="select"
                                             className={`w-full mt-2 font-light text-sm border font-light text-sm rounded px-2 h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${touched.contactName && errors.contactName
@@ -268,7 +202,6 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
                                                 : ""
                                             }`}
                                             name="contactName"
-                                            // key={formikRef.current?.values.contactData?.id}
                                             value={formikRef.current?.values?.contactData?.id}
                                             onChange={async (e: { target: { value: any; }; }) => {
                                                 const selectedContactId = e.target.value;
@@ -283,7 +216,6 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
                                                     formikRef.current?.setFieldValue('contactData.lastName', lastName?.trim());
                                                     formikRef.current?.setFieldValue('contactNumber', contactNumber);
                                                 } else {
-                                                    // If the selected contact is not found, clear the values
                                                     formikRef.current?.setFieldValue('contactData.firstName', '');
                                                     formikRef.current?.setFieldValue('contactData.lastName', '');
                                                     formikRef.current?.setFieldValue('contactNumber', '');
@@ -371,25 +303,7 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
                                 ))}
                             </div>
 
-                            {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                <div className="col-span-1">
-                                    <label className="form-label mb-2">Leads New Category</label>
-                                </div>
 
-                                <div className="col-span-1">
-                                    <label className="form-label mb-2">Lead Cate 2</label>
-                                </div>
-                            </div> */}
-
-                            {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                <div className="col-span-1">
-                                    <label className="form-label mb-2">Leads Category</label>
-                                </div>
-
-                                <div className="col-span-1">
-                                    <label className="form-label mb-2">Bhargav</label>
-                                </div>
-                            </div> */}
 
                             <div className="mb-2">
                                 <h5 className="text-black text-xl">Additional Details</h5>
@@ -418,27 +332,6 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
                                 </div>
                             ))}
                             </div>
-
-                            {/* <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                                <div>
-                                    <label className="form-label mb-2">Bhargav</label>
-                                    <Field className={`w-full font-light text-sm border font-light text-sm rounded px-2 h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${touched.bhargav && errors.contactName
-                                        ? "border-red-500 border-2"
-                                        : ""
-                                        }`} type="text" name="bhargav" />
-                                    <ErrorMessage name="bhargav" component="div" className="text-red-600 text-sm mt-1" />
-                                </div>
-
-                                <div>
-                                     <label className="form-label mb-2">Skills</label>
-                                     <Field className={`w-full font-light text-sm border font-light text-sm rounded px-2 h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${touched.skills && errors.contactName
-                                        ? "border-red-500 border-2"
-                                        : ""
-                                        }`} type="text" name="skills" />
-                                    <ErrorMessage name="skills" component="div" className="text-red-600 text-sm mt-1" />
-                                </div>
-                            </div> */}
-
                             <div className="drawer-footer mt-3">
                                 <div className="text-right  w-full">
                                     <button

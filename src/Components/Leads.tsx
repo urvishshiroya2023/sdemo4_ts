@@ -83,7 +83,7 @@ const Leads: React.FC = () => {
     });
     const [tagsCategories, setTagsCategories] = useState < TagCategory[] > ([]);
 
-    // console.log(tagsCategories);
+
 
     useEffect(() => {
         dispatch(fetchLeads());
@@ -92,7 +92,6 @@ const Leads: React.FC = () => {
     useEffect(() => {
             const tagData = async () => {
                 try {
-                    //  Get masterId from crm/module
                     const moduleResponse = await callApi("GET", "crm/module", {
                         moduleName: "leads",
                     });
@@ -101,15 +100,12 @@ const Leads: React.FC = () => {
                         (item: { moduleName: string; }) => item.moduleName === "leads"
                     );
                     const leadId = contactItem ? contactItem.id : null;
-                    // console.log("Contact ID:", leadId);
-                    // console.log(moduleResponse.data);
                     const tagCategoryResponse = await callApi(
                         "GET",
                         `crm/tag-category/?masterId=${leadId}`
                     );
                     const tagCategories = tagCategoryResponse?.data;
                     setTagsCategories(tagCategories);
-                    // console.log(tagCategories);
                 } catch (error) {
                     console.error("Error fetching data:", error);
                 }
@@ -144,7 +140,6 @@ const Leads: React.FC = () => {
                     ...prevState,
                     showLeadForm: true,
                     formMode: "edit",
-                    // formValues: data.data.find((lead) => lead.id === leadId) || initialValues,
                     formValues: data?.find((lead: { id: string; }) => lead.id === leadId) || initialValues,
                     
                 }));
@@ -256,10 +251,6 @@ const Leads: React.FC = () => {
                                                 <th className="truncate p-3">{ item?.categoryName}</th>
                                             ))
                                         }
-                                        {/* <th className="truncate p-3">hot</th>
-                                        <th className="truncate p-3">leads new  category</th>
-                                        <th className="truncate p-3 ">lead cate 2</th>
-                                        <th className="truncate p-3 ">leads category</th> */}
                                         <th className="truncate p-3">budget</th>
                                         <th className="truncate p-3">status</th>
                                         <th className="truncate p-3">Reason</th>
@@ -306,7 +297,6 @@ const Leads: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* TaskForm overlay */}
                     {state.showLeadForm && (
                         <div
                             onClick={handleCloseForm}

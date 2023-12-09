@@ -12,11 +12,8 @@ interface LeadsDataProps {
 }
 
 const LeadsData: React.FC<LeadsDataProps> = ({ lead, handleEdit,tagsCategories }) => {
-    // console.log(lead);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    // const dispatch = useDispatch();
     const dispatch = useAppDispatch();
-
     const statusStyles = {
         color: lead?.leadStatus?.colorCode,
         backgroundColor: `${lead?.leadStatus?.colorCode}1A`,
@@ -64,7 +61,7 @@ const LeadsData: React.FC<LeadsDataProps> = ({ lead, handleEdit,tagsCategories }
                         {isModalOpen && (
                             <div onClick={() => setIsModalOpen(false)} className="fixed inset-0 z-10 overflow-y-auto">
                                 <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                                    {/* Background overlay */}
+                                  
                                     <div
                                         className="fixed inset-0 transition-opacity"
                                         aria-hidden="true"
@@ -72,7 +69,7 @@ const LeadsData: React.FC<LeadsDataProps> = ({ lead, handleEdit,tagsCategories }
                                         <div className="absolute inset-0 bg-black opacity-60"></div>
                                     </div>
 
-                                    {/* Modal panel */}
+                                 
                                     <div
                                         onClick={(e) => e.stopPropagation()}
                                         className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
@@ -81,7 +78,6 @@ const LeadsData: React.FC<LeadsDataProps> = ({ lead, handleEdit,tagsCategories }
 
                                         <div className="bg-white rounded-lg px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                                             <div className="">
-                                                {/* ... Modal content */}
                                                 <div onClick={() => setIsModalOpen(false)} className='cursor-pointer text-right text-xs'>X</div>
                                                 <div >
                                                     <h3 className='text-black text-xl font-semibold'>Delete Lead</h3>
@@ -117,7 +113,7 @@ const LeadsData: React.FC<LeadsDataProps> = ({ lead, handleEdit,tagsCategories }
                             </div>
                         )}
 
-                        {/* view */}
+                      
                         <Link to={`/leaddetails/${lead.id}`} className='text-decoration-none'>
                             <span className="cursor-pointer  hover:text-green-500 circle items-center text-lg">
                                 <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http:www.w3.org/2000/svg">
@@ -137,36 +133,6 @@ const LeadsData: React.FC<LeadsDataProps> = ({ lead, handleEdit,tagsCategories }
                 <td className='truncate p-3'>{lead?.title ?? '-'}</td>
 
 
-                {/* <td className='truncate p-3'>
-
-                    {lead?.tags?.length > 0 && lead?.tags?.some(item => item.tagName.includes('cat')) ? (
-                        lead?.tags.map((item) => (
-                            <>
-                                {item.tagName.includes('cat') && (
-                                    <span className='py-1 px-2 text-xs font-semibold rounded-md mr-2' style={{ color: item?.colorName, backgroundColor: `${item?.colorName}1A` }} key={item.id}>{item.tagName}</span>
-                                )}
-                            </>
-                        ))
-                    ) : (
-                        '-'
-                    )}
-                </td>
-
-                <td className='truncate p-3'>
-
-                    {lead?.tags?.length > 0 && lead?.tags?.some(item => !item.tagName.includes('cat')) ? (
-                        lead?.tags?.map((item) => (
-                            !item.tagName.includes('cat') && (
-                                <>
-                                    <span className='py-1 px-2 text-xs font-semibold rounded-md mr-2' style={{ color: item?.colorName, backgroundColor: `${item?.colorName}1A` }} key={item.id}>{item.tagName}</span>
-                                </>
-                            )
-                        ))
-                    ) : (
-                        '-'
-                    )}
-                </td> */}
-            
             {tagsCategories.map((category) => {
         const categoryTags = lead?.tags?.filter(
           (tag) => tag.tagCategoryId === category.id
