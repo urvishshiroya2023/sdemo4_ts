@@ -250,7 +250,7 @@
 // export default Leadsform;
 
 
-import { Field, Form, Formik, FormikProps } from "formik";
+import { ErrorMessage, Field, Form, Formik, FormikProps } from "formik";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import * as Yup from 'yup';
@@ -264,11 +264,33 @@ import SelectField from "./SelectFiled";
 import callApi from "./api";
 
 
-const validationSchema = Yup.object().shape({
+interface LeadsFormProps {
+    onClose: () => void;
+    formMode: 'edit' | null;
+    setShowLeadForm: (show: boolean) => void;
+    formValues: Lead; // Assuming you have a type for your lead data
+}
+
+interface ContactOptions{
+    id: any;
+    firstName: string;
+    lastName: string;
+    contactNumber: number;
+}
+
+const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadForm, formValues }) => {
+    const [tagCategories, setTagCategories] = useState<TagCategory[]>([]);  
+    const [customCategories, setCustomCategories] = useState<CustomCategory[]>([]);  
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [contactOptions, setContactOptions] = useState<ContactOptions[]>([]);
+    const [isContactSelected, setIsContactSelected] = useState(false);
+    
+    const validationSchema = Yup.object().shape({
     // contactName: Yup.string().required('Contact Name is required'),
     title: Yup.string().required('Title is required'),
     email: Yup.string().email('Invalid email').required('Email is required'),
-    contactNumber: Yup.string().required('Contact Number is required'),
+    contactNumber: isContactSelected? Yup.string().required('Contact Number is required')
+        : Yup.string(),
     budget: Yup.number().required('Budget is required').positive('Budget must be positive'),
     // notes: Yup.string()
     // leadsNewCategory: Yup.string()
@@ -278,18 +300,7 @@ const validationSchema = Yup.object().shape({
     // skills: Yup.string().required('Skills is required')
 });
 
-interface LeadsFormProps {
-    onClose: () => void;
-    formMode: 'edit' | null;
-    setShowLeadForm: (show: boolean) => void;
-    formValues: Lead; // Assuming you have a type for your lead data
-}
-
-const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadForm, formValues }) => {
-     const [tagCategories, setTagCategories] = useState<TagCategory[]>([]);  
-     const [customCategories, setCustomCategories] = useState<CustomCategory[]>([]);  
-     const [selectedTags, setSelectedTags] = useState<string[]>([]);
-    console.log(selectedTags);
+    // console.log(contactOptions);
     // console.log(customCategories);
     console.log(formValues);
     // const dispatch = useDispatch();
@@ -316,6 +327,7 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
             colorCode: ""
         },
         contactData: {
+            id:"",
              firstName: "",
               lastName: ""
         }
@@ -327,7 +339,8 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
             const updatedData = {
                 ...values,
             };
-
+         const contactDataId = formikRef.current?.values.contactData?.id;
+        formikRef.current?.setFieldValue('contactsDataId', contactDataId);
             console.log(formValues);
             const leadId = formValues.id;
 
@@ -365,12 +378,26 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
         }
     };
 
-        useEffect(() => {
+     useEffect(() => {
         if (formikRef.current) {
             const setFieldValue = formikRef.current.setFieldValue;
             setFieldValue('tagId', selectedTags);
         }
-    }, [selectedTags]);
+     }, [selectedTags]);
+    
+    useEffect(() => {
+        const fetchContactOptions = async () => {
+        try {
+            const response = await callApi(METHOD.GET, "/crm/contacts");
+            const contacts = response?.data || [];
+            setContactOptions(contacts);
+        } catch (error) {
+            console.error("Error fetching contact options:", error);
+            }
+        };
+
+        fetchContactOptions();
+        }, []);
 
        useEffect(() => {
         if (formMode === 'edit') {
@@ -429,13 +456,118 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
                      {({ isSubmitting, touched, errors }) => (
                         <Form className="font-semibold text-[#6B7280] text-sm">
                             <div className="grid bg-white grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                <InputField type="text" name="contactName" placeholder="Contact Name" label="Contact Name" />
+                                {/* <InputField type="text" name="contactName" placeholder="Contact Name" label="Contact Name" /> */}
+                                <div className="col-span-1">
+                                    <label className="form-label mb-2">Contact Name</label>
+                                    {/* <Field
+                                        as="select" 
+                                        className={`w-full mt-2 font-light text-sm border font-light text-sm rounded px-2 h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${touched.contactName && errors.contactName
+                                        ? "border-red-500 border-2"
+                                        : ""
+                                        }`}
+                                            name="contactName"
+                                            onChange={(e: { target: { value: any; }; }) => {
+                                                const selectedContact = e.target.value;
+                                                setIsContactSelected(!!selectedContact);
+                                            }}
+                                    >
+                                        <option value="" label="Select a contact" />
+                                        {contactOptions.map((contact, index) => (
+                                        <option key={index} value={contact.firstName + "" +contact.lastName} label={contact.firstName + "" +contact.lastName} />
+                                        ))}
+                                    </Field> */}
+                                        {/* <Field
+                                            as="select"
+                                            className={`w-full mt-2 font-light text-sm border font-light text-sm rounded px-2 h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${touched.contactName && errors.contactName
+                                                ? "border-red-500 border-2"
+                                                : ""
+                                            }`}
+                                            name="contactName"
+                                            value={formikRef.current?.values.contactName}  
+                                         
+                                            onChange={async (e: { target: { value: any; }; }) => {
+                                                const selectedContact = e.target.value;
+                                                console.log(selectedContact);
+                                                    setIsContactSelected(!!selectedContact);
+                                                    const [firstName, lastName] = selectedContact.split(" "); 
+
+                                                    formikRef.current?.setFieldValue('contactData.firstName', firstName?.trim());  
+                                                    formikRef.current?.setFieldValue('contactData.lastName', lastName?.trim());  
+                                                   
+
+                                                    if (selectedContact) {
+                                                        try {
+                                                            const response = await callApi(METHOD.GET, `/crm/contacts?firstName=${firstName}&lastName=${lastName}`);
+                                                            const contactDetails = response?.data[0]; 
+                                                            if (contactDetails) {
+                                                                formikRef.current?.setFieldValue('contactNumber', contactDetails.contactNumber);  
+                                                            }
+                                                        } catch (error) {
+                                                            console.error("Error fetching contact details:", error);
+                                                        }
+                                                    }
+                                                }}
+                                        >
+                                            <option value="" label="Select a contact" />
+                                            {contactOptions.map((contact, index) => (
+                                                <option key={index} value={`${contact.firstName} ${contact.lastName}`} label={`${contact.firstName} ${contact.lastName}`} />
+                                            ))}
+                                        </Field> */}
+                                       <Field
+                                            as="select"
+                                            className={`w-full mt-2 font-light text-sm border font-light text-sm rounded px-2 h-11 focus:ring-indigo-600 focus-within:ring-indigo-600 focus-within:border-indigo-600 focus:border-indigo-600 ${touched.contactName && errors.contactName
+                                                ? "border-red-500 border-2"
+                                                : ""
+                                            }`}
+                                            name="contactName"
+                                            // key={formikRef.current?.values.contactData?.id}
+                                            value={formikRef.current?.values?.contactData?.id}
+                                            onChange={async (e: { target: { value: any; }; }) => {
+                                                const selectedContactId = e.target.value;
+                                                console.log(selectedContactId);
+                                                setIsContactSelected(!!selectedContactId);
+
+                                                const selectedContact = contactOptions.find(contact => contact.id === selectedContactId);
+
+                                                if (selectedContact) {
+                                                    const { firstName, lastName, contactNumber } = selectedContact;
+                                                    formikRef.current?.setFieldValue('contactData.firstName', firstName?.trim());
+                                                    formikRef.current?.setFieldValue('contactData.lastName', lastName?.trim());
+                                                    formikRef.current?.setFieldValue('contactNumber', contactNumber);
+                                                } else {
+                                                    // If the selected contact is not found, clear the values
+                                                    formikRef.current?.setFieldValue('contactData.firstName', '');
+                                                    formikRef.current?.setFieldValue('contactData.lastName', '');
+                                                    formikRef.current?.setFieldValue('contactNumber', '');
+                                                }
+                                                console.log(formikRef.current?.values);
+                                                formikRef.current?.setFieldValue('contactsDataId', selectedContactId);
+                                                formikRef.current?.setFieldValue('contactData.id', selectedContactId);
+                                            }}
+                                        >
+                                            <option value="" label="Select a contact" />
+                                            {contactOptions.map((contact) => (
+                                                <option key={contact.id} value={contact.id} label={`${contact?.firstName}  ${contact?.lastName}`} />
+                                        
+                                            ))}
+                                        </Field>
+
+                                    <ErrorMessage name="contactName" component="div" className="text-red-600 text-sm mt-1" />
+                                </div>
                                 <InputField type="text" name="title" placeholder="Title" label="Title *" />
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">   
                                 <InputField type="email" name="email" placeholder="Email" label="Email *" />
-                                <InputField type="contactNumber" name="contactNumber" placeholder="Contact Number" label="Contact Number *" />   
+                                {isContactSelected ? null : (
+                                        <InputField
+                                            type="contactNumber"
+                                            name="contactNumber"
+                                            placeholder="Contact Number"
+                                            label="Contact Number *"
+                                        />
+                                    )}
+  
                             </div>
 
                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"> 

@@ -366,10 +366,10 @@ const LeadsData: React.FC<LeadsDataProps> = ({ lead, handleEdit,tagsCategories }
                 </td> */}
             
             {tagsCategories.map((category) => {
-        const categoryTags = lead.tags.filter(
+        const categoryTags = lead?.tags?.filter(
           (tag) => tag.tagCategoryId === category.id
         ); 
-        const hasTags = categoryTags.length > 0;
+        const hasTags = categoryTags?.length > 0;
 
         return (
           <td key={category.id} className="truncate p-3">

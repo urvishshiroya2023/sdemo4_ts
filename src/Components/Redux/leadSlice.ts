@@ -125,6 +125,7 @@ import { METHOD } from "../../Constant/Methods";
 import callApi from "../api";
 
 export interface contactData{
+    id:string
     firstName: string;
     lastName: string;
 }

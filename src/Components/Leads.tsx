@@ -300,6 +300,7 @@ const initialValues: Lead = {
         colorCode: ""
     },
     contactData: {
+        id:"",
         firstName: "",
         lastName: ""
     }
@@ -320,7 +321,7 @@ const Leads: React.FC = () => {
     });
     const [tagsCategories, setTagsCategories] = useState < TagCategory[] > ([]);
 
-    console.log(tagsCategories);
+    // console.log(tagsCategories);
 
     useEffect(() => {
         dispatch(fetchLeads());
