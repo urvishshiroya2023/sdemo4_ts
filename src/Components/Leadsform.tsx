@@ -302,7 +302,7 @@ const Leadsform: React.FC<LeadsFormProps> = ({ onClose, formMode, setShowLeadFor
 
     // console.log(contactOptions);
     // console.log(customCategories);
-    console.log(formValues);
+    // console.log(formValues);
     // const dispatch = useDispatch();
     const formikRef = useRef<FormikProps<Lead>>(null);
     const dispatch = useAppDispatch();

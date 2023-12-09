@@ -313,7 +313,8 @@ const ContactData: React.FC<ContactDataProps> = ({
           </button>
           <span
             className="cursor-pointer hover:text-red-500 circle mx-1 items-center"
-            onClick={handleDelete}
+            // onClick={handleDelete}
+            onClick={() => setIsModalOpen(true)}
           >
             <svg
               stroke="currentColor"
@@ -333,11 +334,60 @@ const ContactData: React.FC<ContactDataProps> = ({
           </span>
           {/* Modal for confirmation */}
           {isModalOpen && (
-            /*  modal  */
-            <div>
-              {/* ... (modal content) */}
-            </div>
-          )}
+                            <div onClick={() => setIsModalOpen(false)} className="fixed inset-0 z-10 overflow-y-auto">
+                                <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                                    {/* Background overlay */}
+                                    <div
+                                        className="fixed inset-0 transition-opacity"
+                                        aria-hidden="true"
+                                    >
+                                        <div className="absolute inset-0 bg-black opacity-60"></div>
+                                    </div>
+
+                                    {/* Modal panel */}
+                                    <div
+                                        onClick={(e) => e.stopPropagation()}
+                                        className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+                                    >
+
+
+                                        <div className="bg-white rounded-lg px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                            <div className="">
+                                                {/* ... Modal content */}
+                                                <div onClick={() => setIsModalOpen(false)} className='cursor-pointer text-right text-xs'>X</div>
+                                                <div >
+                                                    <h3 className='text-black text-xl font-semibold'>Delete Lead</h3>
+                                                    <div className="whitespace-normal mt-3  text-sm overflow-hidden line-clamp-3">
+                                                        Are you sure you want to delete this Lead? All record related to this Lead will be deleted as well. This action cannot be undone.
+                                                    </div>
+                                                </div>
+                                                <div className='mt-3'>
+                                                    <div className='text-right '>
+                                                        <div className=''>
+                                                            <button
+                                                                onClick={() => setIsModalOpen(false)}
+                                                                className="cursor-pointer border rounded-md px-4 py-2 mt-3 w-full sm:mt-0  sm:w-auto sm:text-sm"
+                                                            >
+                                                                Cancel
+                                                            </button>
+                                                            <button
+                                                                onClick={() => {
+                                                                    setIsModalOpen(false);
+                                                                    handleDelete()
+                                                                }}
+                                                                className="cursor-pointer inline-flex justify-center w-full rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 ml-2  sm:w-auto sm:text-sm"
+                                                            >
+                                                                Confirm
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
           <Link
             to={`/contactdetails/${contact.id}`}
             className="text-decoration-none"
