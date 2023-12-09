@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { TagCategory } from "./Leads";
-import { deleteLead, fetchLeads, Lead } from "./Redux/leadSlice";
+import { Lead, deleteLead, fetchLeads } from "./Redux/leadSlice";
 import { useAppDispatch } from "./Redux/store";
+import callApi from "./api";
 
 interface LeadsDataProps {
   lead: Lead;
@@ -20,12 +21,15 @@ const LeadsData: React.FC<LeadsDataProps> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState<string | null>(
+    lead.status
+  );
   const dispatch = useAppDispatch();
   const statusStyles = {
     color: lead?.leadStatus?.colorCode,
     backgroundColor: `${lead?.leadStatus?.colorCode}1A`,
   };
-  console.log(statuses);
+  //   console.log(statuses);
   const handleDelete = async () => {
     try {
       await dispatch(deleteLead(lead.id));
@@ -36,6 +40,51 @@ const LeadsData: React.FC<LeadsDataProps> = ({
       toast.error("Error deleting lead");
     }
   };
+
+  const handleStatusChange = async (statusId: string) => {
+    try {
+      // Make an API call to update the lead status
+      const updatedLead = await callApi("PUT", `/crm/leads/${lead.id}`, {
+        status: statusId,
+      });
+      //   console.log(updatedLead);
+
+      // Assuming your Redux store is updated with the new lead data
+      // You may need to dispatch an action to update the Redux store with the new lead data
+      // dispatch(updateLeadInStore(updatedLead));
+
+      // Optionally, you can fetch leads again to refresh the data
+      dispatch(fetchLeads());
+      setSelectedStatus(statusId);
+
+      toast.success(updatedLead?.message);
+    } catch (error: any) {
+      console.error("Error updating lead status:", error);
+      toast.error(error?.response?.data?.message);
+    }
+  };
+
+  const filteredStatuses = statuses.filter(
+    (status) => status.id !== selectedStatus
+  );
+
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <tr className="text-[#6B7280] border-b">
@@ -54,25 +103,35 @@ const LeadsData: React.FC<LeadsDataProps> = ({
             </div>
           </div> */}
           {/* Dropdown */}
-          <div className="">
-            <button
-              className="dropdown-toggle cursor-pointer circle items-center hover:text-indigo-500"
-              id={`dropdown-toggle-${lead.id}`}
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
+          <div
+            style={{ backgroundColor: `${lead?.leadStatus?.colorCode}` }}
+            className="w-[10px] h-[10px]  mr-2 rounded-sm"
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            id={`dropdown-toggle-${lead.id}`}
+            ref={dropdownRef}
+          >
+            <button className="dropdown-toggle cursor-pointer circle items-center hover:text-indigo-500">
               <span className="tooltip-wrapper">
-                <div>w</div>
+                <div className="w-[14px] bg-green-900"></div>
               </span>
             </button>
             {isDropdownOpen && (
               <div className="dropdown-menu rounded-lg w-[200px] bg-white py-3 px-2 border absolute z-[100]">
-                {statuses.map((status) => (
+                {filteredStatuses?.map((status) => (
                   <div
                     key={status.id}
                     className="dropdown-item my-2 cursor-pointer hover:bg-gray-100 rounded-lg px-2"
-                    // onClick={() => handleStatusChange(status.statusName)}
+                    onClick={() => handleStatusChange(status.id)}
                   >
-                    {status.statusName}
+                    <div className="flex items-baseline">
+                      <div
+                        style={{
+                          backgroundColor: `${status?.colorCode}`,
+                        }}
+                        className="w-[10px] h-[10px]  mr-2 rounded-sm"
+                      ></div>
+                      <div className="ms-2">{status.statusName}</div>
+                    </div>
                   </div>
                 ))}
               </div>

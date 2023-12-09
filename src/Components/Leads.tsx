@@ -25,6 +25,7 @@ interface leadsActivity {
   length: number;
 }
 interface Lead {
+  status: string;
   id: string;
   contactName: string;
   title: string;
@@ -62,6 +63,7 @@ const initialValues: Lead = {
   leadsCategory: "",
   bhargav: "",
   skills: "",
+  status: "",
   leadsActivity: [],
   reason: "",
   tags: [],

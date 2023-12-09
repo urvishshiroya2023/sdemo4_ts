@@ -22,6 +22,7 @@ export interface leadStatus{
 }
 
 export interface Lead {
+    status: string ;
     leadsActivity: any[];
     reason: string;
     tags: tags[];
